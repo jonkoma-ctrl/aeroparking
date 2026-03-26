@@ -4,11 +4,12 @@ import { prisma } from "@/lib/db";
 // GET /api/reservas/:id
 export async function GET(
   _req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
     const reservation = await prisma.cruiseReservation.findUnique({
-      where: { id: params.id },
+      where: { id },
     });
 
     if (!reservation) {
@@ -31,9 +32,10 @@ export async function GET(
 // PATCH /api/reservas/:id — Update reservation status
 export async function PATCH(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
     const body = await req.json();
     const { status } = body;
 
@@ -45,7 +47,7 @@ export async function PATCH(
     }
 
     const reservation = await prisma.cruiseReservation.update({
-      where: { id: params.id },
+      where: { id },
       data: { status },
     });
 

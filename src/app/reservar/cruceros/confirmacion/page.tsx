@@ -13,14 +13,16 @@ export const metadata: Metadata = {
 export default async function ConfirmacionPage({
   searchParams,
 }: {
-  searchParams: { id?: string };
+  searchParams: Promise<{ id?: string }>;
 }) {
-  if (!searchParams.id) {
+  const params = await searchParams;
+
+  if (!params.id) {
     notFound();
   }
 
   const reservation = await prisma.cruiseReservation.findUnique({
-    where: { id: searchParams.id },
+    where: { id: params.id },
   });
 
   if (!reservation) {
@@ -42,17 +44,13 @@ export default async function ConfirmacionPage({
           y te contactará para confirmar.
         </p>
 
-        {/* Reservation summary */}
         <div className="mt-8 rounded-2xl border border-brand-100 bg-brand-50 p-6 text-left md:p-8">
           <h2 className="mb-4 text-sm font-semibold uppercase tracking-wider text-brand-500">
             Resumen de la reserva
           </h2>
 
           <dl className="space-y-3 text-sm">
-            <SummaryRow
-              label="Código de reserva"
-              value={reservation.id}
-            />
+            <SummaryRow label="Código de reserva" value={reservation.id} />
             <SummaryRow label="Estado" value="Pendiente de confirmación" />
             <SummaryRow
               label="Nombre"
