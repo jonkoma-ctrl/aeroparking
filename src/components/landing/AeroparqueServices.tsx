@@ -154,10 +154,18 @@ export function AeroparqueServices() {
                 <strong> Ideal para viajes de 4 a 14 días.</strong>
               </p>
 
+              {/* Travel time badge */}
+              <div className="mt-4 inline-flex items-center gap-2 rounded-full bg-emerald-50 border border-emerald-200 px-4 py-2">
+                <Clock className="h-4 w-4 text-emerald-600" />
+                <span className="text-xs font-semibold text-emerald-700">
+                  A solo 5 min de Aeroparque
+                </span>
+              </div>
+
               <div className="mt-5 grid grid-cols-2 gap-3">
                 {[
                   "Dejás el auto",
-                  "Te llevamos al aeropuerto",
+                  "5 min hasta Aeroparque",
                   "Viajás tranquilo",
                   "Transfer te lleva a tu auto",
                 ].map((step, i) => (
@@ -173,7 +181,7 @@ export function AeroparqueServices() {
               <ul className="mt-5 space-y-2">
                 {[
                   "Estadías de 4 a 14 días",
-                  "Traslados In-Out incluidos",
+                  "Traslados In-Out incluidos (5 min)",
                   "Recogida en aeropuerto o puerto",
                   "Parking vigilado 24hs",
                 ].map((f) => (

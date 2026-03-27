@@ -61,13 +61,21 @@ export function CruiseService() {
                 Traé tu auto a nuestro parking en Costa Salguero, lo guardamos seguro mientras disfrutás tu crucero. Al volver, tomás nuestro shuttle hasta tu vehículo.
               </p>
 
+              {/* Travel time badge */}
+              <div className="mt-4 inline-flex items-center gap-2 rounded-full bg-white/15 border border-white/20 px-4 py-2">
+                <Clock className="h-4 w-4 text-accent-400" />
+                <span className="text-xs font-semibold text-white">
+                  A solo 10 min del Puerto
+                </span>
+              </div>
+
               {/* Steps */}
               <div className="mt-6 space-y-3">
                 {[
                   "Traés tu auto a Costa Salguero",
                   "Lo guardamos seguro en nuestro parking",
                   "Disfrutá tu crucero tranquilo",
-                  "Al volver, shuttle te lleva a tu auto",
+                  "Al volver, shuttle te lleva a tu auto (10 min)",
                 ].map((text, i) => (
                   <div key={i} className="flex items-center gap-3">
                     <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-white/20 text-xs font-bold">
@@ -82,7 +90,7 @@ export function CruiseService() {
               <ul className="mt-5 space-y-2">
                 {[
                   "Parking vigilado 24hs con cámaras",
-                  "Shuttle de vuelta incluido",
+                  "Shuttle incluido (10 min al puerto)",
                   "Estadías flexibles",
                   "Atención personalizada",
                 ].map((f) => (
