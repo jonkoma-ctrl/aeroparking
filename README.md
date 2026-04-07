@@ -14,7 +14,7 @@ Landing comercial para servicios de parking y traslados vinculados a Aeroparque 
 - TypeScript
 - Tailwind CSS
 - React Hook Form + Zod
-- Prisma + SQLite
+- Prisma + PostgreSQL (Neon)
 - Lucide Icons
 
 ## Requisitos
