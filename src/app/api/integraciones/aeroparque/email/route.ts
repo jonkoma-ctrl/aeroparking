@@ -48,6 +48,7 @@ export async function POST(req: NextRequest) {
       update: {}, // no-op if already exists
       create: {
         externalOrderId: parsed.externalOrderId,
+        destination: parsed.destination,
         serviceType: parsed.serviceType,
         customerName: parsed.customerName,
         email: parsed.email,

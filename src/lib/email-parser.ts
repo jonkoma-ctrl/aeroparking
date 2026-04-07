@@ -1,7 +1,9 @@
 export type AeroparqueServiceType = "drop_go" | "larga_estadia";
+export type AeroparqueDestination = "aeroparque" | "puerto";
 
 export interface ParsedAeroparqueEmail {
   externalOrderId: string;
+  destination: AeroparqueDestination;
   serviceType: AeroparqueServiceType;
   customerName: string;
   email: string | null;
@@ -130,6 +132,10 @@ export function parseAeroparqueEmail(
   if (!nameMatch) return fail("customerName");
   const customerName = nameMatch[1].trim();
 
+  // Destination — Costa Salguero = puerto, else aeroparque
+  const destination: AeroparqueDestination =
+    /Costa\s+Salguero/i.test(body) ? "puerto" : "aeroparque";
+
   // Service type — handle various forms
   let serviceType: AeroparqueServiceType;
   if (/Drop\s*[&y]\s*Go/i.test(body) || /Drop\s*&amp;\s*Go/i.test(body)) {
@@ -237,6 +243,7 @@ export function parseAeroparqueEmail(
 
   return {
     externalOrderId,
+    destination,
     serviceType,
     customerName,
     email,

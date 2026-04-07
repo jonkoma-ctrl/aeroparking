@@ -46,6 +46,7 @@ model AeroparqueReservation {
   externalOrderId  String   @unique
   status           String   @default("confirmed") // confirmed | cancelled | completed
 
+  destination      String   @default("aeroparque") // "aeroparque" | "puerto"
   serviceType      String   // "drop_go" | "larga_estadia"
   customerName     String
   email            String?
