@@ -24,27 +24,45 @@ export interface ParsedAeroparqueEmail {
 }
 
 /**
- * Extract value after a label in AA2000 plain-text emails.
- * Handles multiple formats:
- *   - `*\tLabel:\n\n\n\tValue` (raw .eml)
- *   - `Label:\nValue` (Gmail getPlainBody stripped)
- *   - `Label: Value` (inline)
+ * Extract value after a label in AA2000 emails.
+ * Gmail getPlainBody() format: `- *Label:*\n\n   Value` or `*Label:* Value`
+ * Raw .eml format: `*\tLabel:\n\n\n\tValue`
  */
 function extractField(body: string, label: string): string | null {
-  const escaped = label.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  // Strip trailing colon from label for flexible matching
+  const baseLabel = label.replace(/:$/, "");
+  const escaped = baseLabel.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 
-  // Pattern 1: label on one line, value on a subsequent non-empty line (with any whitespace/newlines between)
-  const multiLine = new RegExp(`${escaped}[\\t ]*\\n[\\s]*?([^\\n*][^\\n]*)`, "im");
-  const m1 = body.match(multiLine);
+  // Pattern 1: Gmail bold format — `*Label:*` followed by value on next non-empty line
+  // e.g. `- *Patente n°:*\n\n   ODE588`
+  const gmailBold = new RegExp(`\\*${escaped}:\\*[\\t ]*\\n[\\s]*?([^\\n\\-\\*][^\\n]*)`, "im");
+  const m1 = body.match(gmailBold);
   if (m1) {
     const val = m1[1].trim();
-    if (val && !val.startsWith("*")) return val;
+    if (val) return val;
   }
 
-  // Pattern 2: label followed by value on the same line (after colon + space)
-  const inlineMatch = body.match(new RegExp(`${escaped}\\s+(.+)`, "i"));
-  if (inlineMatch) {
-    const val = inlineMatch[1].trim();
+  // Pattern 2: Gmail bold inline — `*Label:* Value` on same line
+  const gmailInline = new RegExp(`\\*${escaped}:\\*\\s+([^\\n]+)`, "i");
+  const m2 = body.match(gmailInline);
+  if (m2) {
+    const val = m2[1].trim();
+    if (val) return val;
+  }
+
+  // Pattern 3: Raw .eml format — `Label:\n\n\n\tValue`
+  const rawEml = new RegExp(`${escaped}:[\\t ]*\\n[\\s]*?([^\\n\\*\\-][^\\n]*)`, "im");
+  const m3 = body.match(rawEml);
+  if (m3) {
+    const val = m3[1].trim();
+    if (val) return val;
+  }
+
+  // Pattern 4: Plain inline — `Label: Value`
+  const plain = new RegExp(`${escaped}:\\s+([^\\n]+)`, "i");
+  const m4 = body.match(plain);
+  if (m4) {
+    const val = m4[1].trim();
     if (val) return val;
   }
 
