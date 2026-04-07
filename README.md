@@ -10,7 +10,7 @@ Landing comercial para servicios de parking y traslados vinculados a Aeroparque 
 
 ## Stack
 
-- Next.js 14 (App 16)
+- Next.js 16 (App Router)
 - TypeScript
 - Tailwind CSS
 - React Hook Form + Zod
