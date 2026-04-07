@@ -37,18 +37,31 @@ export async function PATCH(
   try {
     const { id } = await params;
     const body = await req.json();
-    const { status } = body;
+    const { status, destination } = body;
 
-    if (!["confirmed", "cancelled", "completed"].includes(status)) {
-      return NextResponse.json(
-        { error: "Estado inválido" },
-        { status: 400 }
-      );
+    const data: Record<string, string> = {};
+    if (status) {
+      if (!["confirmed", "cancelled", "completed"].includes(status)) {
+        return NextResponse.json(
+          { error: "Estado inválido" },
+          { status: 400 }
+        );
+      }
+      data.status = status;
+    }
+    if (destination) {
+      if (!["aeroparque", "puerto"].includes(destination)) {
+        return NextResponse.json(
+          { error: "Destino inválido" },
+          { status: 400 }
+        );
+      }
+      data.destination = destination;
     }
 
     const reservation = await prisma.aeroparqueReservation.update({
       where: { id },
-      data: { status },
+      data,
     });
 
     return NextResponse.json(reservation);
