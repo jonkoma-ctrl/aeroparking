@@ -40,3 +40,44 @@ model CruiseReservation {
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
 }
+
+model AeroparqueReservation {
+  id               String   @id @default(cuid())
+  externalOrderId  String   @unique
+  status           String   @default("confirmed") // confirmed | cancelled | completed
+
+  serviceType      String   // "drop_go" | "larga_estadia"
+  customerName     String
+  email            String?
+  phone            String?
+  dni              String?
+
+  // Vehículo
+  licensePlate     String
+  carBrand         String
+  carModel         String
+
+  // Reserva
+  startDate        DateTime
+  endDate          DateTime
+  price            Int      // ARS pesos enteros (214000)
+
+  // Vuelo
+  departureFlightDate DateTime?
+  departureAirline    String?
+  departureFlight     String?
+  arrivalAirline      String?
+  arrivalFlight       String?
+  arrivalTime         String?
+  passengers          Int?
+
+  // Notas
+  notes            String?  @db.Text
+
+  // Auditoría
+  rawEmailSubject  String?
+  rawEmailBody     String?  @db.Text
+
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+}
