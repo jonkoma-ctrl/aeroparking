@@ -25,14 +25,29 @@ export interface ParsedAeroparqueEmail {
 
 /**
  * Extract value after a label in AA2000 plain-text emails.
- * Pattern: `*\tLabel:\n\n\n\tValue` or just `Label:\n...\nValue`
+ * Handles multiple formats:
+ *   - `*\tLabel:\n\n\n\tValue` (raw .eml)
+ *   - `Label:\nValue` (Gmail getPlainBody stripped)
+ *   - `Label: Value` (inline)
  */
 function extractField(body: string, label: string): string | null {
-  // Try pattern: label followed by value on next non-empty line
   const escaped = label.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-  const regex = new RegExp(`${escaped}\\s*\\n+\\s*\\n*\\s*(.+)`, "i");
-  const match = body.match(regex);
-  if (match) return match[1].trim();
+
+  // Pattern 1: label on one line, value on a subsequent non-empty line (with any whitespace/newlines between)
+  const multiLine = new RegExp(`${escaped}[\\t ]*\\n[\\s]*?([^\\n*][^\\n]*)`, "im");
+  const m1 = body.match(multiLine);
+  if (m1) {
+    const val = m1[1].trim();
+    if (val && !val.startsWith("*")) return val;
+  }
+
+  // Pattern 2: label followed by value on the same line (after colon + space)
+  const inlineMatch = body.match(new RegExp(`${escaped}\\s+(.+)`, "i"));
+  if (inlineMatch) {
+    const val = inlineMatch[1].trim();
+    if (val) return val;
+  }
+
   return null;
 }
 
@@ -40,8 +55,7 @@ function extractField(body: string, label: string): string | null {
  * Parse DD/MM/YYYY or DD/MM/YYYY HH:MM into a Date
  */
 function parseDateDMY(str: string): Date | null {
-  // Match DD/MM/YYYY optionally followed by HH:MM
-  const m = str.trim().match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})(?:\s+(\d{1,2}):(\d{2}))?/);
+  const m = str.trim().match(/(\d{1,2})\/(\d{1,2})\/(\d{4})(?:\s+(\d{1,2}):(\d{2}))?/);
   if (!m) return null;
   const day = parseInt(m[1], 10);
   const month = parseInt(m[2], 10) - 1;
@@ -52,79 +66,121 @@ function parseDateDMY(str: string): Date | null {
 }
 
 /**
- * Parse price string like "$ 214.000" → 214000
+ * Parse price string like "$ 214.000" or "$214.000" or "214.000" → 214000
  */
 function parsePrice(str: string): number {
-  const cleaned = str.replace(/[$.\\s\u00a0]/g, "").replace(/\./g, "").trim();
-  return parseInt(cleaned, 10) || 0;
+  // Remove everything except digits
+  const digits = str.replace(/[^\d]/g, "");
+  return parseInt(digits, 10) || 0;
+}
+
+/**
+ * Try to find Argentine license plate in text.
+ * Formats: AA000BB (new) or AAA000 (old)
+ */
+function findLicensePlate(text: string): string | null {
+  const m = text.match(/\b([A-Z]{2}\d{3}[A-Z]{2})\b/i) ||
+            text.match(/\b([A-Z]{3}\d{3})\b/i);
+  return m ? m[1].toUpperCase() : null;
 }
 
 /**
  * Parse an AA2000 WooCommerce confirmation email (plain text).
  * Returns null if critical fields can't be extracted.
+ * Logs which field failed for debugging.
  */
 export function parseAeroparqueEmail(
   subject: string,
   body: string
 ): ParsedAeroparqueEmail | null {
-  // Order ID from subject: "Nuevo pedido de cliente (177666)"
-  const orderMatch = subject.match(/\((\d+)\)/);
-  if (!orderMatch) return null;
+  const fail = (field: string) => {
+    console.error(`[email-parser] Failed to extract: ${field}`);
+    console.error(`[email-parser] Subject: ${subject.slice(0, 120)}`);
+    console.error(`[email-parser] Body preview (500 chars): ${body.slice(0, 500)}`);
+    return null;
+  };
+
+  // Order ID from subject: "(177666)" or "#177666"
+  const orderMatch = subject.match(/\((\d+)\)/) || subject.match(/#(\d+)/);
+  if (!orderMatch) return fail("orderId");
   const externalOrderId = orderMatch[1];
 
   // Customer name: "Has recibido un pedido de Axel Mauhourat."
-  const nameMatch = body.match(/pedido de (.+?)\./i);
-  if (!nameMatch) return null;
+  // Also try: "pedido de Axel Mauhourat" without trailing dot
+  const nameMatch = body.match(/pedido de\s+(.+?)\s*\./i) ||
+                    body.match(/pedido de\s+([^\n]+)/i);
+  if (!nameMatch) return fail("customerName");
   const customerName = nameMatch[1].trim();
 
-  // Service type
+  // Service type — handle various forms
   let serviceType: AeroparqueServiceType;
-  if (/Drop\s*&\s*Go/i.test(body)) {
+  if (/Drop\s*[&y]\s*Go/i.test(body) || /Drop\s*&amp;\s*Go/i.test(body)) {
     serviceType = "drop_go";
   } else if (/Larga\s+Estad[ií]a/i.test(body)) {
     serviceType = "larga_estadia";
   } else {
-    return null;
+    return fail("serviceType");
   }
 
-  // Vehicle
-  const licensePlate = extractField(body, "Patente n°:");
-  if (!licensePlate) return null;
+  // Vehicle — try extractField first, then regex fallback
+  // Handle both n° (degree sign U+00B0) and nº (ordinal indicator U+00BA) and n:
+  let licensePlate = extractField(body, "Patente n°:") ||
+                     extractField(body, "Patente nº:") ||
+                     extractField(body, "Patente n:") ||
+                     extractField(body, "Patente:");
+  // Fallback: find plate pattern near "Patente" keyword
+  if (!licensePlate) {
+    const plateSection = body.match(/Patente[^\n]*\n([\s\S]{0,100})/i);
+    if (plateSection) licensePlate = findLicensePlate(plateSection[1]);
+  }
+  if (!licensePlate) return fail("licensePlate");
 
   const carBrand = extractField(body, "Marca:");
-  if (!carBrand) return null;
+  if (!carBrand) return fail("carBrand");
 
   const carModel = extractField(body, "Modelo:");
-  if (!carModel) return null;
+  if (!carModel) return fail("carModel");
 
   // Dates
   const startDateStr = extractField(body, "Reservado desde:");
   const endDateStr = extractField(body, "Reservado hasta:");
-  if (!startDateStr || !endDateStr) return null;
+  if (!startDateStr) return fail("startDate");
+  if (!endDateStr) return fail("endDate");
 
   const startDate = parseDateDMY(startDateStr);
   const endDate = parseDateDMY(endDateStr);
-  if (!startDate || !endDate) return null;
+  if (!startDate) return fail("startDate (parse)");
+  if (!endDate) return fail("endDate (parse)");
 
-  // Price — get from "Total:" line or last $ amount
+  // Price — multiple strategies
   let price = 0;
-  const totalMatch = body.match(/Total:\s*\n?\s*\$\s*([\d.]+)/i);
+  // Try "Total:" followed by price
+  const totalMatch = body.match(/Total[:\s]*\$?\s*([\d.]+)/i);
   if (totalMatch) {
     price = parsePrice(totalMatch[1]);
-  } else {
-    // Fallback: find "- \t$ NNN.NNN" pattern
-    const priceMatches = body.match(/\$\s*([\d.]+)/g);
-    if (priceMatches && priceMatches.length > 0) {
-      const last = priceMatches[priceMatches.length - 1];
-      price = parsePrice(last);
+  }
+  // Fallback: find the last/largest $ amount
+  if (price === 0) {
+    const allPrices = [...body.matchAll(/\$\s*([\d.]+)/g)];
+    if (allPrices.length > 0) {
+      const amounts = allPrices.map(m => parsePrice(m[1]));
+      price = Math.max(...amounts);
     }
   }
 
-  // Flight info (optional)
-  const departureAirline = extractField(body, "Aerolínea:") || extractField(body, "Aerolinea:");
-  const departureFlight = extractField(body, "Número de vuelo:") || extractField(body, "Numero de vuelo:");
-  const arrivalAirline = extractField(body, "Línea aérea de arribo:") || extractField(body, "Linea aerea de arribo:");
-  const arrivalFlight = extractField(body, "N° de vuelo de arribo:");
+  // Flight info (all optional — never fail on these)
+  const departureAirline = extractField(body, "Aerolínea:") ||
+                           extractField(body, "Aerolinea:") ||
+                           extractField(body, "Aerol\u00ednea:");
+  const departureFlight = extractField(body, "Número de vuelo:") ||
+                          extractField(body, "Numero de vuelo:") ||
+                          extractField(body, "N\u00famero de vuelo:");
+  const arrivalAirline = extractField(body, "Línea aérea de arribo:") ||
+                         extractField(body, "Linea aerea de arribo:") ||
+                         extractField(body, "L\u00ednea a\u00e9rea de arribo:");
+  const arrivalFlight = extractField(body, "N° de vuelo de arribo:") ||
+                        extractField(body, "Nº de vuelo de arribo:") ||
+                        extractField(body, "N\u00b0 de vuelo de arribo:");
   const arrivalTime = extractField(body, "Horario de arribo:");
 
   // Departure flight date
@@ -136,24 +192,28 @@ export function parseAeroparqueEmail(
   const passengers = passStr ? parseInt(passStr, 10) || null : null;
 
   // DNI
-  const dni = extractField(body, "Número de documento:") || extractField(body, "Numero de documento:");
+  const dni = extractField(body, "Número de documento:") ||
+              extractField(body, "Numero de documento:") ||
+              extractField(body, "N\u00famero de documento:");
 
-  // Email & phone from billing address section
+  // Email — find customer email, skip system addresses
   let email: string | null = null;
-  const emailMatch = body.match(/[\w.-]+@[\w.-]+\.\w{2,}/);
-  if (emailMatch) {
-    const found = emailMatch[0];
-    // Skip known system emails
-    if (!found.includes("nrauditores") && !found.includes("tiendaaeropuertos")) {
-      email = found;
+  const allEmails = body.match(/[\w.-]+@[\w.-]+\.\w{2,}/g) || [];
+  for (const e of allEmails) {
+    if (!e.includes("nrauditores") &&
+        !e.includes("tiendaaeropuertos") &&
+        !e.includes("aeropuertosargentina")) {
+      email = e;
+      break;
     }
   }
 
+  // Phone
   let phone: string | null = null;
   const phoneMatch = body.match(/\+\d{10,15}/);
   if (phoneMatch) phone = phoneMatch[0];
 
-  // Notes from "Nota:" field in email footer
+  // Notes
   const notesMatch = body.match(/Nota:\s*\n?\s*([^\n]+)/i);
   const notes = notesMatch ? notesMatch[1].trim() : null;
 

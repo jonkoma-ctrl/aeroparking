@@ -25,7 +25,17 @@ export async function POST(req: NextRequest) {
     // 3. Parse email content
     const parsed = parseAeroparqueEmail(subject, body);
     if (!parsed) {
-      console.error("Could not parse email:", { subject: subject.slice(0, 100) });
+      // Log enough to debug but not the full body (could be huge)
+      console.error("Could not parse email:", {
+        subject,
+        bodyLength: body.length,
+        bodyPreview: body.slice(0, 1000),
+        hasPatente: /[Pp]atente/i.test(body),
+        hasMarca: /[Mm]arca:/i.test(body),
+        hasReservado: /[Rr]eservado desde/i.test(body),
+        hasDropGo: /Drop/i.test(body),
+        hasLargaEstadia: /Larga/i.test(body),
+      });
       return NextResponse.json(
         { error: "No se pudo parsear el email" },
         { status: 422 }
