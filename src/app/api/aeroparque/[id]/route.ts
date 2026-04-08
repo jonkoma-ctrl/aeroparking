@@ -37,9 +37,10 @@ export async function PATCH(
   try {
     const { id } = await params;
     const body = await req.json();
-    const { status, destination } = body;
+    const { status, destination, checkInTime } = body;
 
     const data: Record<string, string> = {};
+    if (checkInTime) data.checkInTime = checkInTime;
     if (status) {
       if (!["confirmed", "cancelled", "completed"].includes(status)) {
         return NextResponse.json(
