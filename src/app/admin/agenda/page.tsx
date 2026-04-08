@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { BRAND_NAME } from "@/lib/constants";
 import { prisma } from "@/lib/db";
 import {
@@ -238,7 +239,16 @@ export default async function AdminAgendaPage({
                       </span>
                     </td>
                     <td className="px-4 py-3 font-medium text-brand-900">
-                      {r.customerName}
+                      {r.source === "email" ? (
+                        <Link
+                          href={`/admin/agenda/${r.id}`}
+                          className="hover:text-brand-600 hover:underline"
+                        >
+                          {r.customerName}
+                        </Link>
+                      ) : (
+                        r.customerName
+                      )}
                     </td>
                     <td className="px-4 py-3">
                       <div className="font-mono text-xs text-brand-700">
