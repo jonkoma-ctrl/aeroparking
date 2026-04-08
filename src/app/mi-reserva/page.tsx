@@ -138,37 +138,32 @@ export default function MiReservaPage() {
                   {data.licensePlate} — {data.carBrand} {data.carModel}
                 </dd>
               </div>
-              {start && (
+              {(start || data.departureAirline || data.departureFlight) && (
                 <div className="flex justify-between">
-                  <dt className="text-brand-500">Ingreso</dt>
-                  <dd className="font-medium text-brand-900">
-                    {formatDate(start)}
+                  <dt className="text-brand-500">Salida</dt>
+                  <dd className="text-right font-medium text-brand-900">
+                    <div>{start && formatDate(start)}</div>
+                    {(data.departureAirline || data.departureFlight) && (
+                      <div className="text-xs text-brand-500">
+                        {[data.departureAirline, data.departureFlight].filter(Boolean).join(" ")}
+                      </div>
+                    )}
                   </dd>
                 </div>
               )}
-              {(data.departureAirline || data.departureFlight) && (
+              {(end || data.arrivalAirline || data.arrivalFlight) && (
                 <div className="flex justify-between">
-                  <dt className="text-brand-500">Vuelo salida</dt>
-                  <dd className="font-medium text-brand-900">
-                    {[data.departureAirline, data.departureFlight].filter(Boolean).join(" ")}
-                    {data.departureFlightDate && ` — ${formatDate(data.departureFlightDate)}`}
-                  </dd>
-                </div>
-              )}
-              {end && (
-                <div className="flex justify-between">
-                  <dt className="text-brand-500">Retiro</dt>
-                  <dd className="font-medium text-brand-900">
-                    {formatDate(end)}
-                    {data.arrivalTime && ` — ${data.arrivalTime} hs`}
-                  </dd>
-                </div>
-              )}
-              {(data.arrivalAirline || data.arrivalFlight) && (
-                <div className="flex justify-between">
-                  <dt className="text-brand-500">Vuelo arribo</dt>
-                  <dd className="font-medium text-brand-900">
-                    {[data.arrivalAirline, data.arrivalFlight].filter(Boolean).join(" ")}
+                  <dt className="text-brand-500">Arribo</dt>
+                  <dd className="text-right font-medium text-brand-900">
+                    <div>
+                      {end && formatDate(end)}
+                      {data.arrivalTime && ` — ${data.arrivalTime} hs`}
+                    </div>
+                    {(data.arrivalAirline || data.arrivalFlight) && (
+                      <div className="text-xs text-brand-500">
+                        {[data.arrivalAirline, data.arrivalFlight].filter(Boolean).join(" ")}
+                      </div>
+                    )}
                   </dd>
                 </div>
               )}
