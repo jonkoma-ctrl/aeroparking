@@ -101,11 +101,15 @@ export async function POST(req: NextRequest) {
         price: parsed.price,
         passengers: parsed.passengers,
       };
-      sendEmail({
-        to: parsed.email,
-        subject: getReservationEmailSubject(emailData),
-        html: buildReservationEmail(emailData),
-      }).catch((err) => console.error("[email] Failed to send:", err));
+      try {
+        await sendEmail({
+          to: parsed.email,
+          subject: getReservationEmailSubject(emailData),
+          html: buildReservationEmail(emailData),
+        });
+      } catch (err) {
+        console.error("[email] Failed to send:", err);
+      }
     }
 
     return NextResponse.json(

@@ -53,11 +53,15 @@ export async function POST(req: NextRequest) {
       endDate: new Date(data.returnDate),
       passengers: data.passengers,
     };
-    sendEmail({
-      to: data.email,
-      subject: getReservationEmailSubject(emailData),
-      html: buildReservationEmail(emailData),
-    }).catch((err) => console.error("[email] Failed to send:", err));
+    try {
+      await sendEmail({
+        to: data.email,
+        subject: getReservationEmailSubject(emailData),
+        html: buildReservationEmail(emailData),
+      });
+    } catch (err) {
+      console.error("[email] Failed to send:", err);
+    }
 
     return NextResponse.json(
       { id: reservation.id, status: reservation.status },
