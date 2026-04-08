@@ -21,6 +21,7 @@ export interface ParsedAeroparqueEmail {
   arrivalAirline: string | null;
   arrivalFlight: string | null;
   arrivalTime: string | null;
+  checkInTime: string | null;
   passengers: number | null;
   notes: string | null;
 }
@@ -206,6 +207,7 @@ export function parseAeroparqueEmail(
                         extractField(body, "Nº de vuelo de arribo:") ||
                         extractField(body, "N\u00b0 de vuelo de arribo:");
   const arrivalTime = extractField(body, "Horario de arribo:");
+  const checkInTime = extractField(body, "Horario de ingreso:");
 
   // Departure flight date
   const depDateStr = extractField(body, "Fecha de salida:");
@@ -261,6 +263,7 @@ export function parseAeroparqueEmail(
     arrivalAirline,
     arrivalFlight,
     arrivalTime,
+    checkInTime,
     passengers,
     notes,
   };

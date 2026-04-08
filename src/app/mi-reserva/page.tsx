@@ -22,6 +22,7 @@ interface ReservationData {
   departureFlight?: string;
   arrivalAirline?: string;
   arrivalFlight?: string;
+  checkInTime?: string;
   price?: number;
   status: string;
   arrivalTime?: string;
@@ -142,7 +143,10 @@ export default function MiReservaPage() {
                 <div className="flex justify-between">
                   <dt className="text-brand-500">Salida</dt>
                   <dd className="text-right font-medium text-brand-900">
-                    <div>{start && formatDate(start)}</div>
+                    <div>
+                      {start && formatDate(start)}
+                      {data.checkInTime && ` — ${data.checkInTime} hs`}
+                    </div>
                     {(data.departureAirline || data.departureFlight) && (
                       <div className="text-xs text-brand-500">
                         {[data.departureAirline, data.departureFlight].filter(Boolean).join(" ")}

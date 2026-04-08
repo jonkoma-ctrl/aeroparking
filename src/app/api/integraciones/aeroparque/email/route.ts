@@ -66,6 +66,7 @@ export async function POST(req: NextRequest) {
         arrivalAirline: parsed.arrivalAirline,
         arrivalFlight: parsed.arrivalFlight,
         arrivalTime: parsed.arrivalTime,
+        checkInTime: parsed.checkInTime,
         passengers: parsed.passengers,
         notes: parsed.notes,
         rawEmailSubject: subject,

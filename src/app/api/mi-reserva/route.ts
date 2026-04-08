@@ -38,6 +38,7 @@ export async function GET(req: NextRequest) {
           arrivalAirline: true,
           arrivalFlight: true,
           arrivalTime: true,
+          checkInTime: true,
           passengers: true,
           createdAt: true,
         },
