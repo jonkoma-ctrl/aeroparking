@@ -138,6 +138,14 @@ export default function MiReservaPage() {
                   {data.licensePlate} — {data.carBrand} {data.carModel}
                 </dd>
               </div>
+              {start && (
+                <div className="flex justify-between">
+                  <dt className="text-brand-500">Ingreso</dt>
+                  <dd className="font-medium text-brand-900">
+                    {formatDate(start)}
+                  </dd>
+                </div>
+              )}
               {(data.departureAirline || data.departureFlight) && (
                 <div className="flex justify-between">
                   <dt className="text-brand-500">Vuelo salida</dt>
@@ -147,12 +155,20 @@ export default function MiReservaPage() {
                   </dd>
                 </div>
               )}
+              {end && (
+                <div className="flex justify-between">
+                  <dt className="text-brand-500">Retiro</dt>
+                  <dd className="font-medium text-brand-900">
+                    {formatDate(end)}
+                    {data.arrivalTime && ` — ${data.arrivalTime} hs`}
+                  </dd>
+                </div>
+              )}
               {(data.arrivalAirline || data.arrivalFlight) && (
                 <div className="flex justify-between">
                   <dt className="text-brand-500">Vuelo arribo</dt>
                   <dd className="font-medium text-brand-900">
                     {[data.arrivalAirline, data.arrivalFlight].filter(Boolean).join(" ")}
-                    {data.arrivalTime && ` — ${data.arrivalTime} hs`}
                   </dd>
                 </div>
               )}
@@ -160,20 +176,6 @@ export default function MiReservaPage() {
                 <div className="flex justify-between">
                   <dt className="text-brand-500">Pasajeros</dt>
                   <dd className="font-medium text-brand-900">{data.passengers}</dd>
-                </div>
-              )}
-              {start && end && (
-                <div className="flex justify-between">
-                  <dt className="text-brand-500">Fechas</dt>
-                  <dd className="font-medium text-brand-900">
-                    {formatDate(start)} → {formatDate(end)}
-                  </dd>
-                </div>
-              )}
-              {data.arrivalTime && (
-                <div className="flex justify-between">
-                  <dt className="text-brand-500">Hora arribo</dt>
-                  <dd className="font-medium text-brand-900">{data.arrivalTime}</dd>
                 </div>
               )}
               {data.price != null && data.price > 0 && (
