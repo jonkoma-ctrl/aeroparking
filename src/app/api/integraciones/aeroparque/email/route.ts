@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 import { parseAeroparqueEmail } from "@/lib/email-parser";
+import { sendEmail } from "@/lib/email";
+import { buildReservationEmail, getReservationEmailSubject } from "@/lib/email-templates";
 
 export async function POST(req: NextRequest) {
   try {
@@ -77,6 +79,34 @@ export async function POST(req: NextRequest) {
     // Check if it was a new creation or existing
     const isNew =
       reservation.createdAt.getTime() === reservation.updatedAt.getTime();
+
+    // Send confirmation email to client (fire-and-forget)
+    if (isNew && parsed.email) {
+      const emailData = {
+        customerName: parsed.customerName,
+        externalOrderId: parsed.externalOrderId,
+        destination: parsed.destination,
+        serviceType: parsed.serviceType,
+        licensePlate: parsed.licensePlate,
+        carBrand: parsed.carBrand,
+        carModel: parsed.carModel,
+        startDate: parsed.startDate,
+        endDate: parsed.endDate,
+        checkInTime: parsed.checkInTime,
+        arrivalTime: parsed.arrivalTime,
+        departureAirline: parsed.departureAirline,
+        departureFlight: parsed.departureFlight,
+        arrivalAirline: parsed.arrivalAirline,
+        arrivalFlight: parsed.arrivalFlight,
+        price: parsed.price,
+        passengers: parsed.passengers,
+      };
+      sendEmail({
+        to: parsed.email,
+        subject: getReservationEmailSubject(emailData),
+        html: buildReservationEmail(emailData),
+      }).catch((err) => console.error("[email] Failed to send:", err));
+    }
 
     return NextResponse.json(
       {

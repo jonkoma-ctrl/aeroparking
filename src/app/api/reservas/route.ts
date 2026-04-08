@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 import { cruiseReservationSchema } from "@/lib/validations";
+import { sendEmail } from "@/lib/email";
+import { buildReservationEmail, getReservationEmailSubject } from "@/lib/email-templates";
 
 // POST /api/reservas — Create a new cruise reservation
 export async function POST(req: NextRequest) {
@@ -38,8 +40,24 @@ export async function POST(req: NextRequest) {
       },
     });
 
-    // TODO: Send email notification to admin
-    // await sendAdminNotification(reservation);
+    // Send confirmation email to client (fire-and-forget)
+    const emailData = {
+      customerName: `${data.firstName} ${data.lastName}`,
+      reservationId: reservation.id,
+      destination: "puerto" as const,
+      serviceType: "cruceros",
+      licensePlate: data.licensePlate,
+      carBrand: data.carBrand,
+      carModel: data.carModel,
+      startDate: new Date(data.departureDate),
+      endDate: new Date(data.returnDate),
+      passengers: data.passengers,
+    };
+    sendEmail({
+      to: data.email,
+      subject: getReservationEmailSubject(emailData),
+      html: buildReservationEmail(emailData),
+    }).catch((err) => console.error("[email] Failed to send:", err));
 
     return NextResponse.json(
       { id: reservation.id, status: reservation.status },
