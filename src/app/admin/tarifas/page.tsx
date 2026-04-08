@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import { BRAND_NAME } from "@/lib/constants";
 import { prisma } from "@/lib/db";
-import { formatPrice, formatDateTime } from "@/lib/utils";
+import { formatDateTime } from "@/lib/utils";
 import { PricingRow } from "./PricingRow";
+import { AddPricingForm } from "./AddPricingForm";
 
 export const metadata: Metadata = {
   title: `Admin — Tarifas — ${BRAND_NAME}`,
@@ -40,62 +41,9 @@ export default async function AdminTarifasPage() {
         {/* Add new tariff form */}
         <div className="mb-8 rounded-xl border border-brand-200 bg-white p-6">
           <h2 className="mb-4 text-sm font-semibold uppercase tracking-wider text-brand-400">
-            Agregar tarifa
+            Agregar / actualizar tarifa
           </h2>
-          <form
-            action="/api/admin/pricing"
-            method="POST"
-            className="flex flex-wrap items-end gap-3"
-          >
-            <div>
-              <label className="block text-xs text-brand-500 mb-1">Destino</label>
-              <select
-                name="destination"
-                className="rounded-md border border-brand-200 px-3 py-2 text-sm"
-                required
-              >
-                <option value="puerto">Puerto de BA</option>
-                <option value="aeroparque">Aeroparque</option>
-              </select>
-            </div>
-            <div>
-              <label className="block text-xs text-brand-500 mb-1">Servicio</label>
-              <select
-                name="serviceType"
-                className="rounded-md border border-brand-200 px-3 py-2 text-sm"
-                required
-              >
-                <option value="larga_estadia">Larga Estadía</option>
-                <option value="drop_go">Drop & Go</option>
-                <option value="cruceros">Cruceros</option>
-              </select>
-            </div>
-            <div>
-              <label className="block text-xs text-brand-500 mb-1">Precio/día ($)</label>
-              <input
-                type="number"
-                name="pricePerDay"
-                placeholder="27000"
-                className="w-32 rounded-md border border-brand-200 px-3 py-2 text-sm"
-                required
-              />
-            </div>
-            <div>
-              <label className="block text-xs text-brand-500 mb-1">Descripción</label>
-              <input
-                type="text"
-                name="description"
-                placeholder="Larga Estadía Costa Salguero"
-                className="w-64 rounded-md border border-brand-200 px-3 py-2 text-sm"
-              />
-            </div>
-            <button
-              type="submit"
-              className="rounded-md bg-brand-900 px-4 py-2 text-sm font-medium text-white hover:bg-brand-800"
-            >
-              Guardar
-            </button>
-          </form>
+          <AddPricingForm />
         </div>
 
         {/* Existing tariffs */}
