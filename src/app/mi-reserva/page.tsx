@@ -160,7 +160,8 @@ export default function MiReservaPage() {
                 <div className="flex justify-between">
                   <dt className="text-brand-500">Pasajeros</dt>
                   <dd className="font-medium text-brand-900">{data.passengers}</dd>
-              </div>
+                </div>
+              )}
               {start && end && (
                 <div className="flex justify-between">
                   <dt className="text-brand-500">Fechas</dt>
