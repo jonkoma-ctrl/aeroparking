@@ -32,7 +32,13 @@ export async function GET(req: NextRequest) {
           endDate: true,
           price: true,
           status: true,
+          departureFlightDate: true,
+          departureAirline: true,
+          departureFlight: true,
+          arrivalAirline: true,
+          arrivalFlight: true,
           arrivalTime: true,
+          passengers: true,
           createdAt: true,
         },
       });

@@ -17,9 +17,15 @@ interface ReservationData {
   endDate?: string;
   departureDate?: string;
   returnDate?: string;
+  departureFlightDate?: string;
+  departureAirline?: string;
+  departureFlight?: string;
+  arrivalAirline?: string;
+  arrivalFlight?: string;
   price?: number;
   status: string;
   arrivalTime?: string;
+  passengers?: number;
   cruiseLine?: string;
   createdAt: string;
 }
@@ -131,6 +137,29 @@ export default function MiReservaPage() {
                 <dd className="font-medium text-brand-900">
                   {data.licensePlate} — {data.carBrand} {data.carModel}
                 </dd>
+              </div>
+              {(data.departureAirline || data.departureFlight) && (
+                <div className="flex justify-between">
+                  <dt className="text-brand-500">Vuelo salida</dt>
+                  <dd className="font-medium text-brand-900">
+                    {[data.departureAirline, data.departureFlight].filter(Boolean).join(" ")}
+                    {data.departureFlightDate && ` — ${formatDate(data.departureFlightDate)}`}
+                  </dd>
+                </div>
+              )}
+              {(data.arrivalAirline || data.arrivalFlight) && (
+                <div className="flex justify-between">
+                  <dt className="text-brand-500">Vuelo arribo</dt>
+                  <dd className="font-medium text-brand-900">
+                    {[data.arrivalAirline, data.arrivalFlight].filter(Boolean).join(" ")}
+                    {data.arrivalTime && ` — ${data.arrivalTime} hs`}
+                  </dd>
+                </div>
+              )}
+              {data.passengers && data.passengers > 0 && (
+                <div className="flex justify-between">
+                  <dt className="text-brand-500">Pasajeros</dt>
+                  <dd className="font-medium text-brand-900">{data.passengers}</dd>
               </div>
               {start && end && (
                 <div className="flex justify-between">
