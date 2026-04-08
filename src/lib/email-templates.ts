@@ -40,6 +40,7 @@ export function buildReservationEmail(data: ReservationEmailData): string {
     : `id=${data.reservationId}`;
 
   const isPuerto = data.destination === "puerto";
+  const isCruceros = data.serviceType === "cruceros";
   const startStr = formatDate(data.startDate);
   const endStr = formatDate(data.endDate);
 
@@ -48,14 +49,15 @@ export function buildReservationEmail(data: ReservationEmailData): string {
   rows += row("Referencia", orderRef);
   rows += row("Servicio", getServiceTypeLabel(data.serviceType));
   rows += row("Destino", isPuerto ? "Puerto de Buenos Aires" : "Aeroparque Jorge Newbery");
-  rows += row("Ingreso", `${startStr}${data.checkInTime ? ` — ${data.checkInTime} hs` : ""}`);
-  rows += row("Retiro", `${endStr}${data.arrivalTime ? ` — ${data.arrivalTime} hs` : ""}`);
+  rows += row(isCruceros ? "Embarque" : "Ingreso", `${startStr}${data.checkInTime ? ` — ${data.checkInTime} hs` : ""}`);
+  rows += row(isCruceros ? "Desembarque" : "Retiro", `${endStr}${data.arrivalTime ? ` — ${data.arrivalTime} hs` : ""}`);
   rows += row("Vehículo", `${data.licensePlate} — ${data.carBrand} ${data.carModel}`);
 
-  if (data.departureAirline || data.departureFlight) {
+  // Solo mostrar vuelos para Aeroparque (no cruceros)
+  if (!isCruceros && (data.departureAirline || data.departureFlight)) {
     rows += row("Vuelo salida", [data.departureAirline, data.departureFlight].filter(Boolean).join(" "));
   }
-  if (data.arrivalAirline || data.arrivalFlight) {
+  if (!isCruceros && (data.arrivalAirline || data.arrivalFlight)) {
     rows += row("Vuelo arribo", [data.arrivalAirline, data.arrivalFlight].filter(Boolean).join(" "));
   }
   if (data.passengers) {
