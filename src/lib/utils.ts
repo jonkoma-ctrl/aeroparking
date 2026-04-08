@@ -29,6 +29,8 @@ export function getStatusLabel(status: string): string {
     confirmed: "Confirmada",
     cancelled: "Cancelada",
     completed: "Completada",
+    cancellation_requested: "Cancelación solicitada",
+    extension_requested: "Extensión solicitada",
   };
   return labels[status] || status;
 }
@@ -39,6 +41,8 @@ export function getStatusColor(status: string): string {
     confirmed: "bg-green-100 text-green-800",
     cancelled: "bg-red-100 text-red-800",
     completed: "bg-blue-100 text-blue-800",
+    cancellation_requested: "bg-orange-100 text-orange-800",
+    extension_requested: "bg-purple-100 text-purple-800",
   };
   return colors[status] || "bg-gray-100 text-gray-800";
 }

@@ -42,7 +42,7 @@ export async function PATCH(
     const data: Record<string, string> = {};
     if (checkInTime) data.checkInTime = checkInTime;
     if (status) {
-      if (!["confirmed", "cancelled", "completed"].includes(status)) {
+      if (!["confirmed", "cancelled", "completed", "cancellation_requested", "extension_requested"].includes(status)) {
         return NextResponse.json(
           { error: "Estado inválido" },
           { status: 400 }
