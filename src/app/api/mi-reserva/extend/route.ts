@@ -44,17 +44,28 @@ export async function POST(req: NextRequest) {
     }
 
     // Calculate extra days
-    const currentEnd = reservation.endDate;
-    const diffMs = parsedNewEnd.getTime() - currentEnd.getTime();
+    const diffMs = parsedNewEnd.getTime() - reservation.endDate.getTime();
     const extraDays = Math.ceil(diffMs / (1000 * 60 * 60 * 24));
+
+    // Get pricing
+    const pricing = await prisma.servicePricing.findFirst({
+      where: {
+        destination: reservation.destination,
+        serviceType: reservation.serviceType,
+        active: true,
+      },
+    });
+
+    const pricePerDay = pricing?.pricePerDay || 0;
+    const extensionCost = extraDays * pricePerDay;
 
     await prisma.aeroparqueReservation.update({
       where: { externalOrderId },
       data: {
         status: "extension_requested",
         notes: reservation.notes
-          ? `${reservation.notes}\n---\nSOLICITUD EXTENSIÓN: ${extraDays} días extra hasta ${newEndDate}. Motivo: ${reason || "Sin motivo"}`
-          : `SOLICITUD EXTENSIÓN: ${extraDays} días extra hasta ${newEndDate}. Motivo: ${reason || "Sin motivo"}`,
+          ? `${reservation.notes}\n---\nSOLICITUD EXTENSIÓN: ${extraDays} días extra hasta ${newEndDate}. Costo: $${extensionCost.toLocaleString("es-AR")}. Motivo: ${reason || "Sin motivo"}`
+          : `SOLICITUD EXTENSIÓN: ${extraDays} días extra hasta ${newEndDate}. Costo: $${extensionCost.toLocaleString("es-AR")}. Motivo: ${reason || "Sin motivo"}`,
       },
     });
 
@@ -63,6 +74,8 @@ export async function POST(req: NextRequest) {
       status: "extension_requested",
       extraDays,
       newEndDate,
+      pricePerDay,
+      extensionCost,
     });
   } catch (error) {
     console.error("Extend error:", error);

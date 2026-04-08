@@ -41,6 +41,20 @@ export default function MiReservaPage() {
   const [actionReason, setActionReason] = useState("");
   const [extendDate, setExtendDate] = useState("");
   const [actionLoading, setActionLoading] = useState(false);
+  const [quoteInfo, setQuoteInfo] = useState<{ extraDays: number; pricePerDay: number; extensionCost: number } | null>(null);
+  const [quoteLoading, setQuoteLoading] = useState(false);
+
+  async function fetchQuote(date: string) {
+    if (!data?.externalOrderId || !date) { setQuoteInfo(null); return; }
+    setQuoteLoading(true);
+    const res = await fetch(`/api/mi-reserva/quote?order=${data.externalOrderId}&newEndDate=${date}`);
+    if (res.ok) {
+      setQuoteInfo(await res.json());
+    } else {
+      setQuoteInfo(null);
+    }
+    setQuoteLoading(false);
+  }
 
   async function handleCancel() {
     if (!data?.externalOrderId) return;
@@ -243,10 +257,26 @@ export default function MiReservaPage() {
                     <input
                       type="date"
                       value={extendDate}
-                      onChange={(e) => setExtendDate(e.target.value)}
+                      onChange={(e) => { setExtendDate(e.target.value); fetchQuote(e.target.value); }}
                       min={end ? new Date(new Date(end).getTime() + 86400000).toISOString().split("T")[0] : ""}
                       className="w-full rounded-md border border-brand-200 px-3 py-2 text-sm"
                     />
+                    {quoteLoading && (
+                      <p className="text-xs text-brand-400">Calculando precio...</p>
+                    )}
+                    {quoteInfo && quoteInfo.extensionCost > 0 && (
+                      <div className="rounded-md bg-purple-50 border border-purple-200 p-3 text-sm">
+                        <p className="font-medium text-purple-800">
+                          {quoteInfo.extraDays} día{quoteInfo.extraDays !== 1 ? "s" : ""} extra → {formatPrice(quoteInfo.extensionCost)}
+                        </p>
+                        <p className="text-xs text-purple-600">
+                          {formatPrice(quoteInfo.pricePerDay)} por día
+                        </p>
+                      </div>
+                    )}
+                    {quoteInfo && quoteInfo.pricePerDay === 0 && (
+                      <p className="text-xs text-brand-400">Tarifa no configurada — nos contactaremos para presupuestar</p>
+                    )}
                     <label className="block text-xs text-brand-500">Motivo</label>
                     <textarea
                       value={actionReason}
