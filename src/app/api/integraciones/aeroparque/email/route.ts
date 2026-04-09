@@ -44,11 +44,21 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // 4. Upsert (idempotent by externalOrderId)
-    const reservation = await prisma.aeroparqueReservation.upsert({
+    // 4. Check if already exists (idempotent)
+    const existing = await prisma.aeroparqueReservation.findUnique({
       where: { externalOrderId: parsed.externalOrderId },
-      update: {}, // no-op if already exists
-      create: {
+    });
+
+    if (existing) {
+      return NextResponse.json(
+        { id: existing.id, externalOrderId: existing.externalOrderId, status: "already_exists" },
+        { status: 200 }
+      );
+    }
+
+    // 5. Create new reservation
+    const reservation = await prisma.aeroparqueReservation.create({
+      data: {
         externalOrderId: parsed.externalOrderId,
         destination: parsed.destination,
         serviceType: parsed.serviceType,
@@ -76,12 +86,8 @@ export async function POST(req: NextRequest) {
       },
     });
 
-    // Check if it was a new creation or existing
-    const isNew =
-      reservation.createdAt.getTime() === reservation.updatedAt.getTime();
-
-    // Send confirmation email to client (fire-and-forget)
-    if (isNew && parsed.email) {
+    // 6. Send confirmation email to client (only for NEW reservations)
+    if (parsed.email) {
       const emailData = {
         customerName: parsed.customerName,
         externalOrderId: parsed.externalOrderId,
@@ -116,9 +122,9 @@ export async function POST(req: NextRequest) {
       {
         id: reservation.id,
         externalOrderId: reservation.externalOrderId,
-        status: isNew ? "created" : "already_exists",
+        status: "created",
       },
-      { status: isNew ? 201 : 200 }
+      { status: 201 }
     );
   } catch (error) {
     console.error("Webhook error:", error);
