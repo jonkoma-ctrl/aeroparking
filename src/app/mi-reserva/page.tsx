@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, Suspense } from "react";
+import { useSearchParams } from "next/navigation";
 import { formatDate, getStatusLabel, getStatusColor, getServiceTypeLabel, formatPrice } from "@/lib/utils";
 
 interface ReservationData {
@@ -31,8 +32,10 @@ interface ReservationData {
   createdAt: string;
 }
 
-export default function MiReservaPage() {
-  const [query, setQuery] = useState("");
+function MiReservaContent() {
+  const searchParams = useSearchParams();
+  const initialOrder = searchParams.get("order") || searchParams.get("id") || "";
+  const [query, setQuery] = useState(initialOrder);
   const [data, setData] = useState<ReservationData | null>(null);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -89,23 +92,26 @@ export default function MiReservaPage() {
     setActionLoading(false);
   }
 
-  async function handleSearch(e: React.FormEvent) {
-    e.preventDefault();
-    if (!query.trim()) return;
+  async function doSearch(q: string) {
+    if (!q.trim()) return;
     setLoading(true);
     setError("");
     setData(null);
-
-    const param = query.match(/^[a-z]/) ? `id=${query}` : `order=${query}`;
+    const param = q.match(/^[a-z]/) ? `id=${q}` : `order=${q}`;
     const res = await fetch(`/api/mi-reserva?${param}`);
     const json = await res.json();
-
-    if (res.ok) {
-      setData(json);
-    } else {
-      setError(json.error || "No encontrada");
-    }
+    if (res.ok) { setData(json); } else { setError(json.error || "No encontrada"); }
     setLoading(false);
+  }
+
+  useEffect(() => {
+    if (initialOrder) doSearch(initialOrder);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  async function handleSearch(e: React.FormEvent) {
+    e.preventDefault();
+    doSearch(query);
   }
 
   const start = data?.startDate || data?.departureDate;
@@ -357,5 +363,13 @@ export default function MiReservaPage() {
         )}
       </div>
     </div>
+  );
+}
+
+export default function MiReservaPage() {
+  return (
+    <Suspense>
+      <MiReservaContent />
+    </Suspense>
   );
 }

@@ -82,7 +82,8 @@ export function buildReservationEmail(data: ReservationEmailData): string {
           <strong>Importante:</strong>
         </p>
         <ul style="margin:0 0 12px;padding-left:20px;color:#374151;font-size:14px;line-height:1.8">
-          <li>Presentate 3 horas antes de tu vuelo (el traslado hacia Aeroparque tiene una duración de 15 minutos)</li>
+          <li>Presentate con anticipación en el estacionamiento de Costa Salguero</li>
+          <li>El traslado hacia Aeroparque tiene una duración de 15 minutos</li>
           <li>Para modificaciones, cancelaciones o solicitudes especiales, comunicate 24 horas antes</li>
         </ul>
         <a href="${MAPS_COSTA_SALGUERO}" style="display:inline-block;background:#0d9488;color:#fff;padding:10px 20px;border-radius:8px;text-decoration:none;font-size:14px;font-weight:600">
@@ -124,9 +125,16 @@ export function buildReservationEmail(data: ReservationEmailData): string {
     <div style="background:#fff;padding:32px 24px;border-left:1px solid #e5e7eb;border-right:1px solid #e5e7eb">
 
       <h2 style="margin:0 0 8px;color:#111827;font-size:20px">¡Hola ${data.customerName}!</h2>
-      <p style="margin:0 0 24px;color:#6b7280;font-size:15px;line-height:1.5">
+      <p style="margin:0 0 16px;color:#6b7280;font-size:15px;line-height:1.5">
         Tu reserva fue recibida correctamente. A continuación encontrarás los detalles.
       </p>
+
+      <!-- Código de reserva destacado -->
+      <div style="background:#f3f4f6;border-radius:8px;padding:16px;margin-bottom:24px;text-align:center">
+        <p style="margin:0 0 4px;color:#6b7280;font-size:12px;text-transform:uppercase;letter-spacing:1px">Tu código de reserva</p>
+        <p style="margin:0;color:#111827;font-size:28px;font-weight:700;letter-spacing:2px">${data.externalOrderId || data.reservationId?.slice(0, 8) || ""}</p>
+        <p style="margin:8px 0 0;color:#6b7280;font-size:12px">Usá este código para gestionar tu reserva</p>
+      </div>
 
       <!-- Reservation table -->
       <table style="width:100%;border-collapse:collapse;font-size:14px">
