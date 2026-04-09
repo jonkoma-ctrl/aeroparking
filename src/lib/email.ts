@@ -14,9 +14,21 @@ interface SendEmailOptions {
   html: string;
 }
 
+// Whitelist de test — solo estos reciben emails hasta salir a producción
+const TEST_EMAILS = [
+  "jonkoma@gmail.com",
+  "reservas@nrauditores.com.ar",
+  "jon@masmetros.com.ar",
+];
+
 export async function sendEmail({ to, subject, html }: SendEmailOptions) {
   if (!process.env.GMAIL_USER || !process.env.GMAIL_APP_PASSWORD) {
     console.error("[email] GMAIL_USER or GMAIL_APP_PASSWORD not set, skipping email");
+    return;
+  }
+
+  if (!TEST_EMAILS.includes(to.toLowerCase())) {
+    console.log("[email] Skipped (not in test whitelist):", to);
     return;
   }
 
