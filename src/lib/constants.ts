@@ -145,7 +145,7 @@ export const FAQ_ITEMS = [
   {
     question: "¿El estacionamiento es seguro?",
     answer:
-      "Todos nuestros parkings cuentan con vigilancia 24 horas, cámaras de seguridad y seguro incluido para tu tranquilidad.",
+      "Todos nuestros parkings son bajo techo y cuentan con vigilancia 24 horas, cámaras de seguridad y seguro incluido para tu tranquilidad.",
   },
   {
     question: "¿Puedo cancelar mi reserva?",
@@ -155,7 +155,7 @@ export const FAQ_ITEMS = [
   {
     question: "¿Qué incluye el servicio de traslado?",
     answer:
-      "El traslado está incluido en el precio del servicio. Te llevamos desde el parking hasta el aeropuerto o terminal de cruceros y viceversa.",
+      "El traslado está incluido en el precio del servicio. Te llevamos desde el parking en Costa Salguero hasta Aeroparque Jorge Newbery y viceversa. El viaje dura aproximadamente 15 minutos.",
   },
   {
     question: "¿Cuál es la diferencia entre Valet Parking y Larga Estadía?",

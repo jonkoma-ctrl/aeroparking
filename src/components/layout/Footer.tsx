@@ -65,8 +65,20 @@ export function Footer() {
             </h3>
             <ul className="space-y-2 text-sm">
               <li>Buenos Aires, Argentina</li>
-              <li>info@aeroparking.com.ar</li>
-              <li>+54 11 XXXX-XXXX</li>
+              <li>
+                <a href="mailto:reservas@nrauditores.com.ar" className="transition-colors hover:text-white">
+                  reservas@nrauditores.com.ar
+                </a>
+              </li>
+              <li>
+                <a href="https://wa.me/5491131606994" className="transition-colors hover:text-white">
+                  11-3160-6994
+                </a>
+                {" / "}
+                <a href="https://wa.me/5491153228770" className="transition-colors hover:text-white">
+                  11-5322-8770
+                </a>
+              </li>
             </ul>
           </div>
         </div>

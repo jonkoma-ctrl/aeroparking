@@ -36,10 +36,10 @@ export function CTA() {
             <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
           </Link>
           <Link
-            href="/reservar/cruceros"
+            href="/reservar/puerto"
             className="inline-flex w-full items-center justify-center gap-2 rounded-2xl border-2 border-white/20 bg-white/10 px-10 py-4 text-lg font-bold text-white backdrop-blur-sm transition-all hover:border-white/40 hover:bg-white/20 sm:w-auto"
           >
-            Reservar cruceros
+            Reservar Puerto de BA
           </Link>
         </div>
       </div>

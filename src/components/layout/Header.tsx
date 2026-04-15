@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { Menu, X } from "lucide-react";
+import { Menu, X, ChevronDown } from "lucide-react";
 
 const navItems = [
   { label: "Aeroparque", href: "/#aeroparque" },
@@ -10,8 +10,16 @@ const navItems = [
   { label: "FAQ", href: "/#faq" },
 ];
 
+const bookingOptions = [
+  { label: "Cruceros — Puerto de BA", href: "/reservar/cruceros" },
+  { label: "Estadía — Puerto de BA", href: "/reservar/puerto" },
+  { label: "Drop & Go — Aeroparque", href: "https://tienda.aeropuertosargentina.com/aeroparque/producto/valet-parking/", external: true },
+  { label: "Larga Estadía — Aeroparque", href: "https://tienda.aeropuertosargentina.com/aeroparque/producto/larga-estadia-4-dias-o-mas/", external: true },
+];
+
 export function Header() {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [bookingOpen, setBookingOpen] = useState(false);
 
   return (
     <header className="sticky top-0 z-50 border-b border-brand-100 bg-white/95 backdrop-blur-sm">
@@ -38,12 +46,44 @@ export function Header() {
               {item.label}
             </Link>
           ))}
-          <Link
-            href="/reservar/cruceros"
-            className="rounded-lg bg-brand-900 px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-brand-800"
-          >
-            Reservar ahora
-          </Link>
+
+          {/* Booking dropdown */}
+          <div className="relative">
+            <button
+              onClick={() => setBookingOpen(!bookingOpen)}
+              onBlur={() => setTimeout(() => setBookingOpen(false), 200)}
+              className="flex items-center gap-1 rounded-lg bg-brand-900 px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-brand-800"
+            >
+              Reservar ahora
+              <ChevronDown className="h-4 w-4" />
+            </button>
+            {bookingOpen && (
+              <div className="absolute right-0 top-full mt-2 w-64 rounded-xl border border-brand-200 bg-white py-2 shadow-lg">
+                {bookingOptions.map((opt) =>
+                  opt.external ? (
+                    <a
+                      key={opt.href}
+                      href={opt.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="block px-4 py-2.5 text-sm text-brand-700 hover:bg-brand-50"
+                    >
+                      {opt.label}
+                      <span className="ml-1 text-xs text-brand-400">↗</span>
+                    </a>
+                  ) : (
+                    <Link
+                      key={opt.href}
+                      href={opt.href}
+                      className="block px-4 py-2.5 text-sm text-brand-700 hover:bg-brand-50"
+                    >
+                      {opt.label}
+                    </Link>
+                  )
+                )}
+              </div>
+            )}
+          </div>
         </nav>
 
         {/* Mobile toggle */}
@@ -74,13 +114,34 @@ export function Header() {
                 {item.label}
               </Link>
             ))}
-            <Link
-              href="/reservar/cruceros"
-              onClick={() => setMobileOpen(false)}
-              className="mt-2 rounded-lg bg-brand-900 px-4 py-3 text-center text-sm font-semibold text-white"
-            >
-              Reservar ahora
-            </Link>
+            <div className="mt-2 border-t border-brand-100 pt-2">
+              <p className="px-4 py-1 text-xs font-semibold uppercase tracking-wider text-brand-400">
+                Reservar
+              </p>
+              {bookingOptions.map((opt) =>
+                opt.external ? (
+                  <a
+                    key={opt.href}
+                    href={opt.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={() => setMobileOpen(false)}
+                    className="block rounded-lg px-4 py-3 text-sm font-medium text-brand-700 hover:bg-brand-50"
+                  >
+                    {opt.label} <span className="text-xs text-brand-400">↗</span>
+                  </a>
+                ) : (
+                  <Link
+                    key={opt.href}
+                    href={opt.href}
+                    onClick={() => setMobileOpen(false)}
+                    className="block rounded-lg px-4 py-3 text-sm font-medium text-brand-700 hover:bg-brand-50"
+                  >
+                    {opt.label}
+                  </Link>
+                )
+              )}
+            </div>
           </nav>
         </div>
       )}

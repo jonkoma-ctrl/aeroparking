@@ -251,16 +251,12 @@ export default async function AdminAgendaPage({
                       </span>
                     </td>
                     <td className="px-4 py-3 font-medium text-brand-900">
-                      {r.source === "email" ? (
-                        <Link
-                          href={`/admin/agenda/${r.id}`}
-                          className="hover:text-brand-600 hover:underline"
-                        >
-                          {r.customerName}
-                        </Link>
-                      ) : (
-                        r.customerName
-                      )}
+                      <Link
+                        href={r.source === "email" ? `/admin/agenda/${r.id}` : `/admin/reservas/${r.id}`}
+                        className="hover:text-brand-600 hover:underline"
+                      >
+                        {r.customerName}
+                      </Link>
                     </td>
                     <td className="px-4 py-3">
                       <div className="font-mono text-xs text-brand-700">
