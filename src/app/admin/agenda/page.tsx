@@ -195,6 +195,18 @@ export default async function AdminAgendaPage({
               </a>
             )}
           </form>
+
+          {/* Export CSV */}
+          <a
+            href={`/api/admin/export?${new URLSearchParams({
+              ...(destFilter !== "todos" ? { dest: destFilter } : {}),
+              ...(fromDate ? { from: fromDate } : {}),
+              ...(toDate ? { to: toDate } : {}),
+            }).toString()}`}
+            className="rounded-md border border-brand-200 px-3 py-1.5 text-sm font-medium text-brand-700 hover:bg-brand-50"
+          >
+            📥 Exportar CSV
+          </a>
         </div>
 
         {unified.length === 0 ? (

@@ -31,6 +31,8 @@ export function getStatusLabel(status: string): string {
     completed: "Completada",
     cancellation_requested: "Cancelación solicitada",
     extension_requested: "Extensión solicitada",
+    pending_payment: "Pago pendiente",
+    payment_rejected: "Pago rechazado",
   };
   return labels[status] || status;
 }
@@ -43,6 +45,8 @@ export function getStatusColor(status: string): string {
     completed: "bg-blue-100 text-blue-800",
     cancellation_requested: "bg-orange-100 text-orange-800",
     extension_requested: "bg-purple-100 text-purple-800",
+    pending_payment: "bg-amber-100 text-amber-800",
+    payment_rejected: "bg-red-100 text-red-800",
   };
   return colors[status] || "bg-gray-100 text-gray-800";
 }
