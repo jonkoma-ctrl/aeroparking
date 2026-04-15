@@ -135,7 +135,7 @@ export function parseAeroparqueEmail(
 
   // Destination — Costa Salguero = puerto, else aeroparque
   const destination: AeroparqueDestination =
-    /Costa\s+Salguero/i.test(body) ? "puerto" : "aeroparque";
+    "aeroparque"; // Todo lo que viene del webhook AA2000 es Aeroparque
 
   // Service type — handle various forms
   let serviceType: AeroparqueServiceType;
