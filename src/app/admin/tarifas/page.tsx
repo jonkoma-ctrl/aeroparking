@@ -75,6 +75,11 @@ export default async function AdminTarifasPage() {
                     pricePerDay={p.pricePerDay}
                     description={p.description}
                     active={p.active}
+                    isReference={p.isReference}
+                    externalCheckoutUrl={p.externalCheckoutUrl}
+                    minDays={p.minDays}
+                    maxDays={p.maxDays}
+                    durationDiscounts={p.durationDiscounts as { fromDays: number; pctOff: number }[] | null}
                     updatedAt={formatDateTime(p.updatedAt)}
                   />
                 ))}
