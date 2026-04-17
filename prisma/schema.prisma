@@ -85,14 +85,19 @@ model AeroparqueReservation {
 }
 
 model ServicePricing {
-  id          String   @id @default(cuid())
-  destination String   // "puerto" | "aeroparque"
-  serviceType String   // "larga_estadia" | "drop_go" | "cruceros"
-  pricePerDay Int      // ARS pesos enteros por día
-  description String?
-  active      Boolean  @default(true)
-  updatedAt   DateTime @updatedAt
-  createdAt   DateTime @default(now())
+  id                  String   @id @default(cuid())
+  destination         String   // "puerto" | "aeroparque"
+  serviceType         String   // "larga_estadia" | "drop_go" | "cruceros"
+  pricePerDay         Int      // ARS pesos enteros por día
+  description         String?
+  active              Boolean  @default(true)
+  isReference         Boolean  @default(false)  // true = checkout externo AA2000
+  externalCheckoutUrl String?
+  minDays             Int?
+  maxDays             Int?
+  durationDiscounts   Json?    // [{fromDays, pctOff}]
+  updatedAt           DateTime @updatedAt
+  createdAt           DateTime @default(now())
 
   @@unique([destination, serviceType])
 }

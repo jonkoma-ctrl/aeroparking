@@ -1,9 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, Suspense } from "react";
+import { useSearchParams } from "next/navigation";
 import { formatPrice } from "@/lib/utils";
+import { decodePrefill } from "@/lib/booking-prefill";
 
-export default function ReservarPuertoPage() {
+function PuertoContent() {
+  const searchParams = useSearchParams();
   const [form, setForm] = useState({
     firstName: "", lastName: "", email: "", phone: "",
     licensePlate: "", carBrand: "", carModel: "",
@@ -12,6 +15,30 @@ export default function ReservarPuertoPage() {
   const [quote, setQuote] = useState<{ days: number; pricePerDay: number; total: number } | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+
+  // Prefill from URL query (?prefill=base64url)
+  useEffect(() => {
+    const encoded = searchParams.get("prefill");
+    if (!encoded) return;
+    const payload = decodePrefill(encoded);
+    if (!payload) return;
+    const startDate = new Date(payload.i).toISOString().split("T")[0];
+    const endDate = new Date(payload.r).toISOString().split("T")[0];
+    setForm((f) => ({ ...f, startDate, endDate }));
+    // Trigger quote calculation
+    const start = new Date(startDate);
+    const end = new Date(endDate);
+    const days = Math.ceil((end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24));
+    if (days > 0) {
+      fetch("/api/admin/pricing").then(r => r.json()).then(pricing => {
+        const tariff = pricing.find((p: { destination: string; serviceType: string; active: boolean }) =>
+          p.destination === "puerto" && p.serviceType === "larga_estadia" && p.active
+        );
+        if (tariff) setQuote({ days, pricePerDay: tariff.pricePerDay, total: days * tariff.pricePerDay });
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   function updateField(field: string, value: string) {
     const updated = { ...form, [field]: value };
@@ -72,7 +99,7 @@ export default function ReservarPuertoPage() {
           Reservar — Puerto de Buenos Aires
         </h1>
         <p className="mb-8 text-sm text-brand-500">
-          Estacionamiento en Costa Salguero con traslado a Aeroparque.
+          Estacionamiento en Costa Salguero con traslado al Puerto de Buenos Aires.
         </p>
 
         <form onSubmit={handleSubmit} className="space-y-6">
@@ -183,5 +210,13 @@ export default function ReservarPuertoPage() {
         </form>
       </div>
     </div>
+  );
+}
+
+export default function ReservarPuertoPage() {
+  return (
+    <Suspense>
+      <PuertoContent />
+    </Suspense>
   );
 }
