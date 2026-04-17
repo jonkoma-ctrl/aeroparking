@@ -107,7 +107,9 @@ export function BookingWidget({
       const prefill = encodePrefill({ s: q.serviceType, i: ingreso, r: retiro });
       trackWidgetEvent({ name: "quote_cta_clicked", serviceType: q.serviceType, destination: "internal" });
       trackWidgetEvent({ name: "internal_checkout_started", serviceType: q.serviceType, prefillKeys: ["s", "i", "r"] });
-      router.push(`/reservar/puerto?prefill=${prefill}`);
+      // Cruceros → /reservar/cruceros, resto → /reservar/puerto
+      const target = q.serviceType === "puerto_cruceros" ? "/reservar/cruceros" : "/reservar/puerto";
+      router.push(`${target}?prefill=${prefill}`);
     }
   }
 

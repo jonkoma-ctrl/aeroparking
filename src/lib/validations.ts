@@ -13,8 +13,9 @@ export const cruiseReservationSchema = z
     email: z.string().email("Ingresá un email válido"),
     phone: z
       .string()
-      .min(8, "Ingresá un teléfono válido")
-      .max(20),
+      .max(20)
+      .optional()
+      .or(z.literal("")),
     departureDate: z.string().min(1, "Seleccioná la fecha de salida"),
     arrivalTime: z.string().min(1, "Seleccioná la hora de llegada al parking"),
     returnDate: z.string().min(1, "Seleccioná la fecha de regreso"),

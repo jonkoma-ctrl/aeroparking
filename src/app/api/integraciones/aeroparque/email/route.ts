@@ -60,6 +60,7 @@ export async function POST(req: NextRequest) {
     const reservation = await prisma.aeroparqueReservation.create({
       data: {
         externalOrderId: parsed.externalOrderId,
+        status: "confirmed", // AA2000 emails are paid orders
         destination: parsed.destination,
         serviceType: parsed.serviceType,
         customerName: parsed.customerName,

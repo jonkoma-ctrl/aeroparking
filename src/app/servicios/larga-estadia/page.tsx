@@ -3,6 +3,7 @@ import { SERVICES, BRAND_NAME } from "@/lib/constants";
 import { ExternalBookingSection } from "@/components/services/ExternalBookingSection";
 import { ServiceSteps } from "@/components/services/ServiceSteps";
 import { ServiceFeatures } from "@/components/services/ServiceFeatures";
+import { BookingWidget } from "@/components/booking-widget/BookingWidget";
 import { Clock } from "lucide-react";
 
 const service = SERVICES.longStay;
@@ -86,6 +87,16 @@ export default function LargaEstadiaPage() {
             {service.name}
           </h1>
           <p className="mt-2 text-lg text-brand-500">{service.tagline}</p>
+        </div>
+
+        {/* Quick quote widget */}
+        <div className="mb-10">
+          <BookingWidget
+            variant="compact"
+            defaultDestino="aeroparque"
+            defaultServiceType="aeroparque_larga_estadia"
+            entryPoint="service_larga_estadia"
+          />
         </div>
 
         {/* External booking integration */}

@@ -24,7 +24,7 @@ export async function POST(req: NextRequest) {
         firstName: data.firstName,
         lastName: data.lastName,
         email: data.email,
-        phone: data.phone,
+        phone: data.phone || "",
         departureDate: new Date(data.departureDate),
         arrivalTime: data.arrivalTime,
         returnDate: new Date(data.returnDate),

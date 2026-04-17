@@ -3,6 +3,7 @@ import { SERVICES, BRAND_NAME } from "@/lib/constants";
 import { ExternalBookingSection } from "@/components/services/ExternalBookingSection";
 import { ServiceSteps } from "@/components/services/ServiceSteps";
 import { ServiceFeatures } from "@/components/services/ServiceFeatures";
+import { BookingWidget } from "@/components/booking-widget/BookingWidget";
 import { Car } from "lucide-react";
 
 const service = SERVICES.valet;
@@ -78,6 +79,16 @@ export default function ValetParkingPage() {
             {service.name}
           </h1>
           <p className="mt-2 text-lg text-brand-500">{service.tagline}</p>
+        </div>
+
+        {/* Quick quote widget */}
+        <div className="mb-10">
+          <BookingWidget
+            variant="compact"
+            defaultDestino="aeroparque"
+            defaultServiceType="aeroparque_drop_go"
+            entryPoint="service_valet_parking"
+          />
         </div>
 
         {/* External booking integration */}

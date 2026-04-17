@@ -3,6 +3,7 @@ import Link from "next/link";
 import { SERVICES, BRAND_NAME } from "@/lib/constants";
 import { ServiceSteps } from "@/components/services/ServiceSteps";
 import { ServiceFeatures } from "@/components/services/ServiceFeatures";
+import { BookingWidget } from "@/components/booking-widget/BookingWidget";
 import { Ship, ArrowRight } from "lucide-react";
 
 const service = SERVICES.cruises;
@@ -25,6 +26,16 @@ export default function TerminalCrucerosPage() {
             {service.name}
           </h1>
           <p className="mt-2 text-lg text-brand-500">{service.tagline}</p>
+        </div>
+
+        {/* Quick quote widget */}
+        <div className="mb-10">
+          <BookingWidget
+            variant="compact"
+            defaultDestino="puerto"
+            defaultServiceType="puerto_cruceros"
+            entryPoint="service_terminal_cruceros"
+          />
         </div>
 
         <div className="grid gap-10 lg:grid-cols-2">

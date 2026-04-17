@@ -12,7 +12,7 @@ const benefits = [
     icon: Shield,
     title: "Seguridad garantizada",
     description:
-      "Vigilancia 24 horas, cámaras de seguridad y seguro incluido para tu vehículo.",
+      "Estacionamiento bajo techo con vigilancia 24 horas, cámaras de seguridad y seguro incluido para tu vehículo.",
   },
   {
     icon: Clock,

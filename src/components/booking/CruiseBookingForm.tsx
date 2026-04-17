@@ -33,7 +33,7 @@ export function CruiseBookingForm() {
     setSubmitError(null);
 
     try {
-      const res = await fetch("/api/reservas", {
+      const res = await fetch("/api/payments/cruise", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
@@ -45,7 +45,12 @@ export function CruiseBookingForm() {
       }
 
       const result = await res.json();
-      router.push(`/reservar/cruceros/confirmacion?id=${result.id}`);
+      if (result.initPoint) {
+        // Redirect to Mercado Pago
+        window.location.href = result.initPoint;
+      } else {
+        router.push(`/reservar/cruceros/confirmacion?id=${result.reservationId}`);
+      }
     } catch (err) {
       setSubmitError(
         err instanceof Error ? err.message : "Error inesperado. Intentá de nuevo."
@@ -87,7 +92,7 @@ export function CruiseBookingForm() {
               className={inputClass(errors.email)}
             />
           </FormField>
-          <FormField label="Teléfono" error={errors.phone?.message}>
+          <FormField label="Teléfono (opcional)" error={errors.phone?.message}>
             <input
               {...register("phone")}
               type="tel"
@@ -255,13 +260,12 @@ export function CruiseBookingForm() {
             Procesando...
           </>
         ) : (
-          "Confirmar reserva"
+          "Continuar al pago"
         )}
       </button>
 
       <p className="text-center text-xs text-brand-400">
-        Tu reserva quedará en estado pendiente hasta ser confirmada por nuestro
-        equipo. No se realiza ningún cobro en este paso.
+        Al continuar serás redirigido a <strong>Mercado Pago</strong> para completar el pago de forma segura.
       </p>
     </form>
   );

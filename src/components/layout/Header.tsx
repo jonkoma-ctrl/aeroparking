@@ -11,10 +11,9 @@ const navItems = [
 ];
 
 const bookingOptions = [
-  { label: "Cruceros — Puerto de BA", href: "/reservar/cruceros" },
-  { label: "Estadía — Puerto de BA", href: "/reservar/puerto" },
-  { label: "Drop & Go — Aeroparque", href: "https://tienda.aeropuertosargentina.com/aeroparque/producto/valet-parking/", external: true },
+  { label: "Valet Parking — Aeroparque", href: "https://tienda.aeropuertosargentina.com/aeroparque/producto/valet-parking/", external: true },
   { label: "Larga Estadía — Aeroparque", href: "https://tienda.aeropuertosargentina.com/aeroparque/producto/larga-estadia-4-dias-o-mas/", external: true },
+  { label: "Larga Estadía Cruceros", href: "/reservar/cruceros" },
 ];
 
 export function Header() {
