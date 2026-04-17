@@ -29,7 +29,7 @@ function toRule(row: PrismaPricing): PricingRule {
   return {
     id: row.id,
     destination: row.destination as Destino,
-    serviceType: row.serviceType as ServiceType,
+    serviceType: `${row.destination}_${row.serviceType}` as ServiceType,
     pricePerDay: row.pricePerDay,
     isReference: row.isReference,
     externalCheckoutUrl: row.externalCheckoutUrl,

@@ -1,10 +1,23 @@
 export type Destino = "aeroparque" | "puerto";
 
+// ServiceType matches DB format: destination + "_" + serviceType row
 export type ServiceType =
   | "aeroparque_drop_go"
   | "aeroparque_larga_estadia"
   | "puerto_larga_estadia"
   | "puerto_cruceros";
+
+// DB uses simple service types, we combine with destination for ServiceType identifier
+export type DbServiceType = "drop_go" | "larga_estadia" | "cruceros";
+
+export function toServiceType(destination: Destino, dbServiceType: string): ServiceType {
+  return `${destination}_${dbServiceType}` as ServiceType;
+}
+
+export function fromServiceType(st: ServiceType): { destination: Destino; dbServiceType: DbServiceType } {
+  const [destination, ...rest] = st.split("_");
+  return { destination: destination as Destino, dbServiceType: rest.join("_") as DbServiceType };
+}
 
 export interface DurationDiscount {
   fromDays: number;
@@ -56,10 +69,7 @@ export function calculateDays(ingreso: Date, retiro: Date): number {
   return Math.ceil(diffMs / (1000 * 60 * 60 * 24));
 }
 
-export function pickDiscount(
-  days: number,
-  discounts: DurationDiscount[] | null | undefined
-): number {
+export function pickDiscount(days: number, discounts: DurationDiscount[] | null | undefined): number {
   if (!discounts || discounts.length === 0) return 0;
   const applicable = discounts
     .filter((d) => days >= d.fromDays)
@@ -91,9 +101,6 @@ export function calculateQuote(input: QuoteInput, rule: PricingRule): QuoteResul
   };
 }
 
-/**
- * Candidate services by destination. Order = UI default preference.
- */
 export function getCandidateServices(destino: Destino): ServiceType[] {
   if (destino === "aeroparque") {
     return ["aeroparque_drop_go", "aeroparque_larga_estadia"];
@@ -125,18 +132,12 @@ export function recommendCheapestService(
   const quotes = applicable
     .map((r) => calculateQuote({ ...input, serviceType: r.serviceType }, r))
     .sort((a, b) => {
-      // Lowest total, tie-breaker: non-reference price
       if (a.total !== b.total) return a.total - b.total;
-      if (a.isReferencePrice !== b.isReferencePrice) {
-        return a.isReferencePrice ? 1 : -1;
-      }
+      if (a.isReferencePrice !== b.isReferencePrice) return a.isReferencePrice ? 1 : -1;
       return 0;
     });
 
-  return {
-    recommended: quotes[0],
-    alternatives: quotes.slice(1),
-  };
+  return { recommended: quotes[0], alternatives: quotes.slice(1) };
 }
 
 export interface ValidationOpts {
@@ -154,36 +155,15 @@ export function validateBookingDates(
   const minDays = opts.minDays ?? 1;
   const maxDays = opts.maxDays ?? 90;
 
-  if (isNaN(ingreso.getTime())) {
-    return { ok: false, field: "ingreso", message: "Fecha de ingreso inválida" };
-  }
-  if (isNaN(retiro.getTime())) {
-    return { ok: false, field: "retiro", message: "Fecha de retiro inválida" };
-  }
-  if (retiro <= ingreso) {
-    return {
-      ok: false,
-      field: "retiro",
-      message: "La fecha de retiro debe ser posterior al ingreso",
-    };
-  }
+  if (isNaN(ingreso.getTime())) return { ok: false, field: "ingreso", message: "Fecha de ingreso inválida" };
+  if (isNaN(retiro.getTime())) return { ok: false, field: "retiro", message: "Fecha de retiro inválida" };
+  if (retiro <= ingreso) return { ok: false, field: "retiro", message: "La fecha de retiro debe ser posterior al ingreso" };
   if (minHoursAhead > 0) {
     const minIngreso = new Date(Date.now() + minHoursAhead * 60 * 60 * 1000);
-    if (ingreso < minIngreso) {
-      return {
-        ok: false,
-        field: "ingreso",
-        message: `La reserva debe hacerse con al menos ${minHoursAhead}hs de anticipación`,
-      };
-    }
+    if (ingreso < minIngreso) return { ok: false, field: "ingreso", message: `La reserva debe hacerse con al menos ${minHoursAhead}hs de anticipación` };
   }
   const days = calculateDays(ingreso, retiro);
-  if (days < minDays) {
-    return { ok: false, field: "retiro", message: `Mínimo ${minDays} día(s)` };
-  }
-  if (days > maxDays) {
-    return { ok: false, field: "retiro", message: `Máximo ${maxDays} días` };
-  }
-
+  if (days < minDays) return { ok: false, field: "retiro", message: `Mínimo ${minDays} día(s)` };
+  if (days > maxDays) return { ok: false, field: "retiro", message: `Máximo ${maxDays} días` };
   return { ok: true };
 }
