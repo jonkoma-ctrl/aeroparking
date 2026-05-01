@@ -7,36 +7,85 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+// Reservas propias — Terminal de Cruceros
 model CruiseReservation {
   id              String   @id @default(cuid())
   status          String   @default("pending") // pending | confirmed | cancelled
 
-  // Datos del cliente
   firstName       String
   lastName        String
   email           String
   phone           String
 
-  // Datos del viaje
   departureDate   DateTime
-  arrivalTime     String   // Hora estimada de llegada al parking
+  arrivalTime     String
   returnDate      DateTime
-  pickupTime      String   // Hora estimada de retiro del auto
+  pickupTime      String
   passengers      Int
 
-  // Datos del vehículo
   licensePlate    String
   carBrand        String
   carModel        String
 
-  // Datos opcionales del crucero
-  cruiseLine      String?  // Naviera
+  cruiseLine      String?
   terminal        String?
-
-  // Observaciones
   notes           String?
 
-  // Timestamps
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
+}
+
+// Reservas Aeroparque — Importadas desde mails de AA2000
+model AeroparqueReservation {
+  id                String   @id @default(cuid())
+  externalOrderId   String   @unique // #177666 — ID del pedido AA2000
+  status            String   @default("confirmed") // confirmed | cancelled | completed | no_show
+  paymentStatus     String   @default("paid") // paid | refunded | pending
+
+  // Tipo de servicio
+  serviceType       String   // "drop_go" | "larga_estadia"
+
+  // Datos del cliente
+  firstName         String
+  lastName          String
+  email             String
+  phone             String
+  documentType      String?  // DNI, Pasaporte
+  documentNumber    String?
+
+  // Datos del viaje
+  departureDate     DateTime // Fecha de salida del vuelo
+  airline           String   // Aerolínea
+  flightNumber      String   // Vuelo de salida
+  returnAirline     String?  // Aerolínea de arribo
+  returnFlight      String?  // Vuelo de arribo
+  arrivalTime       String?  // Horario de arribo
+  entryTime         String?  // Horario de ingreso al parking
+  reservedFrom      DateTime // Reservado desde
+  reservedUntil     DateTime // Reservado hasta
+  passengers        Int      @default(1)
+
+  // Datos del vehículo
+  licensePlate      String
+  carBrand          String
+  carModel          String
+
+  // Datos económicos
+  totalAmount       Int      @default(0) // en pesos, sin decimales
+  paymentMethod     String?  // "Tarjeta de crédito o débito", etc.
+
+  // Dirección de facturación
+  billingAddress    String?
+  billingCity       String?
+  billingState      String?
+  billingZip        String?
+
+  // Notas
+  notes             String?  // Observaciones del cliente (ej: cierre averiado)
+
+  // Control interno
+  rawEmailSubject   String?  // Subject original del mail para trazabilidad
+  importedAt        DateTime @default(now())
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
 }

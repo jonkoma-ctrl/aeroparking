@@ -8,6 +8,7 @@ const navItems = [
   { label: "Aeroparque", href: "/#aeroparque" },
   { label: "Puerto de BA", href: "/#puerto" },
   { label: "FAQ", href: "/#faq" },
+  { label: "Admin", href: "/admin/agenda" },
 ];
 
 export function Header() {
