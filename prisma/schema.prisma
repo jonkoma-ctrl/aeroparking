@@ -7,36 +7,230 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+// ─── Catálogos editables desde admin ─────────────────────────────────────────
+
+/// Destinos a los que trasladamos al pasajero (Aeroparque, Ezeiza, Cruceros, futuros)
+model Destination {
+  id           String        @id @default(cuid())
+  slug         String        @unique // "aeroparque" | "ezeiza" | "cruceros"
+  name         String // "Aeroparque" | "Ezeiza" | "Terminal de Cruceros"
+  description  String?
+  active       Boolean       @default(true)
+  order        Int           @default(0) // orden de visualización en form público
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  reservations Reservation[]
+  tariff       Tariff?
+}
+
+/// Tipos de vehículo (informativo, no afecta precio en MVP). Auto chico, SUV, camioneta, etc.
+model VehicleType {
+  id           String        @id @default(cuid())
+  slug         String        @unique
+  name         String
+  active       Boolean       @default(true)
+  order        Int           @default(0)
+  reservations Reservation[]
+}
+
+/// Tarifa por destino. En MVP: una sola por destino (no varía por vehículo, día ni temporada).
+/// Estructura preparada para soportar variantes a futuro (ver fields validFrom/validUntil).
+model Tariff {
+  id            String      @id @default(cuid())
+  destinationId String      @unique
+  destination   Destination @relation(fields: [destinationId], references: [id], onDelete: Cascade)
+  /// Precio de 1 estadía completa (1 día calendario). Pesos sin decimales.
+  pricePerStay  Int
+  /// Precio de ½ estadía (cuando se fracciona). Pesos sin decimales.
+  priceHalfStay Int
+  /// Si después se quiere temporada/horarios, se prende validFrom/validUntil
+  validFrom     DateTime?
+  validUntil    DateTime?
+  updatedAt     DateTime    @updatedAt
+}
+
+// ─── Reservas ────────────────────────────────────────────────────────────────
+
+/// Reserva unificada para los 3 destinos. Reemplaza el modelo CruiseReservation legacy.
+model Reservation {
+  id   String @id @default(cuid())
+  /// Código visible al cliente, ej "AP-2026-00123"
+  code String @unique
+
+  destinationId String
+  destination   Destination  @relation(fields: [destinationId], references: [id])
+  vehicleTypeId String?
+  vehicleType   VehicleType? @relation(fields: [vehicleTypeId], references: [id])
+
+  // Cliente
+  firstName String
+  lastName  String
+  email     String
+  /// Teléfono / WhatsApp (mismo número, confirmado WA)
+  phone     String
+
+  // Vehículo
+  licensePlate String
+  carBrand     String
+  carModel     String
+
+  // Datos del servicio
+  checkIn        DateTime // fecha/hora reservada de ingreso
+  checkOut       DateTime // fecha/hora reservada de salida
+  /// Marcadas por el personal cuando ocurren realmente (para medir tiempos)
+  actualCheckIn  DateTime?
+  actualCheckOut DateTime?
+  passengers     Int       @default(1)
+
+  // Datos del viaje (vuelo / crucero)
+  airline       String?
+  flightNumber  String?
+  returnAirline String?
+  returnFlight  String?
+  cruiseLine    String?
+  terminal      String?
+
+  // Estado y pago
+  /// pending | confirmed | checked_in | completed | cancelled | no_show
+  status        String  @default("pending")
+  /// pending | paid | refunded | credited (vuelo cancelado, crédito a viaje futuro)
+  paymentStatus String  @default("pending")
+  /// efectivo | tarjeta | transferencia
+  paymentMethod String?
+  /// Total cobrado al cliente, pesos sin decimales
+  totalAmount   Int     @default(0)
+  /// Cantidad de estadías cobradas (ej. 1, 1.5, 2). Usamos float por las medias estadías.
+  staysBilled   Float?
+
+  // Facturación (cliente decide A o B; A requiere CUIT)
+  /// "A" | "B"
+  invoiceType String?
+  cuit        String?
+  taxName     String? // razón social
+  taxAddress  String?
+
+  // Origen
+  /// web | phone | walk_in | referral
+  channel String @default("web")
+
+  // Notas y motivos
+  notes        String?
+  cancelReason String?
+
+  // Crédito a viaje futuro (caso "vuelo cancelado, 3hs free, después se imputa")
+  /// Si esta reserva generó un crédito a favor del cliente
+  creditGenerated Int @default(0)
+  /// Si esta reserva consumió un crédito previo
+  creditApplied   Int @default(0)
+
+  createdAt DateTime              @default(now())
+  updatedAt DateTime              @updatedAt
+  stateLogs ReservationStateLog[]
+
+  @@index([email])
+  @@index([checkIn])
+  @@index([status])
+}
+
+/// Auditoría de cambios de estado de la reserva
+model ReservationStateLog {
+  id            String      @id @default(cuid())
+  reservationId String
+  reservation   Reservation @relation(fields: [reservationId], references: [id], onDelete: Cascade)
+  fromStatus    String?
+  toStatus      String
+  changedBy     String? // email del admin
+  reason        String?
+  createdAt     DateTime    @default(now())
+}
+
+// ─── Valet eventos (cotización, no es una reserva) ───────────────────────────
+
+model ValetQuote {
+  id     String @id @default(cuid())
+  /// new | contacted | quoted | won | lost
+  status String @default("new")
+
+  contactName  String
+  contactEmail String
+  contactPhone String
+
+  // Evento
+  eventType       String? // gala | fiesta | show | desfile | cocktail | cena | muestra | otro
+  eventLocation   String
+  parkingLocation String? // dónde se va a estacionar (si es distinto del evento)
+  distanceKm      Float?
+  eventDate       DateTime
+  startTime       String
+  endTime         String
+
+  estimatedCars   Int
+  estimatedPeople Int?
+
+  notes String?
+
+  /// Cotización que se le devuelve al cliente
+  quotedAmount Int?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// ─── Configuración global ────────────────────────────────────────────────────
+
+model Settings {
+  id                   String   @id @default("singleton")
+  /// Anticipación mínima al reservar (en horas). Default 24.
+  reservationLeadHours Int      @default(24)
+  /// Texto de política de cancelación que se muestra al cliente
+  cancelPolicy         String?
+  /// Mail al que llegan los avisos de reserva nueva
+  adminNotifyEmail     String   @default("reservas@nrauditores.com.ar")
+  /// Teléfono de contacto que mostramos al cliente para reservas urgentes
+  contactPhone         String?
+  updatedAt            DateTime @updatedAt
+}
+
+// ─── Crédito por cliente (caso "vuelo cancelado") ────────────────────────────
+
+/// Crédito a favor del cliente, agrupado por email. Se actualiza desde Reservation.creditGenerated/Applied.
+model CustomerCredit {
+  id          String   @id @default(cuid())
+  email       String   @unique
+  balance     Int      @default(0) // saldo actual a favor del cliente
+  lifetimeIn  Int      @default(0) // total acumulado generado
+  lifetimeOut Int      @default(0) // total acumulado aplicado
+  notes       String?
+  updatedAt   DateTime @updatedAt
+}
+
+// ─── Legacy ─────────────────────────────────────────────────────────────────
+// CruiseReservation se mantiene por compatibilidad mientras se migra el form
+// y los registros existentes. Se elimina en una fase posterior.
+
 model CruiseReservation {
-  id              String   @id @default(cuid())
-  status          String   @default("pending") // pending | confirmed | cancelled
+  id     String @id @default(cuid())
+  status String @default("pending") // pending | confirmed | cancelled
 
-  // Datos del cliente
-  firstName       String
-  lastName        String
-  email           String
-  phone           String
+  firstName String
+  lastName  String
+  email     String
+  phone     String
 
-  // Datos del viaje
-  departureDate   DateTime
-  arrivalTime     String   // Hora estimada de llegada al parking
-  returnDate      DateTime
-  pickupTime      String   // Hora estimada de retiro del auto
-  passengers      Int
+  departureDate DateTime
+  arrivalTime   String
+  returnDate    DateTime
+  pickupTime    String
+  passengers    Int
 
-  // Datos del vehículo
-  licensePlate    String
-  carBrand        String
-  carModel        String
+  licensePlate String
+  carBrand     String
+  carModel     String
 
-  // Datos opcionales del crucero
-  cruiseLine      String?  // Naviera
-  terminal        String?
+  cruiseLine String?
+  terminal   String?
+  notes      String?
 
-  // Observaciones
-  notes           String?
-
-  // Timestamps
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
