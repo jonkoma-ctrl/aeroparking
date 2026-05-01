@@ -1,48 +1,48 @@
 import {
   Shield,
-  Clock,
-  MapPin,
+  Truck,
   Headphones,
-  CreditCard,
-  Star,
+  Award,
+  MapPin,
+  Users,
 } from "lucide-react";
 
 const benefits = [
   {
-    icon: Shield,
-    title: "Seguridad garantizada",
+    icon: Award,
+    title: "Avalado por nuestra experiencia",
     description:
-      "Vigilancia 24 horas, cámaras de seguridad y seguro incluido para tu vehículo.",
-  },
-  {
-    icon: Clock,
-    title: "Reserva rápida",
-    description:
-      "Proceso simple y rápido. Reservá en minutos desde cualquier dispositivo.",
+      "Años cuidando vehículos y trasladando pasajeros. Conocemos cada detalle del servicio.",
   },
   {
     icon: MapPin,
-    title: "Traslado incluido",
+    title: "Sector de estacionamiento propio",
     description:
-      "Te llevamos al aeropuerto o terminal de cruceros sin costo adicional.",
+      "Edificio cubierto en Costa Salguero. Tu auto queda guardado, no en la calle.",
+  },
+  {
+    icon: Truck,
+    title: "Vehículos propios para traslado",
+    description:
+      "No subcontratamos. Te lleva y te trae nuestra propia flota, siempre.",
+  },
+  {
+    icon: Shield,
+    title: "Seguridad las 24 horas",
+    description:
+      "Vigilancia permanente. Ingreso y egreso registrados. Tu vehículo siempre controlado.",
+  },
+  {
+    icon: Users,
+    title: "Personal calificado y uniformado",
+    description:
+      "Equipo formado en atención al cliente, con antecedentes verificados y uniforme.",
   },
   {
     icon: Headphones,
     title: "Atención personalizada",
     description:
-      "Equipo disponible para coordinar cualquier cambio o necesidad especial.",
-  },
-  {
-    icon: CreditCard,
-    title: "Precios transparentes",
-    description:
-      "Sin costos ocultos. Sabés exactamente lo que pagás antes de reservar.",
-  },
-  {
-    icon: Star,
-    title: "Experiencia confiable",
-    description:
-      "Miles de viajeros confían en nosotros para cuidar su vehículo.",
+      "Hablás con personas, no con bots. Coordinamos cualquier cambio o pedido especial.",
   },
 ];
 
@@ -55,8 +55,7 @@ export function Benefits() {
             ¿Por qué elegirnos?
           </h2>
           <p className="mt-4 text-lg text-brand-500">
-            Nos especializamos en que tu viaje empiece y termine sin
-            complicaciones.
+            Operación propia de punta a punta. Sin intermediarios, sin sorpresas.
           </p>
         </div>
 

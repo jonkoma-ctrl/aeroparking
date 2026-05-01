@@ -5,8 +5,9 @@ import Link from "next/link";
 import { Menu, X } from "lucide-react";
 
 const navItems = [
-  { label: "Aeroparque", href: "/#aeroparque" },
-  { label: "Puerto de BA", href: "/#puerto" },
+  { label: "Servicios", href: "/#servicios" },
+  { label: "Cómo funciona", href: "/#como-funciona" },
+  { label: "Eventos", href: "/valet-eventos" },
   { label: "FAQ", href: "/#faq" },
 ];
 
@@ -17,11 +18,6 @@ export function Header() {
     <header className="sticky top-0 z-50 border-b border-brand-100 bg-white/95 backdrop-blur-sm">
       <div className="container-main flex h-16 items-center justify-between px-4 sm:px-6 lg:px-8">
         <Link href="/" className="flex items-center gap-2.5">
-          <img
-            src="https://www.alicanteairportcarparking.com/img/logo.webp"
-            alt="AEROPARKING"
-            className="h-9 w-auto"
-          />
           <span className="text-xl font-extrabold tracking-tight text-brand-900">
             AERO<span className="text-brand-500">PARKING</span>
           </span>
@@ -39,7 +35,7 @@ export function Header() {
             </Link>
           ))}
           <Link
-            href="/reservar/cruceros"
+            href="/reservar"
             className="rounded-lg bg-brand-900 px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-brand-800"
           >
             Reservar ahora
@@ -75,7 +71,7 @@ export function Header() {
               </Link>
             ))}
             <Link
-              href="/reservar/cruceros"
+              href="/reservar"
               onClick={() => setMobileOpen(false)}
               className="mt-2 rounded-lg bg-brand-900 px-4 py-3 text-center text-sm font-semibold text-white"
             >

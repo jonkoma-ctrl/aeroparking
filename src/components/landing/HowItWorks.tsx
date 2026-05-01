@@ -3,27 +3,27 @@ import { CalendarCheck, Car, Plane, Smile } from "lucide-react";
 const steps = [
   {
     icon: CalendarCheck,
-    title: "1. Reservá",
+    title: "1. Reservá online",
     description:
-      "Elegí tu servicio y completá la reserva online en minutos.",
+      "Completá la reserva con tus datos, los del vehículo y los del vuelo. En minutos.",
   },
   {
     icon: Car,
-    title: "2. Dejá tu auto",
+    title: "2. Dejá el auto",
     description:
-      "Llevá tu vehículo al punto indicado o entregalo al personal.",
+      "Llevá tu vehículo a nuestro estacionamiento en Costa Salguero. Te recibe nuestro personal.",
   },
   {
     icon: Plane,
-    title: "3. Viajá tranquilo",
+    title: "3. Te trasladamos",
     description:
-      "Nosotros cuidamos tu auto. Incluimos traslado según el servicio.",
+      "En nuestras unidades te llevamos a Aeroparque, Ezeiza o la terminal de cruceros. Pagás al dejar el auto.",
   },
   {
     icon: Smile,
-    title: "4. Retirá al volver",
+    title: "4. Te buscamos al volver",
     description:
-      "Coordinamos el retiro para que tu auto te espere listo.",
+      "A tu regreso te esperamos en el punto acordado y te llevamos a retirar tu vehículo.",
   },
 ];
 
@@ -36,7 +36,7 @@ export function HowItWorks() {
             Cómo funciona
           </h2>
           <p className="mt-4 text-lg text-brand-500">
-            En 4 pasos simples, tu auto queda seguro y vos viajás sin estrés.
+            En 4 pasos simples. Reservá hoy, viajá tranquilo mañana.
           </p>
         </div>
 
