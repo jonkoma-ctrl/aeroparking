@@ -1,5 +1,14 @@
 export const BRAND_NAME = process.env.NEXT_PUBLIC_BRAND_NAME || "AEROPARKING";
 
+/// Datos de contacto que se muestran al cliente en CTAs y mails.
+/// Mantener sincronizado con email-templates.ts y Settings (cuando exista en DB).
+export const CONTACT = {
+  phone: "11 3160 6994",
+  whatsapp: "5491131606994",
+  email: "reservas@nrauditores.com.ar",
+  address: "Costa Salguero, Ciudad Autónoma de Buenos Aires",
+};
+
 export const EXTERNAL_URLS = {
   valet:
     process.env.NEXT_PUBLIC_VALET_URL ||

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { BRAND_NAME } from "@/lib/constants";
+import { CONTACT } from "@/lib/constants";
 
 export function Footer() {
   return (
@@ -8,51 +8,54 @@ export function Footer() {
         <div className="grid gap-8 md:grid-cols-3">
           {/* Brand */}
           <div>
-            <div className="flex items-center gap-2.5">
-              <img
-                src="https://www.alicanteairportcarparking.com/img/logo.webp"
-                alt="AEROPARKING"
-                className="h-9 w-auto brightness-0 invert"
-              />
+            <div className="flex items-center">
               <span className="text-xl font-extrabold tracking-tight text-white">
                 AERO<span className="text-brand-400">PARKING</span>
               </span>
             </div>
             <p className="mt-4 text-sm leading-relaxed text-brand-400">
-              Valet &middot; Estacionamiento &middot; Traslados
+              Estacionamiento &middot; Traslados &middot; Valet
               <br />
-              Aeropuerto &amp; Puerto de BA
+              Aeroparque &middot; Ezeiza &middot; Cruceros
             </p>
           </div>
 
-          {/* Servicios */}
+          {/* Destinos */}
           <div>
             <h3 className="mb-3 text-sm font-semibold uppercase tracking-wider text-white">
-              Servicios
+              Destinos
             </h3>
             <ul className="space-y-2 text-sm">
               <li>
                 <Link
-                  href="/servicios/valet-parking"
+                  href="/reservar/aeroparque"
                   className="transition-colors hover:text-white"
                 >
-                  Valet Parking Aeroparque
+                  Aeroparque Jorge Newbery
                 </Link>
               </li>
               <li>
                 <Link
-                  href="/servicios/larga-estadia"
+                  href="/reservar/ezeiza"
                   className="transition-colors hover:text-white"
                 >
-                  Larga Estadía Aeroparque
+                  Aeropuerto de Ezeiza
                 </Link>
               </li>
               <li>
                 <Link
-                  href="/servicios/terminal-cruceros"
+                  href="/reservar/puerto"
                   className="transition-colors hover:text-white"
                 >
-                  Puerto de Buenos Aires
+                  Terminal de Cruceros
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/valet-eventos"
+                  className="transition-colors hover:text-white"
+                >
+                  Valet para eventos
                 </Link>
               </li>
             </ul>
@@ -64,27 +67,30 @@ export function Footer() {
               Contacto
             </h3>
             <ul className="space-y-2 text-sm">
-              <li>Buenos Aires, Argentina</li>
+              <li>{CONTACT.address}</li>
               <li>
-                <a href="mailto:reservas@nrauditores.com.ar" className="transition-colors hover:text-white">
-                  reservas@nrauditores.com.ar
+                <a
+                  href={`mailto:${CONTACT.email}`}
+                  className="transition-colors hover:text-white"
+                >
+                  {CONTACT.email}
                 </a>
               </li>
               <li>
-                <a href="https://wa.me/5491131606994" className="transition-colors hover:text-white">
-                  11-3160-6994
-                </a>
-                {" / "}
-                <a href="https://wa.me/5491153228770" className="transition-colors hover:text-white">
-                  11-5322-8770
+                <a
+                  href={`https://wa.me/${CONTACT.whatsapp}`}
+                  className="transition-colors hover:text-white"
+                >
+                  {CONTACT.phone}
                 </a>
               </li>
+              <li className="text-xs text-brand-500">Atención las 24 horas</li>
             </ul>
           </div>
         </div>
 
         <div className="mt-12 border-t border-brand-800 pt-6 text-center text-xs text-brand-500">
-          &copy; 2026 By JonKoma
+          &copy; 2026 AEROPARKING
         </div>
       </div>
     </footer>

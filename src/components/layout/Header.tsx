@@ -5,15 +5,16 @@ import Link from "next/link";
 import { Menu, X, ChevronDown } from "lucide-react";
 
 const navItems = [
-  { label: "Aeroparque", href: "/#aeroparque" },
-  { label: "Puerto de BA", href: "/#puerto" },
+  { label: "Servicios", href: "/#servicios" },
+  { label: "Cómo funciona", href: "/#como-funciona" },
+  { label: "Eventos", href: "/valet-eventos" },
   { label: "FAQ", href: "/#faq" },
 ];
 
 const bookingOptions = [
-  { label: "Valet Parking — Aeroparque", href: "https://tienda.aeropuertosargentina.com/aeroparque/producto/valet-parking/", external: true },
-  { label: "Larga Estadía — Aeroparque", href: "https://tienda.aeropuertosargentina.com/aeroparque/producto/larga-estadia-4-dias-o-mas/", external: true },
-  { label: "Larga Estadía Cruceros", href: "/reservar/cruceros" },
+  { label: "Aeroparque", href: "/reservar/aeroparque" },
+  { label: "Ezeiza", href: "/reservar/ezeiza" },
+  { label: "Terminal de Cruceros", href: "/reservar/puerto" },
 ];
 
 export function Header() {
@@ -23,12 +24,7 @@ export function Header() {
   return (
     <header className="sticky top-0 z-50 border-b border-brand-100 bg-white/95 backdrop-blur-sm">
       <div className="container-main flex h-16 items-center justify-between px-4 sm:px-6 lg:px-8">
-        <Link href="/" className="flex items-center gap-2.5">
-          <img
-            src="https://www.alicanteairportcarparking.com/img/logo.webp"
-            alt="AEROPARKING"
-            className="h-9 w-auto"
-          />
+        <Link href="/" className="flex items-center">
           <span className="text-xl font-extrabold tracking-tight text-brand-900">
             AERO<span className="text-brand-500">PARKING</span>
           </span>
@@ -58,28 +54,15 @@ export function Header() {
             </button>
             {bookingOpen && (
               <div className="absolute right-0 top-full mt-2 w-64 rounded-xl border border-brand-200 bg-white py-2 shadow-lg">
-                {bookingOptions.map((opt) =>
-                  opt.external ? (
-                    <a
-                      key={opt.href}
-                      href={opt.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="block px-4 py-2.5 text-sm text-brand-700 hover:bg-brand-50"
-                    >
-                      {opt.label}
-                      <span className="ml-1 text-xs text-brand-400">↗</span>
-                    </a>
-                  ) : (
-                    <Link
-                      key={opt.href}
-                      href={opt.href}
-                      className="block px-4 py-2.5 text-sm text-brand-700 hover:bg-brand-50"
-                    >
-                      {opt.label}
-                    </Link>
-                  )
-                )}
+                {bookingOptions.map((opt) => (
+                  <Link
+                    key={opt.href}
+                    href={opt.href}
+                    className="block px-4 py-2.5 text-sm text-brand-700 hover:bg-brand-50"
+                  >
+                    {opt.label}
+                  </Link>
+                ))}
               </div>
             )}
           </div>
@@ -91,11 +74,7 @@ export function Header() {
           className="md:hidden"
           aria-label={mobileOpen ? "Cerrar menú" : "Abrir menú"}
         >
-          {mobileOpen ? (
-            <X className="h-6 w-6" />
-          ) : (
-            <Menu className="h-6 w-6" />
-          )}
+          {mobileOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
         </button>
       </div>
 
@@ -117,29 +96,16 @@ export function Header() {
               <p className="px-4 py-1 text-xs font-semibold uppercase tracking-wider text-brand-400">
                 Reservar
               </p>
-              {bookingOptions.map((opt) =>
-                opt.external ? (
-                  <a
-                    key={opt.href}
-                    href={opt.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    onClick={() => setMobileOpen(false)}
-                    className="block rounded-lg px-4 py-3 text-sm font-medium text-brand-700 hover:bg-brand-50"
-                  >
-                    {opt.label} <span className="text-xs text-brand-400">↗</span>
-                  </a>
-                ) : (
-                  <Link
-                    key={opt.href}
-                    href={opt.href}
-                    onClick={() => setMobileOpen(false)}
-                    className="block rounded-lg px-4 py-3 text-sm font-medium text-brand-700 hover:bg-brand-50"
-                  >
-                    {opt.label}
-                  </Link>
-                )
-              )}
+              {bookingOptions.map((opt) => (
+                <Link
+                  key={opt.href}
+                  href={opt.href}
+                  onClick={() => setMobileOpen(false)}
+                  className="block rounded-lg px-4 py-3 text-sm font-medium text-brand-700 hover:bg-brand-50"
+                >
+                  {opt.label}
+                </Link>
+              ))}
             </div>
           </nav>
         </div>

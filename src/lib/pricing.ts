@@ -1,11 +1,12 @@
-export type Destino = "aeroparque" | "puerto";
+export type Destino = "aeroparque" | "puerto" | "ezeiza";
 
 // ServiceType matches DB format: destination + "_" + serviceType row
 export type ServiceType =
   | "aeroparque_drop_go"
   | "aeroparque_larga_estadia"
   | "puerto_larga_estadia"
-  | "puerto_cruceros";
+  | "puerto_cruceros"
+  | "ezeiza_larga_estadia";
 
 // DB uses simple service types, we combine with destination for ServiceType identifier
 export type DbServiceType = "drop_go" | "larga_estadia" | "cruceros";
@@ -105,6 +106,9 @@ export function getCandidateServices(destino: Destino): ServiceType[] {
   if (destino === "aeroparque") {
     return ["aeroparque_drop_go", "aeroparque_larga_estadia"];
   }
+  if (destino === "ezeiza") {
+    return ["ezeiza_larga_estadia"];
+  }
   return ["puerto_larga_estadia", "puerto_cruceros"];
 }
 
@@ -166,4 +170,16 @@ export function validateBookingDates(
   if (days < minDays) return { ok: false, field: "retiro", message: `Mínimo ${minDays} día(s)` };
   if (days > maxDays) return { ok: false, field: "retiro", message: `Máximo ${maxDays} días` };
   return { ok: true };
+}
+
+/// Etiqueta visible del destino para UI
+export function getDestinoLabel(destino: Destino): string {
+  switch (destino) {
+    case "aeroparque":
+      return "Aeroparque Jorge Newbery";
+    case "ezeiza":
+      return "Aeropuerto de Ezeiza";
+    case "puerto":
+      return "Terminal de Cruceros";
+  }
 }
