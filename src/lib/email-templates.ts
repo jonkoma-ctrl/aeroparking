@@ -40,15 +40,22 @@ export function buildReservationEmail(data: ReservationEmailData): string {
     : `id=${data.reservationId}`;
 
   const isPuerto = data.destination === "puerto";
+  const isEzeiza = data.destination === "ezeiza";
   const isCruceros = data.serviceType === "cruceros";
   const startStr = formatDate(data.startDate);
   const endStr = formatDate(data.endDate);
+
+  const destinoLabel = isPuerto
+    ? "Puerto de Buenos Aires"
+    : isEzeiza
+    ? "Aeropuerto de Ezeiza"
+    : "Aeroparque Jorge Newbery";
 
   // Build reservation rows
   let rows = "";
   rows += row("Referencia", orderRef);
   rows += row("Servicio", getServiceTypeLabel(data.serviceType));
-  rows += row("Destino", isPuerto ? "Puerto de Buenos Aires" : "Aeroparque Jorge Newbery");
+  rows += row("Destino", destinoLabel);
   rows += row(isCruceros ? "Embarque" : "Ingreso", `${startStr}${data.checkInTime ? ` — ${data.checkInTime} hs` : ""}`);
   rows += row(isCruceros ? "Desembarque" : "Retiro", `${endStr}${data.arrivalTime ? ` — ${data.arrivalTime} hs` : ""}`);
   rows += row("Vehículo", `${data.licensePlate} — ${data.carBrand} ${data.carModel}`);
@@ -184,6 +191,11 @@ export function buildReservationEmail(data: ReservationEmailData): string {
 
 export function getReservationEmailSubject(data: { customerName: string; destination: string; externalOrderId?: string }) {
   const ref = data.externalOrderId ? ` #${data.externalOrderId}` : "";
-  const dest = data.destination === "puerto" ? "Puerto de BA" : "Aeroparque";
+  const dest =
+    data.destination === "puerto"
+      ? "Puerto de BA"
+      : data.destination === "ezeiza"
+      ? "Ezeiza"
+      : "Aeroparque";
   return `AEROPARKING — Confirmación de reserva${ref} — ${dest}`;
 }
