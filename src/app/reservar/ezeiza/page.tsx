@@ -4,8 +4,9 @@ import { useState, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { formatPrice } from "@/lib/utils";
 import { decodePrefill } from "@/lib/booking-prefill";
+import { calculateStays } from "@/lib/pricing";
 
-function PuertoContent() {
+function EzeizaContent() {
   const searchParams = useSearchParams();
   const [form, setForm] = useState({
     firstName: "", lastName: "", email: "", phone: "",
@@ -14,14 +15,18 @@ function PuertoContent() {
     endDate: "", endTime: "10:00",
     passengers: "1", notes: "",
   });
+  const [transferLegs, setTransferLegs] = useState<number>(parseInt(searchParams.get("legs") || "2", 10));
   const [quote, setQuote] = useState<{
-    fullStays: number; halfStays: number; totalStays: number;
-    pricePerStay: number; parkingSubtotal: number; total: number;
+    stays: { fullStays: number; halfStays: number; totalEquivalent: number };
+    pricePerStay: number;
+    parkingSubtotal: number;
+    transferCost: number;
+    total: number;
   } | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  // Prefill from URL query (?prefill=base64url)
+  // Prefill from URL
   useEffect(() => {
     const encoded = searchParams.get("prefill");
     if (!encoded) return;
@@ -39,28 +44,27 @@ function PuertoContent() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // Recompute quote on date/time change
+  // Recompute quote on dates/time/legs change
   useEffect(() => {
     if (!form.startDate || !form.endDate) { setQuote(null); return; }
     const start = new Date(`${form.startDate}T${form.startTime}:00`);
     const end = new Date(`${form.endDate}T${form.endTime}:00`);
     if (end <= start) { setQuote(null); return; }
-    fetch(`/api/pricing/quote?destino=puerto&serviceType=larga_estadia&ingreso=${start.toISOString()}&retiro=${end.toISOString()}`)
+    fetch(`/api/pricing/quote?destino=ezeiza&serviceType=ezeiza_larga_estadia&ingreso=${start.toISOString()}&retiro=${end.toISOString()}&transferLegs=${transferLegs}`)
       .then(r => r.json())
       .then(data => {
         if (data.quote) {
           setQuote({
-            fullStays: data.quote.fullStays,
-            halfStays: data.quote.halfStays,
-            totalStays: data.quote.totalStays,
+            stays: { fullStays: data.quote.fullStays, halfStays: data.quote.halfStays, totalEquivalent: data.quote.totalStays },
             pricePerStay: data.quote.pricePerStay,
             parkingSubtotal: data.quote.parkingSubtotal,
+            transferCost: data.quote.transferSubtotal,
             total: data.quote.total,
           });
         }
       })
       .catch(() => setQuote(null));
-  }, [form.startDate, form.endDate, form.startTime, form.endTime]);
+  }, [form.startDate, form.endDate, form.startTime, form.endTime, transferLegs]);
 
   function updateField(field: string, value: string) {
     setForm((f) => ({ ...f, [field]: value }));
@@ -79,7 +83,8 @@ function PuertoContent() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         ...form,
-        destination: "puerto",
+        destination: "ezeiza",
+        transferLegs,
         startDate: start.toISOString(),
         endDate: end.toISOString(),
       }),
@@ -101,13 +106,14 @@ function PuertoContent() {
     <div className="section-padding">
       <div className="container-main max-w-xl">
         <h1 className="mb-2 text-2xl font-bold text-brand-900">
-          Reservar — Puerto de Buenos Aires
+          Reservar — Aeropuerto de Ezeiza
         </h1>
         <p className="mb-8 text-sm text-brand-500">
-          Estacionamiento en Costa Salguero con traslado al Puerto de Buenos Aires.
+          Estacionamiento en Costa Salguero con traslado opcional a Ezeiza.
         </p>
 
         <form onSubmit={handleSubmit} className="space-y-6">
+          {/* Datos personales */}
           <fieldset className="space-y-3">
             <legend className="text-sm font-semibold uppercase tracking-wider text-brand-400 mb-2">
               Datos personales
@@ -128,6 +134,7 @@ function PuertoContent() {
               className="w-full rounded-lg border border-brand-200 px-3 py-2.5 text-sm" />
           </fieldset>
 
+          {/* Vehículo */}
           <fieldset className="space-y-3">
             <legend className="text-sm font-semibold uppercase tracking-wider text-brand-400 mb-2">
               Vehículo
@@ -148,6 +155,7 @@ function PuertoContent() {
               className="w-full rounded-lg border border-brand-200 px-3 py-2.5 text-sm" />
           </fieldset>
 
+          {/* Fechas + horas */}
           <fieldset className="space-y-3">
             <legend className="text-sm font-semibold uppercase tracking-wider text-brand-400 mb-2">
               Estadía
@@ -178,12 +186,39 @@ function PuertoContent() {
             </div>
           </fieldset>
 
+          {/* Traslado */}
+          <fieldset className="rounded-lg border border-amber-200 bg-amber-50 p-4 space-y-3">
+            <legend className="text-sm font-semibold text-amber-800 px-2">
+              ✈️ Traslado a Ezeiza
+            </legend>
+            <p className="text-xs text-amber-700">$40.000 por tramo (~40 km).</p>
+            <div className="flex flex-wrap gap-2">
+              {[
+                { v: 0, l: "Sin traslado" },
+                { v: 1, l: "Solo ida" },
+                { v: 2, l: "Ida y vuelta" },
+              ].map((opt) => (
+                <button key={opt.v} type="button" onClick={() => setTransferLegs(opt.v)}
+                  className={`rounded-md px-3 py-1.5 text-xs font-medium transition ${
+                    transferLegs === opt.v ? "bg-amber-600 text-white" : "bg-white text-amber-700 hover:bg-amber-100 border border-amber-300"
+                  }`}>{opt.l}</button>
+              ))}
+            </div>
+          </fieldset>
+
+          {/* Quote */}
           {quote && (
             <div className="rounded-xl border border-brand-200 bg-brand-50 p-5 space-y-2 text-sm">
               <div className="flex justify-between text-brand-600">
-                <span>Cochera ({quote.fullStays} {quote.fullStays === 1 ? "estadía" : "estadías"}{quote.halfStays ? " + ½" : ""})</span>
+                <span>Cochera ({quote.stays.fullStays} {quote.stays.fullStays === 1 ? "estadía" : "estadías"}{quote.stays.halfStays ? " + ½" : ""})</span>
                 <span className="font-medium">{formatPrice(quote.parkingSubtotal)}</span>
               </div>
+              {quote.transferCost > 0 && (
+                <div className="flex justify-between text-brand-600">
+                  <span>Traslado × {transferLegs}</span>
+                  <span className="font-medium">{formatPrice(quote.transferCost)}</span>
+                </div>
+              )}
               <div className="flex justify-between border-t border-brand-200 pt-2 text-base font-bold text-brand-900">
                 <span>Total</span>
                 <span>{formatPrice(quote.total)}</span>
@@ -215,10 +250,10 @@ function PuertoContent() {
   );
 }
 
-export default function ReservarPuertoPage() {
+export default function ReservarEzeizaPage() {
   return (
     <Suspense>
-      <PuertoContent />
+      <EzeizaContent />
     </Suspense>
   );
 }

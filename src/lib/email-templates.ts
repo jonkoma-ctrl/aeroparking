@@ -19,6 +19,9 @@ interface ReservationEmailData {
   arrivalFlight?: string | null;
   price?: number | null;
   passengers?: number | null;
+  stays?: { fullStays: number; halfStays: number } | null;
+  transferLegs?: number | null;
+  transferCost?: number | null;
 }
 
 const SITE_URL = "https://aeroparking.vercel.app";
@@ -40,7 +43,9 @@ export function buildReservationEmail(data: ReservationEmailData): string {
     : `id=${data.reservationId}`;
 
   const isPuerto = data.destination === "puerto";
+  const isEzeiza = data.destination === "ezeiza";
   const isCruceros = data.serviceType === "cruceros";
+  const destLabel = isPuerto ? "Puerto de Buenos Aires" : isEzeiza ? "Aeropuerto de Ezeiza" : "Aeroparque Jorge Newbery";
   const startStr = formatDate(data.startDate);
   const endStr = formatDate(data.endDate);
 
@@ -48,7 +53,11 @@ export function buildReservationEmail(data: ReservationEmailData): string {
   let rows = "";
   rows += row("Referencia", orderRef);
   rows += row("Servicio", getServiceTypeLabel(data.serviceType));
-  rows += row("Destino", isPuerto ? "Puerto de Buenos Aires" : "Aeroparque Jorge Newbery");
+  rows += row("Destino", destLabel);
+  if (data.stays) {
+    const breakdown = `${data.stays.fullStays} ${data.stays.fullStays === 1 ? "estadía" : "estadías"}${data.stays.halfStays ? " + ½" : ""}`;
+    rows += row("Estadías", breakdown);
+  }
   rows += row(isCruceros ? "Embarque" : "Ingreso", `${startStr}${data.checkInTime ? ` — ${data.checkInTime} hs` : ""}`);
   rows += row(isCruceros ? "Desembarque" : "Retiro", `${endStr}${data.arrivalTime ? ` — ${data.arrivalTime} hs` : ""}`);
   rows += row("Vehículo", `${data.licensePlate} — ${data.carBrand} ${data.carModel}`);
@@ -62,6 +71,9 @@ export function buildReservationEmail(data: ReservationEmailData): string {
   }
   if (data.passengers) {
     rows += row("Pasajeros", String(data.passengers));
+  }
+  if (data.transferLegs && data.transferLegs > 0) {
+    rows += row("Traslado Ezeiza", `${data.transferLegs} tramo(s)${data.transferCost ? ` — ${formatPrice(data.transferCost)}` : ""}`);
   }
   if (data.price && data.price > 0) {
     rows += row("Precio", formatPrice(data.price));
@@ -184,6 +196,6 @@ export function buildReservationEmail(data: ReservationEmailData): string {
 
 export function getReservationEmailSubject(data: { customerName: string; destination: string; externalOrderId?: string }) {
   const ref = data.externalOrderId ? ` #${data.externalOrderId}` : "";
-  const dest = data.destination === "puerto" ? "Puerto de BA" : "Aeroparque";
+  const dest = data.destination === "puerto" ? "Puerto de BA" : data.destination === "ezeiza" ? "Ezeiza" : "Aeroparque";
   return `AEROPARKING — Confirmación de reserva${ref} — ${dest}`;
 }

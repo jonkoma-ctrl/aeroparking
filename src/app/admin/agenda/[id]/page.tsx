@@ -34,6 +34,15 @@ export default async function ReservationDetailPage({
 
   const r = reservation;
 
+  // Buscar créditos disponibles del cliente
+  const availableCredits = r.email
+    ? await prisma.customerCredit.findMany({
+        where: { email: r.email.toLowerCase(), status: "available" },
+        orderBy: { createdAt: "desc" },
+      })
+    : [];
+  const totalCredit = availableCredits.reduce((a, c) => a + c.amountAvailable, 0);
+
   return (
     <div className="section-padding">
       <div className="container-main max-w-2xl">
@@ -67,16 +76,37 @@ export default async function ReservationDetailPage({
             </div>
           </div>
 
+          {/* Credit banner */}
+          {totalCredit > 0 && (
+            <div className="mb-4 rounded-xl border border-emerald-200 bg-emerald-50 p-4">
+              <div className="flex items-center justify-between gap-3">
+                <div>
+                  <p className="text-sm font-semibold text-emerald-900">
+                    🎁 Este cliente tiene {formatPrice(totalCredit)} de crédito a favor
+                  </p>
+                  <p className="mt-1 text-xs text-emerald-700">
+                    {availableCredits.length} crédito{availableCredits.length === 1 ? "" : "s"} disponible{availableCredits.length === 1 ? "" : "s"} — aplicar manualmente al cobrar.
+                  </p>
+                </div>
+                <Link href="/admin/creditos" className="rounded-lg bg-emerald-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-emerald-700">
+                  Ver créditos
+                </Link>
+              </div>
+            </div>
+          )}
+
           {/* Badges */}
           <div className="mb-6 flex gap-2">
             <span
               className={`inline-flex rounded-full px-2.5 py-0.5 text-xs font-medium ${
                 r.destination === "aeroparque"
                   ? "bg-indigo-100 text-indigo-700"
+                  : r.destination === "ezeiza"
+                  ? "bg-amber-100 text-amber-700"
                   : "bg-cyan-100 text-cyan-700"
               }`}
             >
-              {r.destination === "aeroparque" ? "Aeroparque" : "Puerto de BA"}
+              {r.destination === "aeroparque" ? "Aeroparque" : r.destination === "ezeiza" ? "Ezeiza" : "Puerto de BA"}
             </span>
             <span className="inline-flex rounded-full bg-brand-100 px-2.5 py-0.5 text-xs font-medium text-brand-700">
               {getServiceTypeLabel(r.serviceType)}

@@ -23,6 +23,8 @@ type PrismaPricing = {
   maxDays: number | null;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   durationDiscounts: any;
+  transferIncluded: boolean;
+  transferCostPerLeg: number | null;
 };
 
 function toRule(row: PrismaPricing): PricingRule {
@@ -37,10 +39,12 @@ function toRule(row: PrismaPricing): PricingRule {
     maxDays: row.maxDays,
     durationDiscounts: (row.durationDiscounts as DurationDiscount[] | null) || [],
     description: row.description,
+    transferIncluded: row.transferIncluded,
+    transferCostPerLeg: row.transferCostPerLeg,
   };
 }
 
-// GET /api/pricing/quote?destino=puerto&serviceType=puerto_larga_estadia&ingreso=2026-05-01&retiro=2026-05-10
+// GET /api/pricing/quote?destino=&serviceType=&ingreso=&retiro=&transferLegs=
 export async function GET(req: NextRequest) {
   try {
     const { searchParams } = new URL(req.url);
@@ -48,6 +52,7 @@ export async function GET(req: NextRequest) {
     const serviceType = searchParams.get("serviceType") as ServiceType | null;
     const ingresoStr = searchParams.get("ingreso");
     const retiroStr = searchParams.get("retiro");
+    const transferLegsStr = searchParams.get("transferLegs");
 
     if (!destino || !ingresoStr || !retiroStr) {
       return NextResponse.json(
@@ -58,16 +63,11 @@ export async function GET(req: NextRequest) {
 
     const ingreso = new Date(ingresoStr);
     const retiro = new Date(retiroStr);
+    const transferLegs = transferLegsStr ? parseInt(transferLegsStr, 10) || 0 : 0;
 
-    const validation = validateBookingDates(ingreso, retiro, {
-      minDays: 1,
-      maxDays: 90,
-    });
+    const validation = validateBookingDates(ingreso, retiro, { maxDays: 90 });
     if (!validation.ok) {
-      return NextResponse.json(
-        { error: validation.message, field: validation.field },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: validation.message, field: validation.field }, { status: 400 });
     }
 
     const pricingRows = (await prisma.servicePricing.findMany({
@@ -78,22 +78,14 @@ export async function GET(req: NextRequest) {
 
     if (serviceType) {
       const rule = rules.find((r) => r.serviceType === serviceType);
-      if (!rule) {
-        return NextResponse.json({ error: "Servicio no disponible" }, { status: 404 });
-      }
-      const quote = calculateQuote({ destino, serviceType, ingreso, retiro }, rule);
+      if (!rule) return NextResponse.json({ error: "Servicio no disponible" }, { status: 404 });
+      const quote = calculateQuote({ destino, serviceType, ingreso, retiro, transferLegs }, rule);
       return NextResponse.json({ quote });
     }
 
-    const recommendation = recommendCheapestService(
-      { destino, ingreso, retiro },
-      rules
-    );
+    const recommendation = recommendCheapestService({ destino, ingreso, retiro, transferLegs }, rules);
     if (!recommendation) {
-      return NextResponse.json(
-        { error: "No hay servicios disponibles para esas fechas" },
-        { status: 404 }
-      );
+      return NextResponse.json({ error: "No hay servicios disponibles para esas fechas" }, { status: 404 });
     }
     return NextResponse.json(recommendation);
   } catch (error) {

@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { MercadoPagoConfig, Preference } from "mercadopago";
 import { prisma } from "@/lib/db";
+import { calculateStays } from "@/lib/pricing";
 
 const mp = new MercadoPagoConfig({
   accessToken: process.env.MP_ACCESS_TOKEN || "",
@@ -23,14 +24,19 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Faltan datos obligatorios" }, { status: 400 });
     }
 
-    // Calculate days
-    const start = new Date(departureDate);
-    const end = new Date(returnDate);
-    const days = Math.ceil((end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24));
+    // Combine date + time for accurate stay calculation
+    const start = arrivalTime
+      ? new Date(`${departureDate}T${arrivalTime}:00`)
+      : new Date(`${departureDate}T12:00:00`);
+    const end = pickupTime
+      ? new Date(`${returnDate}T${pickupTime}:00`)
+      : new Date(`${returnDate}T12:00:00`);
 
-    if (days <= 0) {
+    if (end <= start) {
       return NextResponse.json({ error: "La fecha de retorno debe ser posterior a la salida" }, { status: 400 });
     }
+
+    const stays = calculateStays(start, end);
 
     // Get cruise pricing
     const pricing = await prisma.servicePricing.findFirst({
@@ -44,7 +50,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const totalPrice = days * pricing.pricePerDay;
+    const totalPrice = Math.round(stays.totalEquivalent * pricing.pricePerDay);
 
     // Create reservation with pending_payment status
     const reservation = await prisma.cruiseReservation.create({
@@ -72,7 +78,7 @@ export async function POST(req: NextRequest) {
         items: [
           {
             id: reservation.id,
-            title: `Estacionamiento Cruceros — ${days} días`,
+            title: `Estacionamiento Cruceros — ${stays.totalEquivalent} estadía(s)`,
             description: `${licensePlate.toUpperCase()} — ${carBrand} ${carModel} — ${departureDate} a ${returnDate}`,
             quantity: 1,
             unit_price: totalPrice,
@@ -95,8 +101,8 @@ export async function POST(req: NextRequest) {
       preferenceId: result.id,
       initPoint: result.init_point,
       reservationId: reservation.id,
-      days,
-      pricePerDay: pricing.pricePerDay,
+      stays: stays.totalEquivalent,
+      pricePerStay: pricing.pricePerDay,
       totalPrice,
     });
   } catch (error) {
