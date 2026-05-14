@@ -10,13 +10,23 @@ Al final de cualquier PR que modifique funcionalidad visible para el usuario int
 
 El manual se renderiza en `/admin/manual` (URL no listada). Cualquier sección que cambie debe quedar reflejada antes de mergear.
 
-Específicamente:
+### Reglas de redacción
 
-1. **Sección 15 — Historial de cambios**: agregar entrada con fecha + bullets breves de qué entró.
-2. **Si se agrega una pantalla de admin**: actualizar la tabla de URLs (sección 2) y agregar una sección explicativa propia.
-3. **Si cambia un flujo operativo**: actualizar el "cheatsheet" de la sección 14.
-4. **Si cambian env vars**: actualizar la tabla de la sección 13.
-5. **Si cambian status, precios o reglas de negocio**: actualizar las secciones 3, 4 y 7.
+El manual está dirigido a **usuarios sin conocimiento técnico** (Jon + personal Costa Salguero + atención al cliente). No es documentación de developer.
+
+- **NO usar**: jerga técnica como "Prisma", "schema", "DB", "API", "endpoint", "env var", "PR", "deploy", "repo", "MD", "markdown", "build", "Vercel Blob", "Next.js", "middleware", "cookie", "JSON", "regex", "fetch", "request", "JWT", etc.
+- **SÍ usar**: lenguaje conversacional, "click acá", "andá a esta pantalla", "tarjeta verde", "botón Guardar". Como explicarle el sistema a un amigo no programador.
+- **Links a secciones**: usar markdown anchors hacia los IDs slugificados (ej: `[Tarifas](#9-tarifas-cambiar-precios-y-descuentos)`).
+- **Links a URLs**: usar markdown links absolutos (ej: `[aeroparking.vercel.app/admin/dashboard](https://aeroparking.vercel.app/admin/dashboard)`).
+- **Tablas operativas** y **cheatsheet** > prosa larga.
+
+### Qué actualizar
+
+1. **Sección 15 — Historial de novedades**: agregar entrada con fecha + bullets breves en lenguaje no-técnico (ej: "✨ Nueva pantalla de Ajustes para cambiar foto del Hero").
+2. **Si se agrega una pantalla de admin**: agregarla en el índice (sección 1), agregarle una sección propia con la URL clickeable y explicación paso a paso.
+3. **Si cambia un flujo operativo**: actualizar el cheatsheet (sección 14).
+4. **Si cambian precios, estados o reglas de negocio**: actualizar las secciones 6, 7 y 9.
+5. **NO documentar cambios internos** que el usuario no ve (refactors, libs, env vars, schema changes).
 
 No esperar a que el usuario lo pida — es parte del Definition of Done de cada cambio funcional.
 
