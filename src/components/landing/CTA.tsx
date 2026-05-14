@@ -29,17 +29,17 @@ export function CTA() {
         </p>
         <div className="mt-8 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
           <Link
-            href="/#servicios"
+            href="/reservar"
             className="group inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-accent-500 px-10 py-4 text-lg font-bold text-brand-950 shadow-xl shadow-accent-500/30 transition-all hover:bg-accent-400 hover:shadow-accent-500/50 hover:scale-[1.03] sm:w-auto"
           >
-            Ver servicios y precios
+            Reservar ahora
             <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
           </Link>
           <Link
-            href="/reservar?destino=puerto"
+            href="/#servicios"
             className="inline-flex w-full items-center justify-center gap-2 rounded-2xl border-2 border-white/20 bg-white/10 px-10 py-4 text-lg font-bold text-white backdrop-blur-sm transition-all hover:border-white/40 hover:bg-white/20 sm:w-auto"
           >
-            Reservar Puerto de BA
+            Ver servicios y precios
           </Link>
         </div>
       </div>

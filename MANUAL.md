@@ -372,6 +372,7 @@ El archivo que te baja se abre directo en Excel o Google Sheets. Tiene todas las
 - 🛬 El cotizador rápido de la home ahora muestra los **3 destinos** (antes solo aparecían Aeroparque y Cruceros, faltaba Ezeiza).
 - 📞 El botón de WhatsApp en el Hero pasa a ser un link de **consulta** ("¿Dudas? Consultanos por WhatsApp"), claramente diferenciado del botón principal "Reservar ahora". Antes parecía otra forma de reservar.
 - ✏️ Cambiado el texto "Mercado Pago" → "Pagás al dejar el auto" en el cotizador (refleja la realidad: pago presencial).
+- 🔘 Bloque CTA del final de la home: el botón secundario decía "Reservar Puerto de BA" (genérico solo para un destino). Ahora dice **"Reservar ahora"** (botón principal) y **"Ver servicios y precios"** (secundario). El "Reservar ahora" lleva al form unificado donde el cliente elige su destino.
 
 ### 14 de mayo de 2026
 
