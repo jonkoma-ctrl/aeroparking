@@ -367,6 +367,12 @@ El archivo que te baja se abre directo en Excel o Google Sheets. Tiene todas las
 
 ## 15. Historial de novedades
 
+### 14 de mayo de 2026 — Operación propia + bug Ezeiza
+
+- 🛬 **Aeroparque ahora es operación propia**: la larga estadía deja de redirigir a la tienda de Aeropuertos Argentina (AA2000). El cliente reserva directo con nosotros, mismo flujo que Cruceros y Ezeiza.
+- 🔧 **Bug fix Ezeiza**: el cotizador de la home tiraba "No hay servicios disponibles para esas fechas" al elegir Ezeiza. Era una inconsistencia interna en la configuración de la tarifa. Resuelto.
+- 🛑 **Drop & Go Aeroparque queda desactivado**: no operamos drop & go dentro del aeropuerto. Si en el futuro lo queremos ofrecer, se activa desde Tarifas.
+
 ### 14 de mayo de 2026 — Ajustes de la home
 
 - 🛬 El cotizador rápido de la home ahora muestra los **3 destinos** (antes solo aparecían Aeroparque y Cruceros, faltaba Ezeiza).

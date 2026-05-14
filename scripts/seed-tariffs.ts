@@ -3,9 +3,12 @@
  *
  * Reglas (operador, may 2026):
  *  - $40.000 por estadía (24h, primera indivisible). Media estadía $20.000.
- *  - Aeroparque (drop_go + larga_estadia) → tarifa de referencia, redirige a AA2000
- *  - Puerto larga_estadia + cruceros → $40k, traslado incluido
- *  - Ezeiza larga_estadia → $40k + $40k por tramo de traslado (no incluido)
+ *  - TODAS las operaciones son propias — sin redirects a AA2000.
+ *  - Puerto larga_estadia + cruceros → $40k, traslado incluido.
+ *  - Ezeiza larga_estadia → $40k + $40k por tramo de traslado (no incluido).
+ *  - Aeroparque larga_estadia → $40k, traslado incluido, OPERACIÓN PROPIA.
+ *  - Aeroparque drop_go → desactivado por defecto (no operamos drop & go dentro
+ *    del aeropuerto). Si querés ofrecerlo, prendelo desde /admin/tarifas.
  *
  * Ejecutar: npx tsx scripts/seed-tariffs.ts
  */
@@ -18,6 +21,7 @@ interface TariffSeed {
   serviceType: string;
   pricePerDay: number;
   description: string;
+  active?: boolean;
   isReference?: boolean;
   externalCheckoutUrl?: string | null;
   transferIncluded: boolean;
@@ -25,23 +29,24 @@ interface TariffSeed {
 }
 
 const TARIFFS: TariffSeed[] = [
-  // Aeroparque (referencia AA2000)
+  // Aeroparque — operación propia (sin AA2000)
   {
     destination: "aeroparque",
     serviceType: "drop_go",
     pricePerDay: 40000,
-    description: "Drop & Go en Aeroparque. Reserva vía AA2000.",
-    isReference: true,
-    externalCheckoutUrl: process.env.NEXT_PUBLIC_VALET_URL || null,
+    description: "Drop & Go en Aeroparque (no activo por defecto).",
+    active: false,
+    isReference: false,
+    externalCheckoutUrl: null,
     transferIncluded: true,
   },
   {
     destination: "aeroparque",
     serviceType: "larga_estadia",
     pricePerDay: 40000,
-    description: "Larga estadía Aeroparque. Reserva vía AA2000.",
-    isReference: true,
-    externalCheckoutUrl: process.env.NEXT_PUBLIC_LONG_STAY_URL || null,
+    description: "Estacionamiento Costa Salguero + traslado a Aeroparque.",
+    isReference: false,
+    externalCheckoutUrl: null,
     transferIncluded: true,
   },
   // Puerto (Costa Salguero)
@@ -62,9 +67,11 @@ const TARIFFS: TariffSeed[] = [
     transferIncluded: true,
   },
   // Ezeiza (traslado pago)
+  // NOTA: serviceType es "larga_estadia" (no "ezeiza_larga_estadia"). El código
+  // construye el serviceType público concatenando: `${destination}_${serviceType}`.
   {
     destination: "ezeiza",
-    serviceType: "ezeiza_larga_estadia",
+    serviceType: "larga_estadia",
     pricePerDay: 40000,
     description: "Estacionamiento Costa Salguero + traslado opcional a Ezeiza ($40k por tramo).",
     isReference: false,
@@ -75,8 +82,18 @@ const TARIFFS: TariffSeed[] = [
 
 async function main() {
   console.log("Seeding tariffs...\n");
+
+  // Cleanup: borrar tarifas legacy con el serviceType viejo "ezeiza_larga_estadia"
+  // (era el formato anterior, ahora la convención es "larga_estadia" sin prefijo de destino).
+  const legacy = await prisma.servicePricing.deleteMany({
+    where: { destination: "ezeiza", serviceType: "ezeiza_larga_estadia" },
+  });
+  if (legacy.count > 0) {
+    console.log(`🧹 Borradas ${legacy.count} tarifa(s) legacy ezeiza_larga_estadia\n`);
+  }
+
   for (const t of TARIFFS) {
-    const result = await prisma.servicePricing.upsert({
+    await prisma.servicePricing.upsert({
       where: { destination_serviceType: { destination: t.destination, serviceType: t.serviceType } },
       update: {
         pricePerDay: t.pricePerDay,
@@ -85,7 +102,7 @@ async function main() {
         externalCheckoutUrl: t.externalCheckoutUrl || null,
         transferIncluded: t.transferIncluded,
         transferCostPerLeg: t.transferCostPerLeg ?? null,
-        active: true,
+        active: t.active ?? true,
       },
       create: {
         destination: t.destination,
@@ -96,10 +113,15 @@ async function main() {
         externalCheckoutUrl: t.externalCheckoutUrl || null,
         transferIncluded: t.transferIncluded,
         transferCostPerLeg: t.transferCostPerLeg ?? null,
-        active: true,
+        active: t.active ?? true,
       },
     });
-    console.log(`✓ ${t.destination}/${t.serviceType} → $${t.pricePerDay.toLocaleString("es-AR")}/estadía${t.transferIncluded ? " (traslado incluido)" : ` + $${t.transferCostPerLeg?.toLocaleString("es-AR")}/tramo`}${t.isReference ? " [REFERENCIA]" : ""}`);
+    const status = t.active === false ? " [INACTIVA]" : "";
+    console.log(
+      `✓ ${t.destination}/${t.serviceType} → $${t.pricePerDay.toLocaleString("es-AR")}/estadía${
+        t.transferIncluded ? " (traslado incluido)" : ` + $${t.transferCostPerLeg?.toLocaleString("es-AR")}/tramo`
+      }${status}`
+    );
   }
   console.log("\nDone.");
 }
