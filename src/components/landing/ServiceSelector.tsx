@@ -25,7 +25,7 @@ const destinations: {
       "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiLRRz6M8aujZyPeO9sj5UATUV_oNdGTojo_yBYG2zAuyQVoKq533RQEf4ak08pWbvo1sy7MvzQ7S6DBuv3vxu3cawTYYp2JSFL5-NEk18MGkhLEjud1Bdq_F-90i_S54uB9BflYGsPdKFVBU3-k-fMOxNhz-HePsZUox5PdG6IehaV8lk5Z6DJkmUY9Pk/s1600/IMG-20240710-WA0038.jpg",
     icon: Plane,
     accent: "blue",
-    href: "/reservar/aeroparque",
+    href: "/reservar?destino=aeroparque",
   },
   {
     slug: "ezeiza",
@@ -37,7 +37,7 @@ const destinations: {
       "https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Aeropuerto_Internacional_de_Ezeiza_-_Terminal_A.jpg/1200px-Aeropuerto_Internacional_de_Ezeiza_-_Terminal_A.jpg",
     icon: Plane,
     accent: "sky",
-    href: "/reservar/ezeiza",
+    href: "/reservar?destino=ezeiza",
   },
   {
     slug: "puerto",
@@ -49,7 +49,7 @@ const destinations: {
       "https://www.cronista.com/resizer/v2/L3YSXJLA2JCINILIDSFOXV6KPE.jpg?auth=507cbc1ca9b88afd772181a0ffb9349a408709904b339198a2d4a533db0b409c&height=899&width=1200&quality=70&smart=true",
     icon: Ship,
     accent: "violet",
-    href: "/reservar/puerto",
+    href: "/reservar?destino=puerto",
   },
 ];
 

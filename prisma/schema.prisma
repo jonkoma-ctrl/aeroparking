@@ -84,6 +84,23 @@ model AeroparqueReservation {
   updatedAt        DateTime @updatedAt
 }
 
+model Destination {
+  id            String   @id @default(cuid())
+  slug          String   @unique           // "aeroparque" | "ezeiza" | "puerto" | etc.
+  label         String                     // "Aeroparque Jorge Newbery"
+  shortLabel    String                     // "Aeroparque"
+  iconKey       String   @default("plane") // "plane" | "ship" | "bus" — render-side
+  accentColor   String   @default("blue")  // tailwind hue (blue, sky, violet, amber)
+  description   String?  @db.Text
+  addressInfo   String?  @db.Text          // instructivo para el cliente
+  active        Boolean  @default(true)
+  sortOrder     Int      @default(0)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@index([active, sortOrder])
+}
+
 model ServicePricing {
   id                  String   @id @default(cuid())
   destination         String   // "puerto" | "aeroparque" | "ezeiza"

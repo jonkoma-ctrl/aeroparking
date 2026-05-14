@@ -7,6 +7,8 @@ import {
   Car,
   Plane,
   Ship,
+  Bus,
+  Train,
   User,
   CheckCircle2,
   ArrowRight,
@@ -23,6 +25,27 @@ import {
 } from "@/lib/validations";
 import { CONTACT } from "@/lib/constants";
 import type { Destino } from "@/lib/pricing";
+import type { DestinationMeta } from "@/lib/destinos";
+
+// Mapeo iconKey (DB) → componente Lucide
+const ICON_BY_KEY: Record<string, typeof Plane> = {
+  plane: Plane,
+  ship: Ship,
+  bus: Bus,
+  car: Car,
+  train: Train,
+};
+
+// Mapeo accentColor (DB) → Tailwind class
+const ACCENT_BY_COLOR: Record<string, string> = {
+  blue: "text-blue-600",
+  sky: "text-sky-600",
+  violet: "text-violet-600",
+  amber: "text-amber-600",
+  emerald: "text-emerald-600",
+  rose: "text-rose-600",
+  indigo: "text-indigo-600",
+};
 
 type DbServiceType = "drop_go" | "larga_estadia" | "cruceros";
 
@@ -32,6 +55,10 @@ interface Props {
   /// (el cliente deja el auto en Costa Salguero, lo trasladamos al aeropuerto).
   /// Para Puerto, "cruceros".
   defaultServiceType?: DbServiceType;
+  /// Meta dinámica desde DB. Si se pasa, sobrescribe los defaults hardcoded.
+  destinationMeta?: DestinationMeta;
+  /// Contenido opcional renderizado arriba del header (ej: picker de destino).
+  headerSlot?: React.ReactNode;
 }
 
 interface FormState {
@@ -113,9 +140,19 @@ const STEPS = [
   { id: 4, label: "Contacto", icon: User },
 ];
 
-export function PresentialBookingForm({ destino, defaultServiceType }: Props) {
-  const meta = destinoMeta[destino];
-  const isCruceros = destino === "puerto";
+export function PresentialBookingForm({ destino, defaultServiceType, destinationMeta, headerSlot }: Props) {
+  // Si nos pasan meta de DB, lo usamos; si no, fallback a los defaults hardcoded.
+  const meta = destinationMeta
+    ? {
+        label: destinationMeta.label,
+        icon: ICON_BY_KEY[destinationMeta.iconKey] ?? Plane,
+        accentColor: ACCENT_BY_COLOR[destinationMeta.accentColor] ?? "text-blue-600",
+        tripLabel: destinationMeta.iconKey === "ship" ? "crucero" : "vuelo",
+      }
+    : destinoMeta[destino];
+  const isCruceros = destinationMeta
+    ? destinationMeta.iconKey === "ship"
+    : destino === "puerto";
   const serviceType: DbServiceType =
     defaultServiceType ?? (isCruceros ? "cruceros" : "larga_estadia");
 
@@ -360,6 +397,7 @@ export function PresentialBookingForm({ destino, defaultServiceType }: Props) {
     <main className="min-h-[80vh] bg-brand-50 py-8 sm:py-12">
       <div className="container-main px-4 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-2xl">
+          {headerSlot}
           {/* Header */}
           <div className="mb-6">
             <Link
