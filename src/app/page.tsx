@@ -6,7 +6,9 @@ import { Benefits } from "@/components/landing/Benefits";
 import { FAQ } from "@/components/landing/FAQ";
 import { CTA } from "@/components/landing/CTA";
 
-export default function HomePage() {
+export const dynamic = "force-dynamic";
+
+export default async function HomePage() {
   return (
     <>
       <Hero />

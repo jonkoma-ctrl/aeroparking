@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { ImageUploadField } from "@/components/admin/ImageUploadField";
 
 interface Destination {
   id: string;
@@ -11,6 +12,8 @@ interface Destination {
   accentColor: string;
   description: string | null;
   addressInfo: string | null;
+  imageUrl: string | null;
+  imageAlt: string | null;
   active: boolean;
   sortOrder: number;
 }
@@ -32,6 +35,8 @@ export default function DestinosPage() {
     description: "",
     addressInfo: "",
     sortOrder: "100",
+    imageUrl: "",
+    imageAlt: "",
   });
   const [error, setError] = useState("");
 
@@ -56,6 +61,8 @@ export default function DestinosPage() {
       description: "",
       addressInfo: "",
       sortOrder: "100",
+      imageUrl: "",
+      imageAlt: "",
     });
     setError("");
     setShowForm(true);
@@ -72,6 +79,8 @@ export default function DestinosPage() {
       description: d.description || "",
       addressInfo: d.addressInfo || "",
       sortOrder: String(d.sortOrder),
+      imageUrl: d.imageUrl || "",
+      imageAlt: d.imageAlt || "",
     });
     setError("");
     setShowForm(true);
@@ -89,6 +98,8 @@ export default function DestinosPage() {
       description: form.description || null,
       addressInfo: form.addressInfo || null,
       sortOrder: parseInt(form.sortOrder, 10) || 100,
+      imageUrl: form.imageUrl || null,
+      imageAlt: form.imageAlt || form.label,
     };
     const res = await fetch("/api/admin/destinations", {
       method: editing ? "PATCH" : "POST",
@@ -213,6 +224,27 @@ export default function DestinosPage() {
               className="w-full rounded border border-brand-200 px-3 py-2 text-sm"
             />
           </div>
+
+          <ImageUploadField
+            label="Foto del destino (se muestra al cliente al elegir)"
+            value={form.imageUrl}
+            onChange={(url) => setForm({ ...form, imageUrl: url })}
+            folder="destinos"
+            aspectRatio="16/9"
+          />
+          {form.imageUrl && (
+            <div>
+              <label className="mb-1 block text-xs font-medium text-brand-600">
+                Texto alternativo (accesibilidad)
+              </label>
+              <input
+                value={form.imageAlt}
+                onChange={(e) => setForm({ ...form, imageAlt: e.target.value })}
+                placeholder={form.label || "Foto del destino"}
+                className="w-full rounded border border-brand-200 px-3 py-2 text-sm"
+              />
+            </div>
+          )}
           <div>
             <label className="mb-1 block text-xs font-medium text-brand-600">
               Instructivo de llegada (mostrado al cliente en el email)
@@ -261,8 +293,22 @@ export default function DestinosPage() {
               <tr key={d.id} className={`hover:bg-brand-50 ${!d.active && "opacity-50"}`}>
                 <td className="px-4 py-3 font-mono text-xs text-brand-600">{d.slug}</td>
                 <td className="px-4 py-3">
-                  <div className="font-medium text-brand-900">{d.label}</div>
-                  <div className="text-xs text-brand-500">{d.shortLabel}</div>
+                  <div className="flex items-center gap-3">
+                    {d.imageUrl ? (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img
+                        src={d.imageUrl}
+                        alt={d.imageAlt || d.label}
+                        className="h-10 w-16 shrink-0 rounded object-cover"
+                      />
+                    ) : (
+                      <div className="h-10 w-16 shrink-0 rounded border border-dashed border-brand-200 bg-brand-50" />
+                    )}
+                    <div>
+                      <div className="font-medium text-brand-900">{d.label}</div>
+                      <div className="text-xs text-brand-500">{d.shortLabel}</div>
+                    </div>
+                  </div>
                 </td>
                 <td className="px-4 py-3 text-xs text-brand-600">
                   {d.iconKey} · <span style={{ color: `var(--color, currentColor)` }}>{d.accentColor}</span>

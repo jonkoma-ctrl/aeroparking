@@ -24,9 +24,9 @@ export function Header() {
   return (
     <header className="sticky top-0 z-50 border-b border-brand-100 bg-white/95 backdrop-blur-sm">
       <div className="container-main flex h-16 items-center justify-between px-4 sm:px-6 lg:px-8">
-        <Link href="/" className="flex items-center">
-          <span className="text-xl font-extrabold tracking-tight text-brand-900">
-            AERO<span className="text-brand-500">PARKING</span>
+        <Link href="/" className="flex items-center group">
+          <span className="font-display text-xl font-extrabold tracking-tight text-brand-900">
+            AERO<span className="text-accent-500 transition-colors group-hover:text-accent-400">PARKING</span>
           </span>
         </Link>
 
@@ -47,7 +47,7 @@ export function Header() {
             <button
               onClick={() => setBookingOpen(!bookingOpen)}
               onBlur={() => setTimeout(() => setBookingOpen(false), 200)}
-              className="flex items-center gap-1 rounded-lg bg-brand-900 px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-brand-800"
+              className="flex items-center gap-1 rounded-xl bg-accent-400 px-5 py-2.5 text-sm font-bold text-brand-950 shadow-sm transition-all hover:bg-accent-300 hover:scale-[1.02]"
             >
               Reservar ahora
               <ChevronDown className="h-4 w-4" />

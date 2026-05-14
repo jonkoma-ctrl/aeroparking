@@ -14,6 +14,8 @@ interface DestinationSeed {
   accentColor: string;
   description: string;
   sortOrder: number;
+  imageUrl?: string;
+  imageAlt?: string;
 }
 
 const DESTINATIONS: DestinationSeed[] = [
@@ -25,6 +27,8 @@ const DESTINATIONS: DestinationSeed[] = [
     accentColor: "blue",
     description: "Estacionamiento en Costa Salguero con traslado incluido a Aeroparque (4 km).",
     sortOrder: 10,
+    imageUrl: "https://images.unsplash.com/photo-1556388158-158ea5ccacbd?w=1600&q=80",
+    imageAlt: "Aeropuerto Jorge Newbery — Aeroparque",
   },
   {
     slug: "ezeiza",
@@ -34,6 +38,8 @@ const DESTINATIONS: DestinationSeed[] = [
     accentColor: "sky",
     description: "Estacionamiento en Costa Salguero con traslado a Ezeiza ($40k por tramo).",
     sortOrder: 20,
+    imageUrl: "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=1600&q=80",
+    imageAlt: "Aeropuerto Internacional de Ezeiza",
   },
   {
     slug: "puerto",
@@ -43,6 +49,8 @@ const DESTINATIONS: DestinationSeed[] = [
     accentColor: "violet",
     description: "Estacionamiento en Costa Salguero con traslado incluido a la Terminal de Cruceros.",
     sortOrder: 30,
+    imageUrl: "https://images.unsplash.com/photo-1548574505-5e239809ee19?w=1600&q=80",
+    imageAlt: "Terminal de Cruceros — Puerto de Buenos Aires",
   },
 ];
 
@@ -58,9 +66,15 @@ async function main() {
         accentColor: d.accentColor,
         description: d.description,
         sortOrder: d.sortOrder,
+        imageUrl: d.imageUrl ?? null,
+        imageAlt: d.imageAlt ?? null,
         active: true,
       },
-      create: d,
+      create: {
+        ...d,
+        imageUrl: d.imageUrl ?? null,
+        imageAlt: d.imageAlt ?? null,
+      },
     });
     console.log(`✓ ${d.slug} → ${d.label}`);
   }

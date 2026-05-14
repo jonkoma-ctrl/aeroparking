@@ -9,8 +9,8 @@ export function Footer() {
           {/* Brand */}
           <div>
             <div className="flex items-center">
-              <span className="text-xl font-extrabold tracking-tight text-white">
-                AERO<span className="text-brand-400">PARKING</span>
+              <span className="font-display text-xl font-extrabold tracking-tight text-white">
+                AERO<span className="text-accent-400">PARKING</span>
               </span>
             </div>
             <p className="mt-4 text-sm leading-relaxed text-brand-400">
