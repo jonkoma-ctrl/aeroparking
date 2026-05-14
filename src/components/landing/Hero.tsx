@@ -109,7 +109,7 @@ export async function Hero() {
           </p>
 
           {/* CTA principal */}
-          <div className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row">
+          <div className="mt-10 flex flex-col items-center justify-center gap-3">
             <Link
               href="/reservar"
               className="group inline-flex items-center gap-2 rounded-2xl bg-accent-400 px-7 py-4 text-base font-bold text-brand-950 shadow-elevated transition-all hover:bg-accent-300 hover:scale-[1.02]"
@@ -119,9 +119,9 @@ export async function Hero() {
             </Link>
             <a
               href="https://wa.me/5491131606994"
-              className="inline-flex items-center gap-2 rounded-2xl border-2 border-white/20 bg-white/5 px-6 py-4 text-base font-semibold text-white backdrop-blur-sm hover:bg-white/10"
+              className="inline-flex items-center gap-1.5 text-sm text-brand-200 underline decoration-brand-300/60 underline-offset-4 transition hover:text-white hover:decoration-white"
             >
-              WhatsApp 11 3160 6994
+              ¿Dudas? Consultanos por WhatsApp al 11 3160 6994
             </a>
           </div>
 

@@ -367,6 +367,12 @@ El archivo que te baja se abre directo en Excel o Google Sheets. Tiene todas las
 
 ## 15. Historial de novedades
 
+### 14 de mayo de 2026 — Ajustes de la home
+
+- 🛬 El cotizador rápido de la home ahora muestra los **3 destinos** (antes solo aparecían Aeroparque y Cruceros, faltaba Ezeiza).
+- 📞 El botón de WhatsApp en el Hero pasa a ser un link de **consulta** ("¿Dudas? Consultanos por WhatsApp"), claramente diferenciado del botón principal "Reservar ahora". Antes parecía otra forma de reservar.
+- ✏️ Cambiado el texto "Mercado Pago" → "Pagás al dejar el auto" en el cotizador (refleja la realidad: pago presencial).
+
 ### 14 de mayo de 2026
 
 - ✨ Manual interno disponible en `/admin/manual`.

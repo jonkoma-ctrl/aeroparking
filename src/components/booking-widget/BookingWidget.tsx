@@ -107,9 +107,13 @@ export function BookingWidget({
       const prefill = encodePrefill({ s: q.serviceType, i: ingreso, r: retiro });
       trackWidgetEvent({ name: "quote_cta_clicked", serviceType: q.serviceType, destination: "internal" });
       trackWidgetEvent({ name: "internal_checkout_started", serviceType: q.serviceType, prefillKeys: ["s", "i", "r"] });
-      // Cruceros → /reservar/cruceros, resto → /reservar/puerto
-      const target = q.serviceType === "puerto_cruceros" ? "/reservar/cruceros" : "/reservar/puerto";
-      router.push(`${target}?prefill=${prefill}`);
+      // Mapeo a destino del form unificado /reservar?destino=X
+      const destSlug = q.serviceType === "ezeiza_larga_estadia"
+        ? "ezeiza"
+        : q.serviceType === "puerto_cruceros" || q.serviceType === "puerto_larga_estadia"
+        ? "puerto"
+        : "aeroparque";
+      router.push(`/reservar?destino=${destSlug}&prefill=${prefill}`);
     }
   }
 
@@ -131,7 +135,7 @@ export function BookingWidget({
             </div>
 
             {/* Destino pills */}
-            <div className="mb-5 inline-flex gap-1 rounded-xl bg-brand-100 p-1">
+            <div className="mb-5 inline-flex flex-wrap gap-1 rounded-xl bg-brand-100 p-1">
               <button
                 type="button"
                 onClick={() => { setDestino("aeroparque"); setServiceType(""); markInteraction(); }}
@@ -143,12 +147,21 @@ export function BookingWidget({
               </button>
               <button
                 type="button"
+                onClick={() => { setDestino("ezeiza"); setServiceType(""); markInteraction(); }}
+                className={`flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium transition ${
+                  destino === "ezeiza" ? "bg-white text-brand-900 shadow-sm" : "text-brand-500 hover:text-brand-700"
+                }`}
+              >
+                <Plane className="h-4 w-4" /> Ezeiza
+              </button>
+              <button
+                type="button"
                 onClick={() => { setDestino("puerto"); setServiceType(""); markInteraction(); }}
                 className={`flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium transition ${
                   destino === "puerto" ? "bg-white text-brand-900 shadow-sm" : "text-brand-500 hover:text-brand-700"
                 }`}
               >
-                <Ship className="h-4 w-4" /> Puerto de BA
+                <Ship className="h-4 w-4" /> Cruceros
               </button>
             </div>
 
@@ -196,7 +209,7 @@ export function BookingWidget({
             <div className="mt-4 flex flex-wrap items-center justify-center gap-3 text-xs text-brand-500">
               <span className="flex items-center gap-1"><Check className="h-3.5 w-3.5 text-green-600" /> Traslado incluido</span>
               <span className="flex items-center gap-1"><Clock className="h-3.5 w-3.5 text-green-600" /> Reserva en 2 min</span>
-              <span className="flex items-center gap-1"><CreditCard className="h-3.5 w-3.5 text-green-600" /> Mercado Pago</span>
+              <span className="flex items-center gap-1"><CreditCard className="h-3.5 w-3.5 text-green-600" /> Pagás al dejar el auto</span>
             </div>
           </form>
         )}
@@ -296,7 +309,7 @@ function QuoteResultView({
         <Badge icon="🏆" text="Mejor tarifa online" />
         <Badge icon="🚐" text="Traslado incluido" />
         <Badge icon="⚡" text="Reserva rápida" />
-        {!quote.isReferencePrice && <Badge icon="💳" text="Mercado Pago" />}
+        {!quote.isReferencePrice && <Badge icon="💳" text="Pagás al dejar el auto" />}
       </div>
 
       {/* CTA */}
