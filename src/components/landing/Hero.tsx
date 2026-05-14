@@ -45,7 +45,7 @@ export function Hero() {
           </p>
           <div className="mt-4 grid gap-4 sm:grid-cols-3 sm:max-w-3xl sm:mx-auto">
             <Link
-              href="/reservar/aeroparque"
+              href="/reservar?destino=aeroparque"
               className="group flex items-center gap-3 rounded-2xl border-2 border-white/15 bg-white/10 px-5 py-5 text-left backdrop-blur-sm transition-all hover:border-blue-400/50 hover:bg-blue-500/20 hover:scale-[1.03]"
             >
               <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-blue-500/80">
@@ -58,7 +58,7 @@ export function Hero() {
             </Link>
 
             <Link
-              href="/reservar/ezeiza"
+              href="/reservar?destino=ezeiza"
               className="group flex items-center gap-3 rounded-2xl border-2 border-white/15 bg-white/10 px-5 py-5 text-left backdrop-blur-sm transition-all hover:border-sky-400/50 hover:bg-sky-500/20 hover:scale-[1.03]"
             >
               <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-sky-500/80">
@@ -71,7 +71,7 @@ export function Hero() {
             </Link>
 
             <Link
-              href="/reservar/puerto"
+              href="/reservar?destino=puerto"
               className="group flex items-center gap-3 rounded-2xl border-2 border-white/15 bg-white/10 px-5 py-5 text-left backdrop-blur-sm transition-all hover:border-violet-400/50 hover:bg-violet-500/20 hover:scale-[1.03]"
             >
               <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-violet-500/80">

@@ -28,7 +28,7 @@ export function Footer() {
             <ul className="space-y-2 text-sm">
               <li>
                 <Link
-                  href="/reservar/aeroparque"
+                  href="/reservar?destino=aeroparque"
                   className="transition-colors hover:text-white"
                 >
                   Aeroparque Jorge Newbery
@@ -36,7 +36,7 @@ export function Footer() {
               </li>
               <li>
                 <Link
-                  href="/reservar/ezeiza"
+                  href="/reservar?destino=ezeiza"
                   className="transition-colors hover:text-white"
                 >
                   Aeropuerto de Ezeiza
@@ -44,7 +44,7 @@ export function Footer() {
               </li>
               <li>
                 <Link
-                  href="/reservar/puerto"
+                  href="/reservar?destino=puerto"
                   className="transition-colors hover:text-white"
                 >
                   Terminal de Cruceros

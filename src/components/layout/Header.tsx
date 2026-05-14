@@ -12,9 +12,9 @@ const navItems = [
 ];
 
 const bookingOptions = [
-  { label: "Aeroparque", href: "/reservar/aeroparque" },
-  { label: "Ezeiza", href: "/reservar/ezeiza" },
-  { label: "Terminal de Cruceros", href: "/reservar/puerto" },
+  { label: "Aeroparque", href: "/reservar?destino=aeroparque" },
+  { label: "Ezeiza", href: "/reservar?destino=ezeiza" },
+  { label: "Terminal de Cruceros", href: "/reservar?destino=puerto" },
 ];
 
 export function Header() {
