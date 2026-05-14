@@ -18,6 +18,8 @@ interface PricingRowProps {
   minDays?: number | null;
   maxDays?: number | null;
   durationDiscounts?: Discount[] | null;
+  transferIncluded?: boolean;
+  transferCostPerLeg?: number | null;
   updatedAt: string;
 }
 
@@ -34,6 +36,8 @@ export function PricingRow(props: PricingRowProps) {
   const [minDays, setMinDays] = useState(props.minDays ? String(props.minDays) : "");
   const [maxDays, setMaxDays] = useState(props.maxDays ? String(props.maxDays) : "");
   const [discounts, setDiscounts] = useState<Discount[]>(props.durationDiscounts || []);
+  const [transferIncluded, setTransferIncluded] = useState(props.transferIncluded !== false);
+  const [transferCostPerLeg, setTransferCostPerLeg] = useState(props.transferCostPerLeg ? String(props.transferCostPerLeg) : "");
 
   async function saveAll() {
     setLoading(true);
@@ -48,6 +52,8 @@ export function PricingRow(props: PricingRowProps) {
         minDays: minDays ? parseInt(minDays, 10) : null,
         maxDays: maxDays ? parseInt(maxDays, 10) : null,
         durationDiscounts: discounts.length > 0 ? discounts : null,
+        transferIncluded,
+        transferCostPerLeg: transferCostPerLeg ? parseInt(transferCostPerLeg, 10) : null,
       }),
     });
     setShowAdvanced(false);
@@ -174,6 +180,25 @@ export function PricingRow(props: PricingRowProps) {
                       className="w-full rounded border border-brand-200 px-2 py-1.5 text-sm" />
                   </div>
                 </div>
+              </div>
+
+              <div className="mt-5 rounded-lg border border-amber-200 bg-amber-50 p-3">
+                <label className="mb-2 block text-xs font-medium text-amber-800">
+                  <input type="checkbox" checked={transferIncluded}
+                    onChange={(e) => setTransferIncluded(e.target.checked)}
+                    className="mr-2" />
+                  Traslado incluido en el precio
+                </label>
+                {!transferIncluded && (
+                  <div className="mt-2 flex items-center gap-2">
+                    <span className="text-xs text-amber-700">Costo por tramo:</span>
+                    <span className="text-amber-700">$</span>
+                    <input type="number" value={transferCostPerLeg}
+                      onChange={(e) => setTransferCostPerLeg(e.target.value)}
+                      placeholder="40000"
+                      className="w-24 rounded border border-amber-300 px-2 py-1 text-sm" />
+                  </div>
+                )}
               </div>
 
               <div className="mt-5">
