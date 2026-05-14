@@ -70,6 +70,46 @@ export function calculateDays(ingreso: Date, retiro: Date): number {
   return Math.ceil(diffMs / (1000 * 60 * 60 * 24));
 }
 
+export interface StayBreakdown {
+  fullStays: number;        // estadías completas (24h)
+  halfStays: number;        // medias estadías (12h)
+  totalEquivalent: number;  // fullStays + halfStays * 0.5
+  totalHours: number;
+}
+
+/**
+ * Calcula estadías según regla del operador:
+ *  - La primera estadía es indivisible (mínimo 1 aunque sean 4h).
+ *  - Después de 24h, cada bloque de hasta 12h adicionales es ½ estadía.
+ *  - 2 medias se consolidan automáticamente en 1 completa.
+ *
+ * Casos validados:
+ *   4h  → 1 estadía
+ *   13h → 1 estadía
+ *   23h → 1 estadía
+ *   28h → 1 + ½
+ *   36h → 1 + ½
+ *   37h → 2 estadías
+ *   48h → 2 estadías
+ *   49h → 2 + ½
+ */
+export function calculateStays(ingreso: Date, retiro: Date): StayBreakdown {
+  const totalHours = Math.max(0, (retiro.getTime() - ingreso.getTime()) / (1000 * 60 * 60));
+  if (totalHours <= 24) {
+    return { fullStays: 1, halfStays: 0, totalEquivalent: 1, totalHours };
+  }
+  const extraHours = totalHours - 24;
+  const extraHalves = Math.ceil(extraHours / 12);
+  const extraFulls = Math.floor(extraHalves / 2);
+  const remainingHalf = extraHalves % 2;
+  return {
+    fullStays: 1 + extraFulls,
+    halfStays: remainingHalf,
+    totalEquivalent: 1 + extraFulls + remainingHalf * 0.5,
+    totalHours,
+  };
+}
+
 export function pickDiscount(days: number, discounts: DurationDiscount[] | null | undefined): number {
   if (!discounts || discounts.length === 0) return 0;
   const applicable = discounts
