@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import fs from "node:fs/promises";
 import path from "node:path";
-import { marked } from "marked";
+import { marked, type Tokens } from "marked";
 import { BRAND_NAME } from "@/lib/constants";
 
 export const metadata: Metadata = {
@@ -17,17 +17,36 @@ async function loadManual(): Promise<string> {
     return await fs.readFile(filePath, "utf-8");
   } catch (e) {
     console.error("Error reading MANUAL.md:", e);
-    return "# Manual no disponible\n\nEl archivo `MANUAL.md` no se encontró en el repo.";
+    return "# Manual no disponible\n\nEl archivo no se encontró.";
   }
+}
+
+function slugify(text: string): string {
+  return text
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[̀-ͯ]/g, "") // remove accents
+    .replace(/[^a-z0-9\s-]/g, "")
+    .trim()
+    .replace(/\s+/g, "-")
+    .replace(/-+/g, "-");
 }
 
 export default async function ManualPage() {
   const raw = await loadManual();
 
-  // Render markdown → HTML (marked maneja tablas, listas, code blocks, etc.)
+  // Custom renderer para agregar IDs a los headings (TOC anclas)
+  const renderer = new marked.Renderer();
+  renderer.heading = ({ tokens, depth }: Tokens.Heading) => {
+    const text = tokens.map((t) => ("text" in t ? t.text : "")).join("");
+    const id = slugify(text);
+    return `<h${depth} id="${id}">${text}</h${depth}>`;
+  };
+
   marked.setOptions({
     gfm: true,
     breaks: false,
+    renderer,
   });
 
   const html = await marked.parse(raw);

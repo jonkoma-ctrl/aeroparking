@@ -1,376 +1,394 @@
-# Manual interno — Aeroparking
+# Manual de Aeroparking
 
-> **Última actualización**: 2026-05-14
-> **Público**: personal interno (Jon + equipo Costa Salguero + atención al cliente).
-> **URL del manual** (no listada): `/admin/manual` (requiere login admin).
+> Guía operativa para el equipo. Acá está todo lo que necesitás saber para usar el panel administrativo, gestionar reservas y atender consultas de clientes.
 
-Este documento explica cómo funciona la plataforma de adentro hacia afuera, qué hace cada pantalla del admin y qué pasos seguir para las operaciones más comunes.
+**Última actualización**: 2026-05-14
 
 ---
 
-## 1. Visión general
+## Índice
 
-Aeroparking es la web pública + sistema interno para gestionar reservas de estacionamiento con traslado a:
-
-- **Aeroparque Jorge Newbery** (4 km)
-- **Aeropuerto de Ezeiza** (40 km — con cargo de traslado adicional)
-- **Terminal de Cruceros** (Puerto de Buenos Aires)
-- **Valet para eventos** (cotización custom)
-
-El cliente entra a la web, elige destino, completa el formulario, recibe email de confirmación. El día de la reserva paga en presencia al dejar el auto (efectivo, tarjeta o transferencia).
-
-**No hay cobro online en MVP** — Mercado Pago está dormido pero conectado por si en el futuro se activa la opción de seña.
-
----
-
-## 2. URLs principales
-
-| URL | Audiencia | Qué hace |
-|---|---|---|
-| `https://aeroparking.vercel.app/` | Público | Landing principal con Hero + selector de destinos. |
-| `https://aeroparking.vercel.app/reservar` | Público | Form de reserva unificado. Acepta `?destino=aeroparque\|ezeiza\|puerto`. |
-| `https://aeroparking.vercel.app/valet-eventos` | Público | Form de cotización para Valet Parking. |
-| `https://aeroparking.vercel.app/mi-reserva` | Cliente | Self-service: ver, cancelar, extender una reserva existente. |
-| `https://aeroparking.vercel.app/admin/login` | Interno | Login del admin (solo password). |
-| `https://aeroparking.vercel.app/admin/dashboard` | Interno | KPIs + gráficos + filtros + export. Pantalla por defecto al loguearse. |
-| `https://aeroparking.vercel.app/admin/agenda` | Interno | Lista completa de reservas con filtros + tabla. |
-| `https://aeroparking.vercel.app/admin/destinos` | Interno | Configurar destinos (foto, label, ícono, color, descripción). |
-| `https://aeroparking.vercel.app/admin/tarifas` | Interno | Editar precios por estadía, descuentos por duración, traslado pago. |
-| `https://aeroparking.vercel.app/admin/creditos` | Interno | Créditos a clientes (cancelaciones por vuelo cancelado, etc.). |
-| `https://aeroparking.vercel.app/admin/settings` | Interno | Hero image, título, contacto WhatsApp + email. |
-| `https://aeroparking.vercel.app/admin/manual` | Interno (no listada) | Este manual. |
+1. [Qué es Aeroparking](#1-que-es-aeroparking)
+2. [Entrar al panel administrativo](#2-entrar-al-panel-administrativo)
+3. [Pantalla principal: el Dashboard](#3-pantalla-principal-el-dashboard)
+4. [Reservas: ver la agenda completa](#4-reservas-ver-la-agenda-completa)
+5. [Detalle de una reserva: cómo gestionarla](#5-detalle-de-una-reserva-como-gestionarla)
+6. [Estados de una reserva: qué significa cada uno](#6-estados-de-una-reserva-que-significa-cada-uno)
+7. [Cómo se calcula el precio (estadía y media estadía)](#7-como-se-calcula-el-precio-estadia-y-media-estadia)
+8. [Destinos: agregar, editar, foto, descripción](#8-destinos-agregar-editar-foto-descripcion)
+9. [Tarifas: cambiar precios y descuentos](#9-tarifas-cambiar-precios-y-descuentos)
+10. [Créditos a clientes (vuelo cancelado, etc.)](#10-creditos-a-clientes-vuelo-cancelado-etc)
+11. [Ajustes del sitio: cambiar foto del hero y datos de contacto](#11-ajustes-del-sitio-cambiar-foto-del-hero-y-datos-de-contacto)
+12. [Atender consultas de clientes](#12-atender-consultas-de-clientes)
+13. [Exportar datos a Excel](#13-exportar-datos-a-excel)
+14. [Atajos del día a día (cheatsheet)](#14-atajos-del-dia-a-dia-cheatsheet)
+15. [Historial de novedades](#15-historial-de-novedades)
+16. [Quién te ayuda si algo no anda](#16-quien-te-ayuda-si-algo-no-anda)
 
 ---
 
-## 3. Modelo de pricing — Estadía y ½ estadía
+## 1. Qué es Aeroparking
 
-Regla del operador (validada):
+Aeroparking es nuestra web pública y el sistema interno para gestionar todo el negocio:
 
-- **1 estadía = 24 horas** indivisibles. Mínimo se cobra siempre 1 estadía aunque el auto deje 4 horas.
-- Después de las primeras 24h, cada bloque adicional de hasta 12h = **½ estadía**.
-- 2 medias se consolidan en 1 completa.
+- **El cliente** entra a [aeroparking.vercel.app](https://aeroparking.vercel.app), elige a dónde viaja (Aeroparque, Ezeiza, Cruceros), completa el formulario y recibe un email con la confirmación.
+- **Nosotros** vemos todas esas reservas en el panel administrativo, las gestionamos día a día y configuramos precios, destinos y datos del sitio.
 
-**Casos validados**:
-
-| Tiempo | Cobro |
-|---|---|
-| 4 h | 1 estadía |
-| 13 h | 1 estadía |
-| 23 h | 1 estadía |
-| 28 h | 1 estadía + ½ |
-| 36 h | 1 estadía + ½ |
-| 37 h | 2 estadías |
-| 48 h | 2 estadías |
-| 49 h | 2 estadías + ½ |
-
-**Precios actuales** (mayo 2026):
-
-- Estadía completa: **$40.000 ARS**
-- Media estadía: **$20.000 ARS**
-
-**Ezeiza** suma traslado: **$40.000 ARS por tramo** (sin tramo / solo ida / ida y vuelta). El cliente elige en el formulario.
-
-Los precios se editan desde `/admin/tarifas`. El helper `calculateStays()` está en `src/lib/pricing.ts`.
+**Importante**: el pago se hace en presencia cuando el cliente deja el auto (efectivo, tarjeta o transferencia). La web no cobra plata online en este momento.
 
 ---
 
-## 4. Estados de una reserva
+## 2. Entrar al panel administrativo
 
-| Status | Significado | Quién lo setea |
-|---|---|---|
-| `pending` | Reserva creada, sin confirmar (caso raro). | Automático al crear. |
-| `confirmed` | Confirmada por el sistema. Cliente tiene email. | Automático cuando el form valida. |
-| `checked_in` | Auto en sede. | Manual desde admin. |
-| `completed` | Auto retirado, viaje terminado. | Manual desde admin. |
-| `cancelled` | Cancelada (antes de check-in = gratis). | Manual desde admin o cliente vía `/mi-reserva`. |
-| `no_show` | Cliente no apareció. | Manual desde admin. |
+1. Andá a [aeroparking.vercel.app/admin/login](https://aeroparking.vercel.app/admin/login).
+2. Ingresá la contraseña que te pasamos.
+3. Al ingresar quedás logueado y vas directo al Dashboard.
 
-Estos estados afectan los KPIs del dashboard (no-show rate, autos en sede hoy, etc.).
+Si te olvidaste de la contraseña, pedísela a Jon.
 
 ---
 
-## 5. Cómo opera el dashboard `/admin/dashboard`
+## 3. Pantalla principal: el Dashboard
 
-### KPI cards (6 tarjetas)
+**URL**: [aeroparking.vercel.app/admin/dashboard](https://aeroparking.vercel.app/admin/dashboard)
 
-- **Reservas en el período**: cantidad total con los filtros aplicados. Delta vs período anterior equivalente.
-- **Facturación**: suma del campo `price` de las reservas. Delta %.
-- **Ticket promedio**: facturación / reservas. Delta %.
-- **Autos en sede hoy**: reservas con `status=checked_in` cuya fecha de retiro es futura.
-- **No-show rate**: `no_show / (completed + no_show + cancelled)`. % sobre reservas finalizadas.
-- **Cancel rate**: `cancelled / finalizadas`. % sobre reservas finalizadas.
+Es la pantalla que ves al entrar. Te muestra cómo va el negocio de un vistazo. Tiene cuatro partes:
+
+### Tarjetas con números (KPIs)
+
+Seis tarjetas grandes con los números clave:
+
+- **Reservas en el período**: cuántas reservas hubo en el rango que estás mirando, con comparación contra el período anterior (por ejemplo, este mes vs el mes pasado).
+- **Facturación**: total que se cobró.
+- **Ticket promedio**: cuánto gasta en promedio cada cliente.
+- **Autos en sede hoy**: cuántos autos están en este momento en Costa Salguero (con check-in hecho).
+- **No-show rate**: porcentaje de clientes que reservaron y no aparecieron.
+- **Cancelación rate**: porcentaje de cancelaciones sobre reservas finalizadas.
+
+Cada tarjeta muestra una flechita verde ▲ (subió) o roja ▼ (bajó) comparando con el período anterior.
 
 ### Filtros
 
-- **Desde / Hasta**: rango de fechas (filtra por `startDate` de la reserva).
-- **Destino**: todos, aeroparque, ezeiza, puerto.
-- **Estado**: cualquiera de los 6 status.
+Arriba de las tarjetas tenés cuatro filtros:
 
-Los filtros se guardan en la URL — si copiás el link y se lo pasás a otra persona, ve los mismos números.
+- **Desde / Hasta**: rango de fechas.
+- **Destino**: todos, Aeroparque, Ezeiza o Cruceros.
+- **Estado**: filtrar por estado de las reservas (pendientes, confirmadas, etc.).
+
+Apretás "Aplicar" y todas las tarjetas y gráficos se actualizan.
 
 ### Gráficos
 
-- **Reservas por día**: line chart, eje X = fecha, eje Y = cantidad de reservas.
-- **Por destino**: pie/donut chart con cantidad y % por destino.
+- **Reservas por día**: línea con la cantidad de reservas día a día.
+- **Por destino**: torta que muestra qué porcentaje de las reservas va a cada destino.
 
-### Exportar
+### Botón "Descargar CSV"
 
-Botón "**Descargar CSV**" al lado de los filtros. Te devuelve un Excel-compatible con todas las reservas filtradas (cliente, vehículo, fechas, precio, status, etc.). Las columnas están listadas en `/api/admin/export`.
-
----
-
-## 6. Administrar destinos `/admin/destinos`
-
-Cada destino tiene:
-
-- **Slug** (URL — no se puede cambiar después de creado): `aeroparque`, `ezeiza`, `puerto`, etc.
-- **Nombre completo**: "Aeroparque Jorge Newbery" — aparece en la card hero del formulario.
-- **Nombre corto**: "Aeroparque" — aparece en chips y badges.
-- **Ícono**: plane, ship, bus, car, train (selector).
-- **Color de acento**: blue, sky, violet, amber, emerald, rose, indigo.
-- **Descripción**: copy público debajo del nombre.
-- **Instructivo de llegada**: texto largo que se muestra al cliente en el email confirmación. ⚠️ **Funcionalidad parcial** — campo en DB pero todavía no se renderiza en el email (usa instructivo hardcoded global).
-- **Imagen**: foto representativa (16:9 recomendado, JPG/PNG/WebP < 5MB). Se guarda en Vercel Blob.
-- **Texto alternativo**: alt text de la imagen (accesibilidad).
-- **Orden**: número entero, menor = aparece primero.
-- **Activo**: si está apagado, no aparece en la home ni en el form.
-
-### Agregar un destino nuevo
-
-1. `/admin/destinos` → "+ Nuevo destino".
-2. Completar slug + nombre + ícono + color.
-3. Subir foto (opcional pero recomendado).
-4. Guardar.
-5. Ir a `/admin/tarifas` y crear la tarifa correspondiente (sin esto, el destino no se puede cotizar).
-
-### Reordenar destinos
-
-Editar el destino → cambiar campo "Orden" → guardar. Menor valor = aparece primero. Default = 100.
+Te baja un Excel con todas las reservas que coinciden con los filtros. Útil para informes mensuales o cruzar con contabilidad.
 
 ---
 
-## 7. Administrar tarifas `/admin/tarifas`
+## 4. Reservas: ver la agenda completa
 
-Cada fila es una combinación **destino + tipo de servicio**. Por ejemplo:
+**URL**: [aeroparking.vercel.app/admin/agenda](https://aeroparking.vercel.app/admin/agenda)
 
-- aeroparque + larga_estadia
-- ezeiza + ezeiza_larga_estadia
-- puerto + cruceros
+Es la lista completa de reservas en formato tabla. Cada fila es una reserva con:
 
-### Campos básicos
+- Fecha de ingreso y retiro
+- Destino
+- Cliente (nombre)
+- Vehículo (patente + marca + modelo)
+- Precio
+- Estado
 
-- **Precio/día** (mal-llamado, es por estadía completa): pesos ARS, entero.
-- **Descripción**: ayuda interna.
-- **Estado**: activa / inactiva.
+Tenés filtros arriba (destino + rango de fechas) y un botón para exportar a Excel.
 
-### Configuración avanzada (click ⚙ Avanzado)
-
-- **Precio de referencia**: si está prendido, redirige a un checkout externo (caso legacy AA2000). Ignoralo, no se usa en el flow nuevo.
-- **Mín / máx días**: límites opcionales.
-- **Descuentos por duración**: array `{fromDays, pctOff}`. Ejemplo: desde 7 días → 10% off, desde 14 días → 15% off. El sistema aplica el descuento más alto que califique.
-- **Traslado incluido**: checkbox. Si está prendido, no hay cargo adicional. Si está apagado, podés configurar:
-- **Costo por tramo**: $X por cada tramo (ida o vuelta). El cliente elige cuántos tramos en el formulario.
-
-### Cambiar precios
-
-Click en el precio → editar → ✓. Se actualiza al instante. Las reservas viejas no se recalculan (mantienen el precio que tenían).
+Click en cualquier fila para ver el detalle completo de esa reserva.
 
 ---
 
-## 8. Créditos a clientes `/admin/creditos`
+## 5. Detalle de una reserva: cómo gestionarla
 
-Sirve para casos donde el cliente paga, vuelo se cancela y queremos darle crédito para un viaje futuro en vez de devolver plata.
+Cuando entrás al detalle de una reserva (haciendo click en una fila de la agenda) ves toda la información del cliente:
 
-### Flujo
+- **Datos personales**: nombre, email, teléfono.
+- **Vehículo**: patente, marca, modelo.
+- **Reserva**: fechas de ingreso y retiro, precio, cantidad de pasajeros.
+- **Vuelo** (si corresponde): aerolínea y número.
+- **Notas**: cualquier observación que dejó el cliente o que agregamos.
 
-1. Cliente cancela por vuelo cancelado → no se le devuelve plata, se le promete crédito.
-2. Admin entra a `/admin/creditos` → "+ Nuevo crédito".
-3. Email del cliente + monto en pesos + motivo (ej: "Vuelo AA1234 cancelado 14/05") + (opcional) ID reserva origen.
-4. Estado por defecto: `available`.
-5. Cuando el cliente vuelve a reservar, **en la pantalla de detalle de su reserva nueva** aparece un **banner verde** indicando "Tiene $X de crédito a favor".
-6. Al cobrar en presencia, el admin descuenta ese monto del total.
-7. Volver a `/admin/creditos` → "Marcar usado".
+Arriba del todo está el **estado** con un botón al lado para cambiarlo (por ejemplo, marcar que el auto llegó, que se retiró o que el cliente no apareció).
 
-### Estados de un crédito
+### Si el cliente tiene crédito a favor
 
-- **available**: disponible para aplicar.
-- **used**: ya se aplicó (con fecha + reserva opcional).
-- **expired**: vencido (manual — no expira solo).
-
-### Buscar créditos por cliente
-
-Campo "Filtrar por email" → enter. Lista solo los del cliente.
+Si ese cliente ya tuvo otra reserva que se canceló y le dimos crédito, vas a ver un **banner verde** al principio diciendo *"Este cliente tiene $X de crédito a favor"*. Al cobrar, descontá ese monto y después marcá el crédito como usado desde [Créditos](#10-creditos-a-clientes-vuelo-cancelado-etc).
 
 ---
 
-## 9. Configuración del sitio `/admin/settings`
+## 6. Estados de una reserva: qué significa cada uno
 
-Edita campos globales sin tocar código:
+| Estado | Qué significa | Cuándo se usa |
+|---|---|---|
+| **Pendiente** | Reserva apenas creada, falta confirmar | Caso raro, casi no aparece |
+| **Confirmada** | El sistema mandó el email al cliente | Al ratito de crearse |
+| **En sede** | El auto está en Costa Salguero | Cuando llega el cliente y te entrega el auto |
+| **Completada** | Reserva terminada, el cliente retiró el auto | Cuando se va el cliente |
+| **Cancelada** | El cliente avisó que no viene | Si avisó antes de check-in, gratis. Si fue después, depende del caso |
+| **No-show** | El cliente reservó y nunca apareció | Si pasaron 24h del horario y no vino |
 
-- **Imagen del Hero**: foto principal de la home (16:9, JPG/PNG/WebP).
-- **Alt text**: descripción para accesibilidad.
-- **Título del Hero**: si está vacío, usa el default ("Estacioná seguro. Viajá sin preocupaciones.").
-- **Subtítulo del Hero**: si está vacío, usa el default.
-- **WhatsApp**: número internacional sin `+` (ej: `5491131606994`). Lo usan los CTAs de WhatsApp y los emails.
-- **Email de contacto**: aparece en footer y emails.
-
-Guardar → cambios visibles en 1-2 segundos en la home.
-
----
-
-## 10. Agenda `/admin/agenda` y detalle de reserva
-
-### Vista de lista
-
-- Tabla con todas las reservas (Aeroparque + Puerto + Cruceros).
-- Filtros: destino (todos / aeroparque / puerto), rango de fechas.
-- Export CSV (mismo que dashboard).
-- Click en una fila → detalle.
-
-### Detalle `/admin/agenda/[id]`
-
-- Datos del cliente, vehículo, reserva.
-- Vuelos (si aplica).
-- Estado: cambiar con el botón al lado del badge.
-- **Si el cliente tiene crédito**: banner verde con el monto disponible + link a `/admin/creditos`.
-- Notas internas.
+El estado lo cambiás vos manualmente desde el detalle de cada reserva.
 
 ---
 
-## 11. Cron de mails
+## 7. Cómo se calcula el precio (estadía y media estadía)
 
-Vercel Cron Jobs corre `/api/cron/daily-emails` diariamente. Manda:
+Esta es **la regla que aprobó el operador** y la usamos siempre:
 
-- **Recordatorio 24h antes** del ingreso.
-- **Mail de bienvenida** después del check-in.
-- **Pedido de reseña** después del check-out.
+- Una **estadía** = 24 horas. Es indivisible: si el cliente deja el auto solo 4 horas, igual cobra 1 estadía completa.
+- Después de las primeras 24 horas, cada bloque de hasta 12 horas adicionales = **media estadía**.
+- Dos medias se convierten automáticamente en 1 completa.
 
-⚠️ **Whitelist activo en producción**: para evitar mandar mails a clientes reales mientras testeamos. Solo se mandan mails a:
-- `jonkoma@gmail.com`
-- `reservas@nrauditores.com.ar`
-- `jon@masmetros.com.ar`
+### Ejemplos prácticos
 
-Para desactivar el whitelist y abrir mails a todos los clientes:
-1. `src/lib/email.ts` → buscar `TEST_EMAILS` → comentar o vaciar el array.
-2. PR + merge + redeploy.
-
----
-
-## 12. Flujo de soporte al cliente
-
-### Cliente quiere cambiar fecha / cancelar
-
-1. Decirle que entre a `https://aeroparking.vercel.app/mi-reserva?id=...` o `?order=...`.
-2. Allí puede cancelar gratis si todavía no entró el auto (antes del check-in).
-3. Si ya está adentro o el cambio es complicado, hacerlo manual desde `/admin/agenda/[id]`.
-
-### Cliente reporta no haber recibido el email
-
-1. Verificar si su email está en el whitelist (si está activo) — solo mails de prueba se envían.
-2. Si el whitelist está desactivado, revisar logs en Vercel → función `/api/reservas/presencial`.
-3. Reenviar manualmente desde el detalle de la reserva (feature pendiente).
-
-### Cliente con vuelo cancelado
-
-1. Confirmar el case (ID reserva + monto pagado).
-2. Crear crédito en `/admin/creditos` con su email + monto.
-3. Avisarle que tiene crédito disponible para próxima reserva.
-
----
-
-## 13. Stack técnico (referencia rápida)
-
-- **Frontend**: Next.js 16 (App Router) + TypeScript + Tailwind CSS + recharts.
-- **Tipografía**: Outfit (display) + Inter (body) vía `next/font`.
-- **DB**: PostgreSQL en Neon (gestión vía Prisma).
-- **Imágenes**: Vercel Blob (token `BLOB_READ_WRITE_TOKEN`).
-- **Mail**: Nodemailer + Gmail SMTP (`GMAIL_USER` + `GMAIL_APP_PASSWORD`).
-- **Deploy**: Vercel auto-deploy en push a `main`.
-- **Cron**: Vercel Cron Jobs (configurado en `vercel.json`).
-- **Auth admin**: middleware con cookie + env var `ADMIN_PASSWORD`.
-
-### Env vars producción (Vercel)
-
-| Variable | Para qué |
+| Cuánto tiempo deja el auto | Cuánto cobra |
 |---|---|
-| `DATABASE_URL` | Neon PostgreSQL. |
-| `ADMIN_PASSWORD` | Password de `/admin/login`. |
-| `GMAIL_USER` + `GMAIL_APP_PASSWORD` | Envío de emails. |
-| `BLOB_READ_WRITE_TOKEN` | Upload de imágenes a Vercel Blob. |
-| `NEXT_PUBLIC_SITE_URL` | URL canónica para links en emails. |
-| `NEXT_PUBLIC_BRAND_NAME` | "AEROPARKING". |
-| `MP_ACCESS_TOKEN` | (Dormido) Mercado Pago — sin uso en MVP. |
-| `AEROPARQUE_MAIL_TOKEN` | (Legacy) Webhook AA2000 — sin uso en MVP. |
+| 4 horas | 1 estadía completa |
+| 13 horas | 1 estadía completa |
+| 23 horas | 1 estadía completa |
+| 28 horas | 1 estadía + ½ |
+| 36 horas | 1 estadía + ½ |
+| 37 horas | 2 estadías completas |
+| 48 horas | 2 estadías completas |
+| 49 horas | 2 estadías + ½ |
+
+### Precios actuales (mayo 2026)
+
+- **Estadía completa**: $40.000 ARS
+- **Media estadía**: $20.000 ARS
+- **Ezeiza** suma traslado: **$40.000 por tramo**. El cliente elige sin tramo, solo ida, o ida y vuelta.
+
+Los precios los cambiás desde [Tarifas](#9-tarifas-cambiar-precios-y-descuentos).
 
 ---
 
-## 14. Operaciones recurrentes (cheatsheet)
+## 8. Destinos: agregar, editar, foto, descripción
 
-### Cargar un destino nuevo
-1. `/admin/destinos` → "+ Nuevo destino"
-2. `/admin/tarifas` → crear tarifa para ese destino
+**URL**: [aeroparking.vercel.app/admin/destinos](https://aeroparking.vercel.app/admin/destinos)
 
-### Cambiar el precio base
-1. `/admin/tarifas` → click en el precio → editar → ✓
+Acá manejás los lugares a los que llevamos clientes (Aeroparque, Ezeiza, Cruceros). Si en el futuro abrimos un destino nuevo, lo agregás desde acá sin necesidad de pedir ayuda técnica.
 
-### Subir foto al Hero de la home
-1. `/admin/settings` → bloque "Hero de la home" → subir imagen → Guardar
+### Qué tiene cada destino
 
-### Aplicar un crédito a un cliente
-1. `/admin/creditos` → "+ Nuevo crédito" → email + monto + motivo → Crear
-2. Cuando el cliente vuelve a reservar, ver banner en el detalle de la reserva
+- **Nombre completo**: aparece en el formulario cuando el cliente lo selecciona ("Aeroparque Jorge Newbery").
+- **Nombre corto**: aparece en chips, listas y botones ("Aeroparque").
+- **Ícono**: avión, barco, micro, auto o tren. Visual.
+- **Color**: el color con el que se destaca el destino (azul, celeste, violeta, etc.).
+- **Descripción**: texto breve que ve el cliente al elegir el destino.
+- **Foto**: imagen representativa. Se ve grande cuando el cliente selecciona el destino en el formulario.
+- **Activo / inactivo**: si está inactivo, no aparece en la web.
 
-### Marcar auto como en sede
-1. `/admin/agenda/[id]` → botón al lado del estado → "checked_in"
+### Cómo agregar un destino nuevo
 
-### Exportar listado a Excel
-1. `/admin/dashboard` o `/admin/agenda` → aplicar filtros → "Descargar CSV"
+1. Click en **"+ Nuevo destino"** arriba a la derecha.
+2. Poné un identificador corto (sin espacios, todo en minúsculas, ej: `cordoba`).
+3. Nombre completo, nombre corto, ícono, color.
+4. Subí una foto (recomendado: 16:9, máximo 5MB, formato JPG/PNG/WebP).
+5. Guardar.
+6. **Importante**: andá a [Tarifas](#9-tarifas-cambiar-precios-y-descuentos) y creá la tarifa para ese destino. Sin tarifa, el destino no se puede cotizar.
 
-### Ver KPIs del mes
-1. `/admin/dashboard` → setear desde/hasta = primer día y último día del mes → Aplicar
+### Cómo cambiar la foto de un destino
 
----
+1. En la tabla, click en **"Editar"** al lado del destino.
+2. En el bloque "Foto del destino", click en **"Cambiar"** (si ya hay foto) o **"Subir imagen"** (si no hay).
+3. Elegí el archivo y subilo.
+4. Guardar.
 
-## 15. Historial de cambios
+### Cómo desactivar temporalmente un destino
 
-> Esta sección se actualiza con cada deploy.
-
-### 2026-05-14 — Fotos + Dashboard + Rediseño + Manual
-- ✅ Fotos por destino (Vercel Blob).
-- ✅ Dashboard `/admin/dashboard` con KPIs, gráficos, filtros y export.
-- ✅ Rediseño paleta + tipografía (Outfit + Inter) + Hero rediseñado.
-- ✅ SiteSettings: Hero + contacto editables desde admin.
-- ✅ Email confirmación muestra foto del destino.
-- ✅ Manual interno en `/admin/manual` (este documento).
-
-### 2026-05-14 — Destinos dinámicos + form único
-- ✅ Modelo `Destination` en DB, admin `/admin/destinos` para gestionar.
-- ✅ `/reservar?destino=X` página única con picker.
-- ✅ Forms viejos `/reservar/{aeroparque,ezeiza,puerto,cruceros}` redirigen al unificado.
-
-### 2026-05-14 — Pricing por estadía + créditos
-- ✅ Función `calculateStays()` con regla del operador (1 + ½).
-- ✅ Modelo `CustomerCredit` + admin `/admin/creditos`.
-- ✅ Campos `transferIncluded` + `transferCostPerLeg` en tarifas.
-- ✅ Banner crédito en detalle de reserva.
-- ✅ Script seed-tariffs.ts con $40k base.
-
-### 2026-05-02 — Form presencial + cleanup AA2000 (PR #9)
-- ✅ Form multi-step en `/reservar/{aeroparque,ezeiza,puerto}` (pago presencial).
-- ✅ 4 templates de email (confirmación, recordatorio, bienvenida, reseña).
-- ✅ Cron diario `/api/cron/daily-emails`.
-- ✅ Limpieza de la integración AA2000 (webhook, parser).
-- ✅ Whitelist de emails para testing.
-
-### 2026-05-01 — Ezeiza + identidad (PR #8)
-- ✅ Destino Ezeiza agregado.
-- ✅ Limpieza visual AA2000 (logo, header, footer).
+Click en el botón "Activo" (verde) de la tabla → pasa a "Inactivo" (gris). El destino deja de aparecer en la web. Para reactivarlo, click de nuevo.
 
 ---
 
-## 16. Preguntas / soporte
+## 9. Tarifas: cambiar precios y descuentos
 
-Cualquier duda operativa o bug → Jon (jonkoma@gmail.com / WhatsApp).
-Cualquier cambio del sistema → registrarlo en la sección 15 de este documento.
+**URL**: [aeroparking.vercel.app/admin/tarifas](https://aeroparking.vercel.app/admin/tarifas)
 
-**Para actualizar este manual**: editar `MANUAL.md` en la raíz del repo (`C:\Users\jordy\parking-aeroparque\MANUAL.md`) → commit → push → se actualiza automáticamente en `/admin/manual` después del deploy de Vercel.
+Acá cambiás los precios. Cada fila es una combinación destino + tipo de servicio.
+
+### Cambiar un precio rápido
+
+1. Click directamente en el precio (aparece subrayado).
+2. Escribí el nuevo valor.
+3. Click en **OK**.
+
+Las reservas que ya estaban tomadas mantienen el precio que tenían cuando se hicieron — solo las nuevas usan el precio actualizado.
+
+### Configuración avanzada
+
+Click en **"⚙ Avanzado"** al final de la fila. Te abre un panel con:
+
+- **Mínimo y máximo de días**: por ejemplo, si querés que un servicio solo se pueda reservar entre 2 y 30 días.
+- **Descuentos por duración**: agregá descuentos automáticos. Por ejemplo: "Desde 7 días → 10% off". Si el cliente reserva 10 días, el sistema aplica el 10% solo. Si reserva 3 días, no aplica nada.
+- **Traslado**:
+  - **Incluido**: para Aeroparque y Cruceros (no se cobra extra).
+  - **No incluido**: para Ezeiza. Tenés que configurar el "costo por tramo" (ej: $40.000) y el cliente elige cuántos tramos en el formulario.
+
+Click en **"Guardar cambios"** al final del panel para que tome efecto.
+
+### Activar / desactivar una tarifa
+
+Click en el badge "Activa" → pasa a "Inactiva". Si la dejás inactiva, el destino no se puede reservar.
+
+---
+
+## 10. Créditos a clientes (vuelo cancelado, etc.)
+
+**URL**: [aeroparking.vercel.app/admin/creditos](https://aeroparking.vercel.app/admin/creditos)
+
+Sirve para casos donde el cliente paga, pero le cancelan el vuelo o pasa algo y queremos darle crédito para una próxima reserva en vez de devolver plata.
+
+### Cómo crear un crédito
+
+1. Click en **"+ Nuevo crédito"** arriba a la derecha.
+2. Email del cliente (el mismo con el que reservó).
+3. Monto en pesos.
+4. **Motivo** (opcional pero recomendado): explicación corta, ej: *"Vuelo AA1234 cancelado el 14/05. Quedó 3hs y se llevó el auto."*
+5. **Reserva origen** (opcional): el código de la reserva donde se generó el crédito.
+6. Crear.
+
+El crédito queda **disponible** y atado al email del cliente.
+
+### Cómo aplicar un crédito
+
+1. Cuando el cliente vuelve a reservar con el mismo email, al entrar al detalle de su nueva reserva vas a ver un **banner verde** que dice *"Este cliente tiene $X de crédito a favor"*.
+2. Al cobrarle en presencia, descontá ese monto del total.
+3. Volvé a la pantalla de Créditos.
+4. Buscá el crédito por email (filtro arriba).
+5. Click en **"Marcar usado"**.
+
+El crédito queda registrado como **usado** con la fecha y deja de aparecer disponible.
+
+### Ver créditos de un cliente específico
+
+Escribí el email en el filtro **"Filtrar por email"** y apretá **Filtrar**.
+
+### Vencimiento de créditos
+
+Los créditos **no vencen automáticamente**. Si querés cerrar uno por antigüedad, click en **"Expirar"** desde la tabla.
+
+---
+
+## 11. Ajustes del sitio: cambiar foto del hero y datos de contacto
+
+**URL**: [aeroparking.vercel.app/admin/settings](https://aeroparking.vercel.app/admin/settings)
+
+Acá editás cosas globales del sitio que ve el cliente.
+
+### Hero de la home
+
+Es la imagen y el título grande que aparece arriba de todo en la página principal.
+
+- **Imagen principal**: subí la foto que querés que aparezca de fondo. Recomendado: horizontal, buena calidad, máximo 5MB.
+- **Alt text**: descripción para personas con lectores de pantalla (accesibilidad). Algo simple como "Estacionamiento Costa Salguero".
+- **Título**: el texto grande. Si lo dejás vacío, usa el texto por defecto. Si querés cambiarlo, escribí el nuevo.
+- **Subtítulo**: el texto debajo del título. Misma lógica.
+
+### Datos de contacto
+
+- **WhatsApp**: número en formato internacional sin el `+`. Ejemplo: `5491131606994`. Aparece en los botones de WhatsApp del sitio y en los emails.
+- **Email de contacto**: aparece en el footer y al final de los emails.
+
+Click en **"Guardar cambios"**. Los cambios se ven en la web en 1-2 segundos.
+
+---
+
+## 12. Atender consultas de clientes
+
+### El cliente quiere cambiar fecha o cancelar
+
+Mandalo a **[aeroparking.vercel.app/mi-reserva](https://aeroparking.vercel.app/mi-reserva)** con su código de reserva (que está en el email de confirmación). Desde ahí puede:
+
+- Ver los datos de su reserva.
+- Cancelar si todavía no entró el auto a la sede (cancelar antes de check-in = gratis).
+- Extender la estadía (si tenemos disponibilidad).
+
+Si el cambio es complicado o el auto ya está adentro, hacelo manualmente desde [Agenda](#4-reservas-ver-la-agenda-completa).
+
+### El cliente dice que no recibió el email
+
+1. Verificá la reserva en [Agenda](#4-reservas-ver-la-agenda-completa) — confirmá que el email cargado es correcto.
+2. Pedile que revise spam.
+3. Si igual no llegó, podés reenviar manualmente desde el detalle de la reserva (funcionalidad pendiente — por ahora avisale a Jon).
+
+### El cliente con vuelo cancelado
+
+1. Confirmá la reserva: código + monto pagado.
+2. Andá a [Créditos](#10-creditos-a-clientes-vuelo-cancelado-etc) → "+ Nuevo crédito".
+3. Cargá email + monto + motivo.
+4. Avisale al cliente: *"Te queda un crédito de $X a tu nombre. Cuando reserves de nuevo te lo descontamos del total."*
+
+### El cliente quiere reservar de último momento (menos de 24h)
+
+Por defecto el sistema bloquea reservas con menos de 24h de anticipación. En esos casos pasale el WhatsApp del 11 3160 6994 o creale la reserva manualmente vos.
+
+---
+
+## 13. Exportar datos a Excel
+
+Tenés botones de **"Descargar CSV"** en dos lugares:
+
+- En el [Dashboard](#3-pantalla-principal-el-dashboard) — exporta con los filtros aplicados (rango fechas + destino + estado).
+- En [Agenda](#4-reservas-ver-la-agenda-completa) — exporta con los filtros aplicados.
+
+El archivo que te baja se abre directo en Excel o Google Sheets. Tiene todas las columnas: cliente, email, teléfono, patente, marca, modelo, fechas, precio, estado, etc.
+
+**Tip**: si querés un informe mensual de facturación, setá las fechas del mes en el Dashboard y descargá. Después en Excel sumás la columna "Precio".
+
+---
+
+## 14. Atajos del día a día (cheatsheet)
+
+| Quiero... | Hago |
+|---|---|
+| Ver cuántas reservas hay esta semana | [Dashboard](#3-pantalla-principal-el-dashboard) → filtrar fechas |
+| Ver la lista completa de reservas | [Agenda](#4-reservas-ver-la-agenda-completa) |
+| Marcar que un auto llegó | [Agenda](#4-reservas-ver-la-agenda-completa) → click en la reserva → cambiar estado |
+| Subir una foto del Hero de la web | [Ajustes](#11-ajustes-del-sitio-cambiar-foto-del-hero-y-datos-de-contacto) |
+| Cambiar foto de un destino | [Destinos](#8-destinos-agregar-editar-foto-descripcion) → editar → cambiar imagen |
+| Subir el precio | [Tarifas](#9-tarifas-cambiar-precios-y-descuentos) → click en el precio |
+| Configurar descuento por estadía larga | [Tarifas](#9-tarifas-cambiar-precios-y-descuentos) → Avanzado |
+| Dar crédito a un cliente | [Créditos](#10-creditos-a-clientes-vuelo-cancelado-etc) → "+ Nuevo crédito" |
+| Aplicar un crédito existente | Cobrar menos al cliente + [Créditos](#10-creditos-a-clientes-vuelo-cancelado-etc) → Marcar usado |
+| Exportar a Excel | [Dashboard](#3-pantalla-principal-el-dashboard) o [Agenda](#4-reservas-ver-la-agenda-completa) → Descargar CSV |
+| Agregar un destino nuevo | [Destinos](#8-destinos-agregar-editar-foto-descripcion) → "+ Nuevo destino" → después crear tarifa |
+| Cambiar el WhatsApp de contacto | [Ajustes](#11-ajustes-del-sitio-cambiar-foto-del-hero-y-datos-de-contacto) |
+
+---
+
+## 15. Historial de novedades
+
+### 14 de mayo de 2026
+
+- ✨ Manual interno disponible en `/admin/manual`.
+- 🎨 Diseño nuevo del sitio: paleta azul corporativa, tipografía nueva, Hero rediseñado.
+- 📊 **Nuevo Dashboard** con tarjetas de KPIs, gráficos y filtros.
+- 📸 **Fotos por destino**: cada destino ahora tiene una foto que el cliente ve al elegirlo. Editás desde Destinos.
+- ⚙️ **Pantalla de Ajustes**: cambiá la foto del Hero y los datos de contacto sin pedir ayuda.
+- 📧 Email de confirmación ahora muestra la foto del destino arriba.
+
+### Días previos
+
+- Sistema de **créditos a clientes** para casos de vuelo cancelado.
+- Modelo de **estadía y media estadía** para cobrar correctamente.
+- **Ezeiza** como destino con cargo de traslado configurable.
+- Formulario unificado en `/reservar` con selector de destino.
+- 4 emails automáticos al cliente: confirmación, recordatorio 24h, bienvenida post-check-in, pedido de reseña.
+
+---
+
+## 16. Quién te ayuda si algo no anda
+
+- **Cualquier duda operativa o algo no funciona**: Jon ([jonkoma@gmail.com](mailto:jonkoma@gmail.com) / WhatsApp).
+- **Cambios que querés sumar al sistema** (nuevas pantallas, integraciones): anotalos y mandáselos a Jon.
+
+Este manual se actualiza cada vez que se hace un cambio importante. Si ves algo que no encaja con la realidad (un botón que cambió de lugar, una pantalla nueva que no está documentada), avisanos.
