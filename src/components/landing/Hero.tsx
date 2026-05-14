@@ -1,99 +1,138 @@
 import Link from "next/link";
-import { Shield, Clock, MapPin, Star, BadgePercent, Plane, Ship } from "lucide-react";
+import { Shield, Clock, MapPin, BadgePercent, Plane, Ship, Bus, Car, Train, ArrowRight } from "lucide-react";
+import { getSiteSettings } from "@/lib/site-settings";
+import { listActiveDestinations, type DestinationMeta } from "@/lib/destinos";
 
-export function Hero() {
+const ICON_BY_KEY: Record<string, typeof Plane> = {
+  plane: Plane,
+  ship: Ship,
+  bus: Bus,
+  car: Car,
+  train: Train,
+};
+
+const ACCENT_HOVER: Record<string, string> = {
+  blue: "hover:border-blue-300 hover:bg-blue-500/15",
+  sky: "hover:border-sky-300 hover:bg-sky-500/15",
+  violet: "hover:border-violet-300 hover:bg-violet-500/15",
+  amber: "hover:border-amber-300 hover:bg-amber-500/15",
+  emerald: "hover:border-emerald-300 hover:bg-emerald-500/15",
+  rose: "hover:border-rose-300 hover:bg-rose-500/15",
+  indigo: "hover:border-indigo-300 hover:bg-indigo-500/15",
+};
+
+const ACCENT_BG: Record<string, string> = {
+  blue: "bg-blue-500/80",
+  sky: "bg-sky-500/80",
+  violet: "bg-violet-500/80",
+  amber: "bg-amber-500/80",
+  emerald: "bg-emerald-500/80",
+  rose: "bg-rose-500/80",
+  indigo: "bg-indigo-500/80",
+};
+
+const ACCENT_SUB: Record<string, string> = {
+  blue: "text-blue-200",
+  sky: "text-sky-200",
+  violet: "text-violet-200",
+  amber: "text-amber-200",
+  emerald: "text-emerald-200",
+  rose: "text-rose-200",
+  indigo: "text-indigo-200",
+};
+
+export async function Hero() {
+  const [settings, destinations] = await Promise.all([
+    getSiteSettings(),
+    listActiveDestinations(),
+  ]);
+
+  const heroImage = settings.heroImageUrl;
+  const heroAlt = settings.heroImageAlt || "Estacionamiento Aeroparking en Costa Salguero";
+
+  const title = settings.heroTitle || null;
+  const subtitle = settings.heroSubtitle || null;
+
   return (
     <section className="relative min-h-[85vh] overflow-hidden bg-brand-950 flex items-center">
       {/* Background image */}
-      <img
-        src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiLRRz6M8aujZyPeO9sj5UATUV_oNdGTojo_yBYG2zAuyQVoKq533RQEf4ak08pWbvo1sy7MvzQ7S6DBuv3vxu3cawTYYp2JSFL5-NEk18MGkhLEjud1Bdq_F-90i_S54uB9BflYGsPdKFVBU3-k-fMOxNhz-HePsZUox5PdG6IehaV8lk5Z6DJkmUY9Pk/s1600/IMG-20240710-WA0038.jpg"
-        alt=""
-        className="absolute inset-0 h-full w-full object-cover"
-        aria-hidden="true"
-      />
-      {/* Dark overlay */}
-      <div className="absolute inset-0 bg-gradient-to-b from-brand-950/80 via-brand-950/70 to-brand-950/90" />
-      <div className="absolute inset-0 bg-gradient-to-r from-brand-950/60 to-transparent" />
+      {heroImage && (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img
+          src={heroImage}
+          alt={heroAlt}
+          className="absolute inset-0 h-full w-full object-cover"
+          aria-hidden="true"
+        />
+      )}
+      {/* Layered overlays — más sofisticado que un solo gradiente plano */}
+      <div className="absolute inset-0 bg-gradient-to-b from-brand-950/85 via-brand-950/65 to-brand-950/95" />
+      <div className="absolute inset-0 bg-gradient-to-tr from-brand-900/50 via-transparent to-transparent" />
+      {/* Noise texture sutil */}
+      <div className="absolute inset-0 bg-noise opacity-[0.08] mix-blend-overlay" aria-hidden="true" />
 
       <div className="container-main relative z-10 px-4 py-20 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-4xl text-center">
           {/* Trust badge */}
-          <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-accent-400/30 bg-accent-500/20 px-5 py-2 text-sm font-semibold text-accent-300 backdrop-blur-sm">
+          <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-accent-300/40 bg-accent-500/15 px-5 py-2 text-sm font-semibold text-accent-200 backdrop-blur-sm">
             <BadgePercent className="h-4 w-4" />
             Estacionamiento propio · Traslado incluido
           </div>
 
-          <h1 className="text-4xl font-extrabold leading-[1.1] tracking-tight text-white sm:text-6xl lg:text-7xl">
-            Estacioná seguro.
-            <br />
-            <span className="bg-gradient-to-r from-accent-400 via-accent-300 to-yellow-300 bg-clip-text text-transparent">
-              Viajá sin preocupaciones.
-            </span>
+          <h1 className="font-display text-5xl font-extrabold leading-[1.05] tracking-tight text-white text-balance sm:text-6xl lg:text-7xl">
+            {title ? (
+              title
+            ) : (
+              <>
+                Estacioná seguro.
+                <br />
+                <span className="text-accent-400">Viajá sin preocupaciones.</span>
+              </>
+            )}
           </h1>
 
-          <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-brand-200 sm:text-xl">
-            Estacionamiento propio en Costa Salguero con traslado incluido a{" "}
-            <strong className="text-white">Aeroparque</strong>,{" "}
-            <strong className="text-white">Ezeiza</strong> y{" "}
-            <strong className="text-white">Terminal de Cruceros</strong>.
-            Atención las 24 horas.
+          <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-brand-100/90 text-balance sm:text-xl">
+            {subtitle ? (
+              subtitle
+            ) : (
+              <>
+                Estacionamiento propio en Costa Salguero con traslado incluido a{" "}
+                {destinations.slice(0, 3).map((d, i) => (
+                  <span key={d.slug}>
+                    <strong className="text-white">{d.shortLabel}</strong>
+                    {i < Math.min(destinations.length, 3) - 1 ? (i === destinations.length - 2 ? " y " : ", ") : "."}
+                  </span>
+                ))}{" "}
+                Atención las 24 horas.
+              </>
+            )}
           </p>
 
-          {/* Destination selector */}
-          <p className="mt-8 text-sm font-medium uppercase tracking-widest text-brand-400">
-            Elegí tu destino
-          </p>
-          <div className="mt-4 grid gap-4 sm:grid-cols-3 sm:max-w-3xl sm:mx-auto">
+          {/* CTA principal */}
+          <div className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row">
             <Link
-              href="/reservar?destino=aeroparque"
-              className="group flex items-center gap-3 rounded-2xl border-2 border-white/15 bg-white/10 px-5 py-5 text-left backdrop-blur-sm transition-all hover:border-blue-400/50 hover:bg-blue-500/20 hover:scale-[1.03]"
+              href="/reservar"
+              className="group inline-flex items-center gap-2 rounded-2xl bg-accent-400 px-7 py-4 text-base font-bold text-brand-950 shadow-elevated transition-all hover:bg-accent-300 hover:scale-[1.02]"
             >
-              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-blue-500/80">
-                <Plane className="h-6 w-6 text-white" />
-              </div>
-              <div className="min-w-0">
-                <span className="block text-base font-extrabold text-white">Aeroparque</span>
-                <span className="text-xs text-blue-200">Jorge Newbery</span>
-              </div>
+              Reservar ahora
+              <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
             </Link>
-
-            <Link
-              href="/reservar?destino=ezeiza"
-              className="group flex items-center gap-3 rounded-2xl border-2 border-white/15 bg-white/10 px-5 py-5 text-left backdrop-blur-sm transition-all hover:border-sky-400/50 hover:bg-sky-500/20 hover:scale-[1.03]"
+            <a
+              href="https://wa.me/5491131606994"
+              className="inline-flex items-center gap-2 rounded-2xl border-2 border-white/20 bg-white/5 px-6 py-4 text-base font-semibold text-white backdrop-blur-sm hover:bg-white/10"
             >
-              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-sky-500/80">
-                <Plane className="h-6 w-6 text-white" />
-              </div>
-              <div className="min-w-0">
-                <span className="block text-base font-extrabold text-white">Ezeiza</span>
-                <span className="text-xs text-sky-200">Aerop. Internacional</span>
-              </div>
-            </Link>
-
-            <Link
-              href="/reservar?destino=puerto"
-              className="group flex items-center gap-3 rounded-2xl border-2 border-white/15 bg-white/10 px-5 py-5 text-left backdrop-blur-sm transition-all hover:border-violet-400/50 hover:bg-violet-500/20 hover:scale-[1.03]"
-            >
-              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-violet-500/80">
-                <Ship className="h-6 w-6 text-white" />
-              </div>
-              <div className="min-w-0">
-                <span className="block text-base font-extrabold text-white">Cruceros</span>
-                <span className="text-xs text-violet-200">Terminal Buenos Aires</span>
-              </div>
-            </Link>
+              WhatsApp 11 3160 6994
+            </a>
           </div>
 
-          {/* Social proof */}
-          <div className="mx-auto mt-12 flex max-w-2xl flex-col items-center gap-6 sm:flex-row sm:justify-center">
-            <div className="flex items-center gap-1">
-              {[...Array(5)].map((_, i) => (
-                <Star key={i} className="h-4 w-4 fill-accent-400 text-accent-400" />
-              ))}
-              <span className="ml-2 text-sm text-brand-300">
-                Servicio avalado por nuestra experiencia
-              </span>
-            </div>
+          {/* Destination selector */}
+          <p className="mt-12 text-xs font-semibold uppercase tracking-widest text-brand-300">
+            O elegí tu destino
+          </p>
+          <div className="mt-4 grid gap-3 sm:grid-cols-3 sm:max-w-3xl sm:mx-auto">
+            {destinations.slice(0, 3).map((d) => (
+              <DestinationChip key={d.slug} dest={d} />
+            ))}
           </div>
         </div>
 
@@ -113,7 +152,7 @@ export function Hero() {
                 <span className="text-xs font-semibold text-white sm:text-sm">
                   {item.label}
                 </span>
-                <span className="hidden text-[11px] text-brand-400 sm:block">
+                <span className="hidden text-[11px] text-brand-200 sm:block">
                   {item.sub}
                 </span>
               </div>
@@ -122,5 +161,37 @@ export function Hero() {
         </div>
       </div>
     </section>
+  );
+}
+
+function DestinationChip({ dest }: { dest: DestinationMeta }) {
+  const Icon = ICON_BY_KEY[dest.iconKey] ?? Plane;
+  const hoverClass = ACCENT_HOVER[dest.accentColor] ?? ACCENT_HOVER.blue;
+  const iconBg = ACCENT_BG[dest.accentColor] ?? ACCENT_BG.blue;
+  const subClass = ACCENT_SUB[dest.accentColor] ?? ACCENT_SUB.blue;
+
+  return (
+    <Link
+      href={`/reservar?destino=${dest.slug}`}
+      className={`group relative flex items-center gap-3 overflow-hidden rounded-2xl border-2 border-white/15 bg-white/10 px-4 py-4 text-left backdrop-blur-sm transition-all hover:scale-[1.03] ${hoverClass}`}
+    >
+      {dest.imageUrl && (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img
+          src={dest.imageUrl}
+          alt=""
+          className="absolute inset-0 h-full w-full object-cover opacity-20 transition-opacity group-hover:opacity-30"
+          aria-hidden="true"
+        />
+      )}
+      <div className="absolute inset-0 bg-gradient-to-r from-brand-950/30 to-transparent" />
+      <div className={`relative flex h-12 w-12 shrink-0 items-center justify-center rounded-xl ${iconBg}`}>
+        <Icon className="h-6 w-6 text-white" />
+      </div>
+      <div className="relative min-w-0">
+        <span className="block text-base font-extrabold text-white">{dest.shortLabel}</span>
+        <span className={`text-xs ${subClass}`}>{dest.label.split("—")[0].trim()}</span>
+      </div>
+    </Link>
   );
 }

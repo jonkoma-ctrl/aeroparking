@@ -93,12 +93,26 @@ model Destination {
   accentColor   String   @default("blue")  // tailwind hue (blue, sky, violet, amber)
   description   String?  @db.Text
   addressInfo   String?  @db.Text          // instructivo para el cliente
+  imageUrl      String?                    // URL Vercel Blob, imagen principal
+  imageAlt      String?                    // alt text para accesibilidad
   active        Boolean  @default(true)
   sortOrder     Int      @default(0)
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
 
   @@index([active, sortOrder])
+}
+
+model SiteSettings {
+  id              String   @id @default("singleton")
+  heroImageUrl    String?
+  heroImageAlt    String?
+  heroTitle       String?  @db.Text
+  heroSubtitle    String?  @db.Text
+  whatsappPhone   String?
+  contactEmail    String?
+  updatedAt       DateTime @updatedAt
+  createdAt       DateTime @default(now())
 }
 
 model ServicePricing {

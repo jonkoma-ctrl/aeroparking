@@ -8,6 +8,8 @@ export interface DestinationMeta {
   accentColor: string; // "blue" | "sky" | "violet" | "amber" — tailwind hue
   description: string | null;
   addressInfo: string | null;
+  imageUrl: string | null;
+  imageAlt: string | null;
   active: boolean;
   sortOrder: number;
 }
@@ -44,6 +46,8 @@ function toMeta(row: any): DestinationMeta {
     accentColor: row.accentColor,
     description: row.description ?? null,
     addressInfo: row.addressInfo ?? null,
+    imageUrl: row.imageUrl ?? null,
+    imageAlt: row.imageAlt ?? null,
     active: row.active,
     sortOrder: row.sortOrder,
   };

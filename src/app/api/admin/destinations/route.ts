@@ -18,7 +18,7 @@ export async function GET() {
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const { slug, label, shortLabel, iconKey, accentColor, description, addressInfo, sortOrder } = body;
+    const { slug, label, shortLabel, iconKey, accentColor, description, addressInfo, sortOrder, imageUrl, imageAlt } = body;
 
     if (!slug || !label || !shortLabel) {
       return NextResponse.json({ error: "Faltan slug, label o shortLabel" }, { status: 400 });
@@ -37,6 +37,8 @@ export async function POST(req: NextRequest) {
         accentColor: accentColor || "blue",
         description: description || null,
         addressInfo: addressInfo || null,
+        imageUrl: imageUrl || null,
+        imageAlt: imageAlt || null,
         sortOrder: sortOrder ?? 100,
         active: true,
       },
@@ -57,7 +59,7 @@ export async function POST(req: NextRequest) {
 export async function PATCH(req: NextRequest) {
   try {
     const body = await req.json();
-    const { id, label, shortLabel, iconKey, accentColor, description, addressInfo, sortOrder, active } = body;
+    const { id, label, shortLabel, iconKey, accentColor, description, addressInfo, sortOrder, active, imageUrl, imageAlt } = body;
 
     if (!id) return NextResponse.json({ error: "Falta id" }, { status: 400 });
 
@@ -71,6 +73,8 @@ export async function PATCH(req: NextRequest) {
     if (addressInfo !== undefined) data.addressInfo = addressInfo;
     if (sortOrder !== undefined) data.sortOrder = sortOrder;
     if (active !== undefined) data.active = active;
+    if (imageUrl !== undefined) data.imageUrl = imageUrl || null;
+    if (imageAlt !== undefined) data.imageAlt = imageAlt || null;
 
     const dest = await prisma.destination.update({ where: { id }, data });
     return NextResponse.json(dest);

@@ -12,6 +12,15 @@ const REVIEW_GOOGLE_URL = "https://g.page/r/CXXX/review"; // TODO: reemplazar co
 
 // ─── Tipos compartidos ──────────────────────────────────────────────────────
 
+function destinationHeroImage(imageUrl: string | null | undefined, alt: string): string {
+  if (!imageUrl) return "";
+  return `
+    <div style="margin-bottom:24px;border-radius:12px;overflow:hidden">
+      <img src="${imageUrl}" alt="${alt}" style="display:block;width:100%;height:auto;max-height:240px;object-fit:cover" />
+    </div>
+  `;
+}
+
 export interface ReservationEmailData {
   customerName: string;
   externalOrderId?: string;
@@ -31,6 +40,8 @@ export interface ReservationEmailData {
   arrivalFlight?: string | null;
   price?: number | null;
   passengers?: number | null;
+  destinationImageUrl?: string | null;
+  destinationImageAlt?: string | null;
 }
 
 // ─── Helpers de markup ───────────────────────────────────────────────────────
@@ -199,7 +210,12 @@ function manageReservationCta(data: ReservationEmailData): string {
 // ─── Template 1: Confirmación de reserva ─────────────────────────────────────
 
 export function buildReservationEmail(data: ReservationEmailData): string {
+  const heroImg = destinationHeroImage(
+    data.destinationImageUrl,
+    data.destinationImageAlt || destinoLabel(data.destination)
+  );
   const body = `
+    ${heroImg}
     <h2 style="margin:0 0 8px;color:#0f172a;font-size:22px">¡Hola ${data.customerName}!</h2>
     <p style="margin:0 0 24px;color:#475569;font-size:15px;line-height:1.6">
       Tu reserva en <strong>${destinoShort(data.destination)}</strong> fue recibida.
