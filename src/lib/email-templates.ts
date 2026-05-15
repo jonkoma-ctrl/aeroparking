@@ -1,8 +1,9 @@
 import { formatDate, formatPrice, getServiceTypeLabel } from "./utils";
+import { getSiteUrl } from "./site-url";
 
 // ─── Configuración compartida ────────────────────────────────────────────────
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://aeroparking.vercel.app";
+const SITE_URL = getSiteUrl();
 const MAPS_COSTA_SALGUERO = "https://maps.app.goo.gl/kZQH9UpSa5zGYxY5A";
 const WA_PHONE = "5491131606994";
 const WA_DISPLAY = "11 3160 6994";
