@@ -1,12 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
 import { MercadoPagoConfig, Preference } from "mercadopago";
 import { prisma } from "@/lib/db";
+import { getSiteUrl } from "@/lib/site-url";
 
 const mp = new MercadoPagoConfig({
   accessToken: process.env.MP_ACCESS_TOKEN || "",
 });
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://aeroparking.vercel.app";
+const SITE_URL = getSiteUrl();
 
 // POST /api/payments/cruise — Create MP preference for cruise reservation
 export async function POST(req: NextRequest) {
