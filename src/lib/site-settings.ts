@@ -11,8 +11,8 @@ export interface SiteSettingsData {
 
 const DEFAULTS: SiteSettingsData = {
   heroImageUrl:
-    "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiLRRz6M8aujZyPeO9sj5UATUV_oNdGTojo_yBYG2zAuyQVoKq533RQEf4ak08pWbvo1sy7MvzQ7S6DBuv3vxu3cawTYYp2JSFL5-NEk18MGkhLEjud1Bdq_F-90i_S54uB9BflYGsPdKFVBU3-k-fMOxNhz-HePsZUox5PdG6IehaV8lk5Z6DJkmUY9Pk/s1600/IMG-20240710-WA0038.jpg",
-  heroImageAlt: "Estacionamiento Aeroparking en Costa Salguero",
+    "https://d8j0ntlcm91z4.cloudfront.net/user_3DMiggj4xA2M0vqbzgDi4u6xSTm/hf_20260516_201400_7a608f99-659e-4589-bb74-d77d945a6b55.png",
+  heroImageAlt: "Estacionamiento Aeroparking en Costa Salguero — valet uniformado, sector bajo techo",
   heroTitle: null,
   heroSubtitle: null,
   whatsappPhone: "5491131606994",

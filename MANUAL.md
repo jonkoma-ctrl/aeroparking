@@ -367,6 +367,13 @@ El archivo que te baja se abre directo en Excel o Google Sheets. Tiene todas las
 
 ## 15. Historial de novedades
 
+### 16 de mayo de 2026 — Fotos propias + tiempos realistas + sede visible
+
+- 📸 **Hero nuevo**: foto generada por IA del estacionamiento Costa Salguero con valet uniformado caminando hacia cámara. Más cercano a la realidad de la operación que la foto de Blogger que estaba antes.
+- 🏢 **Sección nueva "Conocé nuestra sede"** entre "Cómo funciona" y "Por qué confiar". Muestra 3 fotos: sector cubierto con cámaras, recepción con personal uniformado, y la furgoneta de traslado cargando equipaje. Incluye dirección y botón a Google Maps.
+- ⏱️ **Tiempos realistas en "Cómo funciona"**: antes decía "15 min al aeropuerto" sin distinguir destinos. Ahora dice: "Aeroparque o Cruceros: 15 min. Ezeiza: 45–60 min según tráfico". Confiable.
+- 🖼️ Las fotos son placeholders de IA hasta que el cliente nos pase fotos reales. En cuanto las tengamos las reemplazamos.
+
 ### 14 de mayo de 2026 — Rediseño UX para más confianza y conversión
 
 - 💬 **WhatsApp flotante**: botón verde siempre visible abajo a la derecha en toda la web. Convierte mejor en Argentina porque la gente prefiere consultar antes de reservar.
