@@ -16,7 +16,29 @@
  */
 import { put } from "@vercel/blob";
 import fs from "node:fs/promises";
+import fsSync from "node:fs";
 import path from "node:path";
+
+// Cargar .env manualmente (tsx no lo hace automático y no queremos sumar deps).
+function loadDotEnv(file: string) {
+  if (!fsSync.existsSync(file)) return;
+  const content = fsSync.readFileSync(file, "utf-8");
+  for (const line of content.split(/\r?\n/)) {
+    const trimmed = line.trim();
+    if (!trimmed || trimmed.startsWith("#")) continue;
+    const eq = trimmed.indexOf("=");
+    if (eq < 0) continue;
+    const key = trimmed.slice(0, eq).trim();
+    let value = trimmed.slice(eq + 1).trim();
+    // Sacar comillas
+    if ((value.startsWith('"') && value.endsWith('"')) || (value.startsWith("'") && value.endsWith("'"))) {
+      value = value.slice(1, -1);
+    }
+    if (!process.env[key]) process.env[key] = value;
+  }
+}
+loadDotEnv(path.join(process.cwd(), ".env"));
+loadDotEnv(path.join(process.cwd(), ".env.local"));
 
 interface MigrationItem {
   oldUrl: string;
