@@ -9,11 +9,20 @@
 
   body {
     @apply text-brand-900 antialiased;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
-  h1, h2, h3 {
+  h1, h2, h3, h4 {
     font-family: var(--font-display), system-ui, sans-serif;
     letter-spacing: -0.02em;
+  }
+
+  /* Tabular numbers en stats */
+  .tabular-nums {
+    font-variant-numeric: tabular-nums;
+    font-feature-settings: "tnum";
   }
 }
 
@@ -35,8 +44,99 @@
   }
 }
 
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .text-pretty {
+    text-wrap: pretty;
+  }
+
+  /* SVG noise texture overlay — para fondos oscuros */
+  .bg-noise {
+    background-image: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.5 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.55'/%3E%3C/svg%3E");
+  }
+
+  /* Grid pattern — para fondos azules */
+  .bg-grid-brand {
+    background-image:
+      linear-gradient(to right, rgba(255,255,255,0.04) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(255,255,255,0.04) 1px, transparent 1px);
+    background-size: 32px 32px;
+  }
+
+  /* Diagonal stripes pattern — accent */
+  .bg-stripes-accent {
+    background-image: repeating-linear-gradient(
+      135deg,
+      rgba(251, 191, 36, 0.06),
+      rgba(251, 191, 36, 0.06) 1px,
+      transparent 1px,
+      transparent 14px
+    );
+  }
+
+  /* Dot grid — para fondos light */
+  .bg-dots-brand {
+    background-image: radial-gradient(circle, rgba(30, 58, 138, 0.06) 1px, transparent 1px);
+    background-size: 24px 24px;
+  }
+
+  /* Radial mesh gradient — para hero */
+  .bg-mesh-hero {
+    background:
+      radial-gradient(at 20% 30%, rgba(37, 99, 235, 0.3) 0px, transparent 50%),
+      radial-gradient(at 80% 0%, rgba(245, 158, 11, 0.2) 0px, transparent 50%),
+      radial-gradient(at 80% 90%, rgba(29, 78, 216, 0.25) 0px, transparent 50%);
+  }
+
+  /* Gradient CTA premium — amarillo a naranja sutil */
+  .bg-cta-gradient {
+    background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 50%, #f97316 100%);
+  }
+
+  .bg-cta-gradient-hover {
+    background: linear-gradient(135deg, #fcd34d 0%, #fbbf24 50%, #f59e0b 100%);
+  }
+
+  /* Shimmer effect para loading o highlights */
+  .bg-shimmer {
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(255, 255, 255, 0.08) 50%,
+      transparent 100%
+    );
+    background-size: 200% 100%;
+  }
+
+  /* Aspect ratio utilities (extra) */
+  .aspect-photo {
+    aspect-ratio: 3 / 2;
+  }
+  .aspect-portrait {
+    aspect-ratio: 3 / 4;
+  }
+
+  /* Tipografía display variable axes ranges */
+  .text-huge-1 {
+    font-size: clamp(2.5rem, 6vw, 5rem);
+    line-height: 1.02;
+    letter-spacing: -0.035em;
+    font-weight: 800;
+  }
+
+  .text-huge-2 {
+    font-size: clamp(2rem, 5vw, 4rem);
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+    font-weight: 800;
+  }
+}
+
+/* Estilos para el manual interno (markdown rendered) */
 @layer components {
-  /* Estilos para el manual interno (markdown rendered) */
   .manual-prose {
     @apply text-brand-800 leading-relaxed;
   }
@@ -96,16 +196,5 @@
   }
   .manual-prose img {
     @apply my-4 rounded-lg border border-brand-200;
-  }
-}
-
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
-
-  /* SVG noise texture overlay for hero backgrounds */
-  .bg-noise {
-    background-image: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.5 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.55'/%3E%3C/svg%3E");
   }
 }

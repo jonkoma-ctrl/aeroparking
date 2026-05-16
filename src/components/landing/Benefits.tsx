@@ -6,6 +6,7 @@ import {
   Wallet,
   KeyRound,
 } from "lucide-react";
+import { Reveal } from "@/components/ui/Reveal";
 
 const benefits = [
   {
@@ -48,57 +49,68 @@ const benefits = [
 
 export function Benefits() {
   return (
-    <section id="beneficios" className="section-padding bg-white">
-      <div className="container-main">
-        <div className="mx-auto max-w-2xl text-center">
-          <p className="mb-2 text-xs font-semibold uppercase tracking-[0.2em] text-brand-500">
-            Por qué confiar en nosotros
-          </p>
-          <h2 className="font-display text-3xl font-bold tracking-tight text-brand-900 text-balance sm:text-4xl lg:text-5xl">
-            No somos cualquier estacionamiento
-          </h2>
-          <p className="mt-3 text-base text-brand-600 sm:text-lg">
-            Más de 2.000 viajeros eligieron Aeroparking porque hacemos las cosas como las haríamos con nuestro propio auto.
-          </p>
-        </div>
+    <section id="beneficios" className="relative section-padding bg-brand-50">
+      {/* Patrón sutil */}
+      <div className="absolute inset-0 bg-dots-brand opacity-40" aria-hidden="true" />
 
-        <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {benefits.map((benefit) => (
-            <div
-              key={benefit.title}
-              className="group rounded-2xl border border-brand-100 bg-white p-6 shadow-soft transition-all hover:border-brand-200 hover:shadow-elevated hover:-translate-y-1"
-            >
-              <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-brand-900 text-accent-400 transition-transform group-hover:scale-110">
-                <benefit.icon className="h-6 w-6" />
+      <div className="container-main relative">
+        <Reveal>
+          <div className="mx-auto max-w-2xl text-center">
+            <p className="mb-3 text-xs font-semibold uppercase tracking-[0.25em] text-brand-500">
+              Por qué confiar en nosotros
+            </p>
+            <h2 className="font-display text-huge-2 text-brand-900 text-balance">
+              No somos cualquier estacionamiento
+            </h2>
+            <p className="mt-4 text-base text-brand-600 text-pretty sm:text-lg">
+              Más de 2.000 viajeros eligieron Aeroparking porque hacemos las cosas como las haríamos con nuestro propio auto.
+            </p>
+          </div>
+        </Reveal>
+
+        <div className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          {benefits.map((benefit, i) => (
+            <Reveal key={benefit.title} delay={i * 80}>
+              <div className="group h-full rounded-2xl border border-brand-100 bg-white p-6 shadow-soft transition-all duration-300 hover:border-brand-200 hover:shadow-elevated hover:-translate-y-1.5">
+                <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-brand-900 text-accent-400 transition-all group-hover:scale-110 group-hover:rotate-3 group-hover:shadow-cta">
+                  <benefit.icon className="h-6 w-6" />
+                </div>
+                <h3 className="font-display text-lg font-bold leading-tight text-brand-900">
+                  {benefit.title}
+                </h3>
+                <p className="mt-2 text-sm leading-relaxed text-brand-600">
+                  {benefit.description}
+                </p>
               </div>
-              <h3 className="font-display text-lg font-bold text-brand-900">
-                {benefit.title}
-              </h3>
-              <p className="mt-2 text-sm leading-relaxed text-brand-600">
-                {benefit.description}
-              </p>
-            </div>
+            </Reveal>
           ))}
         </div>
 
-        {/* Stats strip */}
-        <div className="mt-14 grid grid-cols-2 gap-6 rounded-2xl border border-brand-100 bg-brand-50 p-6 sm:grid-cols-4 sm:p-8">
-          {[
-            { value: "+2.000", label: "Viajeros atendidos" },
-            { value: "4.8★", label: "Rating promedio" },
-            { value: "24/7", label: "Atención" },
-            { value: "5 años", label: "Operando en Buenos Aires" },
-          ].map((s) => (
-            <div key={s.label} className="text-center">
-              <div className="font-display text-2xl font-extrabold text-brand-900 sm:text-3xl">
-                {s.value}
-              </div>
-              <div className="mt-1 text-xs font-medium text-brand-600 sm:text-sm">
-                {s.label}
+        {/* Stats strip rediseñado */}
+        <Reveal delay={200}>
+          <div className="mt-16 overflow-hidden rounded-2xl border border-brand-100 bg-gradient-to-br from-brand-900 via-brand-800 to-brand-900 shadow-elevated">
+            <div className="relative bg-grid-brand bg-noise px-6 py-8 sm:px-10 sm:py-10">
+              <div className="absolute inset-0 bg-stripes-accent opacity-100" aria-hidden="true" />
+              <div className="relative grid grid-cols-2 gap-6 sm:grid-cols-4">
+                {[
+                  { value: "+2.000", label: "Viajeros atendidos" },
+                  { value: "4.8★", label: "Rating promedio" },
+                  { value: "24/7", label: "Atención" },
+                  { value: "5 años", label: "Operando en BA" },
+                ].map((s) => (
+                  <div key={s.label} className="text-center">
+                    <div className="text-stat-xl font-display text-white tabular-nums">
+                      {s.value}
+                    </div>
+                    <div className="mt-1 text-xs font-semibold uppercase tracking-wider text-accent-300 sm:text-sm">
+                      {s.label}
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
-          ))}
-        </div>
+          </div>
+        </Reveal>
       </div>
     </section>
   );

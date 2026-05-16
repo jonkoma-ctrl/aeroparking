@@ -47,7 +47,7 @@ export function Header() {
             <button
               onClick={() => setBookingOpen(!bookingOpen)}
               onBlur={() => setTimeout(() => setBookingOpen(false), 200)}
-              className="flex items-center gap-1 rounded-xl bg-accent-400 px-5 py-2.5 text-sm font-bold text-brand-950 shadow-sm transition-all hover:bg-accent-300 hover:scale-[1.02]"
+              className="flex items-center gap-1 rounded-xl bg-cta-gradient px-5 py-2.5 text-sm font-bold text-brand-950 shadow-cta transition-all hover:shadow-cta-hover hover:scale-[1.03] active:scale-[0.98]"
             >
               Reservar ahora
               <ChevronDown className="h-4 w-4" />

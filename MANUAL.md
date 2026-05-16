@@ -367,6 +367,18 @@ El archivo que te baja se abre directo en Excel o Google Sheets. Tiene todas las
 
 ## 15. Historial de novedades
 
+### 16 de mayo de 2026 — Sprint visual premium (look & feel)
+
+Le subimos el nivel al diseño visual sin tocar la marca:
+
+- 🎬 **Animaciones al hacer scroll**: las tarjetas, fotos y stats aparecen suavemente cuando entran a pantalla. Sensación más viva y profesional.
+- 🔠 **Tipografía más impactante**: títulos principales más grandes y con mejor balance. Los números (+2.000, 4.8★, 24/7) se ven más fuertes.
+- 🟡 **Botones "Reservar" con degradé**: amarillo → naranja sutil + sombra cálida. Más premium y atractivo al click.
+- 🖼️ **Sección "Conocé nuestra sede"** ahora con layout asimétrico: foto grande a la izquierda + 2 chicas apiladas a la derecha. Rompe el ritmo del resto de la página y se siente más editorial.
+- ✨ **Patrones de fondo sutiles**: grid de puntos en secciones claras, líneas diagonales amarillas en la barra de stats. Le da identidad propia al sitio.
+- 🎯 **Sombras y micro-interacciones mejoradas**: las tarjetas levitan más al pasar el mouse, los iconos rotan suavemente, los botones tienen rebote sutil.
+- ⚡ **Performance**: cero librerías externas para las animaciones (usa IntersectionObserver nativo), no afecta velocidad.
+
 ### 16 de mayo de 2026 — Imágenes migradas a storage propio
 
 - 📦 Las 4 imágenes generadas por IA pasaron de un CDN externo a nuestro Vercel Blob propio. URLs estables para siempre, bajo nuestro control.
