@@ -367,6 +367,18 @@ El archivo que te baja se abre directo en Excel o Google Sheets. Tiene todas las
 
 ## 15. Historial de novedades
 
+### 14 de mayo de 2026 — Rediseño UX para más confianza y conversión
+
+- 💬 **WhatsApp flotante**: botón verde siempre visible abajo a la derecha en toda la web. Convierte mejor en Argentina porque la gente prefiere consultar antes de reservar.
+- 📱 **Barra fija en mobile**: al scrollear, aparece una barra abajo con "Reservar ahora". Mejora conversión en celular.
+- ✨ **Hero rediseñado**: copy más emocional ("Tu auto, en buenas manos. Empezás las vacaciones desde que lo dejás"), 3 stats grandes (+2.000 viajeros, 4.8★, 24/7) y trust signals visibles (seguro, cámaras, auto listo).
+- 🛡️ **Banda de confianza** justo después del cotizador: 5 valores clave (seguro, cámaras, personal uniformado, traslado garantizado, recomendaciones).
+- 🚗 **"Cómo funciona" rediseñado**: 4 pasos con número grande de fondo, tiempos estimados ("2 min", "15 min", etc.) y copy más cálido.
+- ⭐ **Sección nueva "Lo que dicen"**: 3 testimonios con estrellas. Por ahora son ejemplos realistas que se pueden reemplazar más adelante con reseñas reales (de Google, etc.).
+- 🏆 **"Por qué confiar"**: cards más visuales con stats al final (+2.000 viajeros, 4.8★, 5 años operando).
+- ❓ **FAQ ampliado** con 4 preguntas nuevas: seguro, vuelo retrasado, camionetas/SUVs. Primera abierta por default, animación suave al abrir. Card de "¿Quedó alguna duda?" con botón directo a WhatsApp.
+- 🎯 **CTA final más punchy**: badge con rating, copy "Tu próximo viaje empieza en Costa Salguero", garantías (cancelación gratis, sin cargos ocultos, seguro incluido).
+
 ### 14 de mayo de 2026 — Limpieza total AA2000
 
 - 🧹 Sacamos toda referencia a Aeropuertos Argentina del sistema. El cotizador, los formularios, el panel de tarifas y los emails ya no muestran nada relacionado a "checkout externo" ni redirigen a tiendas externas.

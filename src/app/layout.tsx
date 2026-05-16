@@ -3,6 +3,8 @@ import { Outfit, Inter } from "next/font/google";
 import { BRAND_NAME } from "@/lib/constants";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
+import { WhatsAppFloat } from "@/components/layout/WhatsAppFloat";
+import { MobileStickyCTA } from "@/components/layout/MobileStickyCTA";
 import "./globals.css";
 
 const outfit = Outfit({
@@ -51,6 +53,8 @@ export default function RootLayout({
         <Header />
         <main>{children}</main>
         <Footer />
+        <WhatsAppFloat />
+        <MobileStickyCTA />
       </body>
     </html>
   );
