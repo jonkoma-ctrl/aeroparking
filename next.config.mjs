@@ -7,10 +7,8 @@ const nextConfig = {
       { protocol: "https", hostname: "*.public.blob.vercel-storage.com" },
       // Unsplash (seeds y placeholders)
       { protocol: "https", hostname: "images.unsplash.com" },
-      // Blogger (imagen actual del Hero, default seed)
+      // Blogger (referencia legacy, opcional — sin uso activo)
       { protocol: "https", hostname: "blogger.googleusercontent.com" },
-      // Higgsfield CDN (imágenes generadas con Nano Banana)
-      { protocol: "https", hostname: "d8j0ntlcm91z4.cloudfront.net" },
     ],
   },
 };

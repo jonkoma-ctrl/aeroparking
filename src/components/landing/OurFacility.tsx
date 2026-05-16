@@ -7,21 +7,21 @@ import { Camera, Truck, UserCheck } from "lucide-react";
  */
 const photos = [
   {
-    url: "https://d8j0ntlcm91z4.cloudfront.net/user_3DMiggj4xA2M0vqbzgDi4u6xSTm/hf_20260516_201448_2e8f18c6-fbde-475d-9de8-c4c65b41f850.png",
+    url: "https://sdpvjoczsukegmpi.public.blob.vercel-storage.com/facility/sector-cubierto.png",
     alt: "Sector cubierto de estacionamiento con cámaras de seguridad",
     icon: Camera,
     label: "Sector cubierto",
     sub: "Vigilancia 24h con cámaras",
   },
   {
-    url: "https://d8j0ntlcm91z4.cloudfront.net/user_3DMiggj4xA2M0vqbzgDi4u6xSTm/hf_20260516_201434_4ea87a18-d30f-42d0-bf34-902166bd4d97.png",
+    url: "https://sdpvjoczsukegmpi.public.blob.vercel-storage.com/facility/recepcion-valet.png",
     alt: "Personal uniformado recibiendo al cliente al llegar",
     icon: UserCheck,
     label: "Recepción personalizada",
     sub: "Personal propio uniformado",
   },
   {
-    url: "https://d8j0ntlcm91z4.cloudfront.net/user_3DMiggj4xA2M0vqbzgDi4u6xSTm/hf_20260516_201414_bc793123-9149-4c3e-866c-7acf19d24d04.png",
+    url: "https://sdpvjoczsukegmpi.public.blob.vercel-storage.com/facility/furgoneta-traslado.png",
     alt: "Furgoneta de traslado al aeropuerto cargando equipaje",
     icon: Truck,
     label: "Traslado en vehículos propios",

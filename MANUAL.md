@@ -367,6 +367,10 @@ El archivo que te baja se abre directo en Excel o Google Sheets. Tiene todas las
 
 ## 15. Historial de novedades
 
+### 16 de mayo de 2026 — Imágenes migradas a storage propio
+
+- 📦 Las 4 imágenes generadas por IA pasaron de un CDN externo a nuestro Vercel Blob propio. URLs estables para siempre, bajo nuestro control.
+
 ### 16 de mayo de 2026 — Fotos propias + tiempos realistas + sede visible
 
 - 📸 **Hero nuevo**: foto generada por IA del estacionamiento Costa Salguero con valet uniformado caminando hacia cámara. Más cercano a la realidad de la operación que la foto de Blogger que estaba antes.
