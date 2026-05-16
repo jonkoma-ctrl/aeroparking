@@ -11,7 +11,7 @@ export interface SiteSettingsData {
 
 const DEFAULTS: SiteSettingsData = {
   heroImageUrl:
-    "https://d8j0ntlcm91z4.cloudfront.net/user_3DMiggj4xA2M0vqbzgDi4u6xSTm/hf_20260516_201400_7a608f99-659e-4589-bb74-d77d945a6b55.png",
+    "https://sdpvjoczsukegmpi.public.blob.vercel-storage.com/hero/costa-salguero-valet.png",
   heroImageAlt: "Estacionamiento Aeroparking en Costa Salguero — valet uniformado, sector bajo techo",
   heroTitle: null,
   heroSubtitle: null,
