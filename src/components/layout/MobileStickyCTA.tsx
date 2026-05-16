@@ -33,7 +33,7 @@ export function MobileStickyCTA() {
     >
       <Link
         href="/reservar"
-        className="group flex w-full items-center justify-center gap-2 rounded-xl bg-accent-400 py-3 text-sm font-bold text-brand-950 shadow-soft transition-all hover:bg-accent-300 active:scale-[0.98]"
+        className="group flex w-full items-center justify-center gap-2 rounded-xl bg-cta-gradient py-3 text-sm font-bold text-brand-950 shadow-cta transition-all hover:shadow-cta-hover active:scale-[0.98]"
       >
         Reservar ahora
         <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
