@@ -48,29 +48,26 @@ interface MigrationItem {
 }
 
 const ITEMS: MigrationItem[] = [
+  // Re-generadas con uniforme correcto: chomba naranja + pantalón cargo negro.
+  // Mismos filenames del Blob → sobreescriben las anteriores (allowOverwrite: true).
+  // El sitio no requiere cambios de código: las URLs de Blob ya quedaron escritas.
   {
-    oldUrl: "https://d8j0ntlcm91z4.cloudfront.net/user_3DMiggj4xA2M0vqbzgDi4u6xSTm/hf_20260516_201400_7a608f99-659e-4589-bb74-d77d945a6b55.png",
+    oldUrl: "https://d8j0ntlcm91z4.cloudfront.net/user_3DMiggj4xA2M0vqbzgDi4u6xSTm/hf_20260516_202826_8349fb8a-d5ec-4cd0-8652-bfbcc8d43f33.png",
     folder: "hero",
     filename: "costa-salguero-valet.png",
-    label: "Hero — valet caminando",
+    label: "Hero — valet caminando (uniforme naranja+cargo)",
   },
   {
-    oldUrl: "https://d8j0ntlcm91z4.cloudfront.net/user_3DMiggj4xA2M0vqbzgDi4u6xSTm/hf_20260516_201448_2e8f18c6-fbde-475d-9de8-c4c65b41f850.png",
-    folder: "facility",
-    filename: "sector-cubierto.png",
-    label: "Facility — sector cubierto",
-  },
-  {
-    oldUrl: "https://d8j0ntlcm91z4.cloudfront.net/user_3DMiggj4xA2M0vqbzgDi4u6xSTm/hf_20260516_201434_4ea87a18-d30f-42d0-bf34-902166bd4d97.png",
+    oldUrl: "https://d8j0ntlcm91z4.cloudfront.net/user_3DMiggj4xA2M0vqbzgDi4u6xSTm/hf_20260516_202841_fd33064f-97ca-457f-9a6d-ffa362a7c63b.png",
     folder: "facility",
     filename: "recepcion-valet.png",
-    label: "Facility — recepción",
+    label: "Facility — recepción (uniforme naranja+cargo)",
   },
   {
-    oldUrl: "https://d8j0ntlcm91z4.cloudfront.net/user_3DMiggj4xA2M0vqbzgDi4u6xSTm/hf_20260516_201414_bc793123-9149-4c3e-866c-7acf19d24d04.png",
+    oldUrl: "https://d8j0ntlcm91z4.cloudfront.net/user_3DMiggj4xA2M0vqbzgDi4u6xSTm/hf_20260516_202855_e050c5d8-7189-4c8d-a90b-936181c005f4.png",
     folder: "facility",
     filename: "furgoneta-traslado.png",
-    label: "Facility — furgoneta",
+    label: "Facility — furgoneta (uniforme naranja+cargo)",
   },
 ];
 
