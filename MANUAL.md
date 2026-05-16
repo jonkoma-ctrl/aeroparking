@@ -367,6 +367,13 @@ El archivo que te baja se abre directo en Excel o Google Sheets. Tiene todas las
 
 ## 15. Historial de novedades
 
+### 14 de mayo de 2026 — Limpieza total AA2000
+
+- 🧹 Sacamos toda referencia a Aeropuertos Argentina del sistema. El cotizador, los formularios, el panel de tarifas y los emails ya no muestran nada relacionado a "checkout externo" ni redirigen a tiendas externas.
+- 🗑️ Desactivado el flujo viejo que importaba reservas por email desde AA2000. Hoy todas las reservas se cargan desde la web propia.
+- 🔧 En "Tarifas" desapareció el checkbox "Es precio de referencia" y el campo "URL externa" — ya no aplican.
+- 📧 Mails de confirmación: los links a "Gestionar mi reserva" ahora siempre van a la URL pública de Aeroparking (antes podía aparecer un link a localhost si alguien testeaba en local — defensa agregada).
+
 ### 14 de mayo de 2026 — Operación propia + bug Ezeiza
 
 - 🛬 **Aeroparque ahora es operación propia**: la larga estadía deja de redirigir a la tienda de Aeropuertos Argentina (AA2000). El cliente reserva directo con nosotros, mismo flujo que Cruceros y Ezeiza.

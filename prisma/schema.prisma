@@ -77,8 +77,8 @@ model AeroparqueReservation {
   notes            String?  @db.Text
 
   // Auditoría
-  rawEmailSubject  String?
-  rawEmailBody     String?  @db.Text
+  rawEmailSubject  String?  // DEPRECATED — legacy AA2000 webhook, sin uso desde may-2026
+  rawEmailBody     String?  @db.Text   // DEPRECATED — legacy AA2000 webhook, sin uso desde may-2026
 
   createdAt        DateTime @default(now())
   updatedAt        DateTime @updatedAt
@@ -122,8 +122,8 @@ model ServicePricing {
   pricePerDay         Int      // ARS pesos enteros por estadía completa (24h)
   description         String?
   active              Boolean  @default(true)
-  isReference         Boolean  @default(false)  // true = checkout externo AA2000 (legacy)
-  externalCheckoutUrl String?
+  isReference         Boolean  @default(false)  // DEPRECATED — legacy AA2000, sin uso desde may-2026
+  externalCheckoutUrl String?                    // DEPRECATED — legacy AA2000, sin uso desde may-2026
   minDays             Int?
   maxDays             Int?
   durationDiscounts   Json?    // [{fromDays, pctOff}]

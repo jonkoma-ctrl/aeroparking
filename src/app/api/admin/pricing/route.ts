@@ -20,7 +20,7 @@ export async function POST(req: NextRequest) {
     const body = await req.json();
     const {
       destination, serviceType, pricePerDay, description,
-      isReference, externalCheckoutUrl, minDays, maxDays, durationDiscounts,
+      minDays, maxDays, durationDiscounts,
     } = body;
 
     if (!destination || !serviceType || pricePerDay == null) {
@@ -29,8 +29,6 @@ export async function POST(req: NextRequest) {
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const baseData: any = { pricePerDay, description, active: true };
-    if (isReference != null) baseData.isReference = isReference;
-    if (externalCheckoutUrl !== undefined) baseData.externalCheckoutUrl = externalCheckoutUrl;
     if (minDays !== undefined) baseData.minDays = minDays;
     if (maxDays !== undefined) baseData.maxDays = maxDays;
     if (durationDiscounts !== undefined) baseData.durationDiscounts = durationDiscounts;
@@ -54,7 +52,7 @@ export async function POST(req: NextRequest) {
 export async function PATCH(req: NextRequest) {
   try {
     const body = await req.json();
-    const { id, pricePerDay, active, isReference, externalCheckoutUrl, minDays, maxDays, durationDiscounts, description, transferIncluded, transferCostPerLeg } = body;
+    const { id, pricePerDay, active, minDays, maxDays, durationDiscounts, description, transferIncluded, transferCostPerLeg } = body;
 
     if (!id) {
       return NextResponse.json({ error: "Falta id" }, { status: 400 });
@@ -64,8 +62,6 @@ export async function PATCH(req: NextRequest) {
     const data: any = {};
     if (pricePerDay != null) data.pricePerDay = pricePerDay;
     if (active != null) data.active = active;
-    if (isReference != null) data.isReference = isReference;
-    if (externalCheckoutUrl !== undefined) data.externalCheckoutUrl = externalCheckoutUrl;
     if (minDays !== undefined) data.minDays = minDays;
     if (maxDays !== undefined) data.maxDays = maxDays;
     if (durationDiscounts !== undefined) data.durationDiscounts = durationDiscounts;
