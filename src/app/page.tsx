@@ -3,6 +3,7 @@ import { BookingWidget } from "@/components/booking-widget/BookingWidget";
 import { TrustBar } from "@/components/landing/TrustBar";
 import { ServiceSelector } from "@/components/landing/ServiceSelector";
 import { HowItWorks } from "@/components/landing/HowItWorks";
+import { OurFacility } from "@/components/landing/OurFacility";
 import { Benefits } from "@/components/landing/Benefits";
 import { Testimonials } from "@/components/landing/Testimonials";
 import { FAQ } from "@/components/landing/FAQ";
@@ -18,6 +19,7 @@ export default async function HomePage() {
       <TrustBar />
       <ServiceSelector />
       <HowItWorks />
+      <OurFacility />
       <Benefits />
       <Testimonials />
       <FAQ />

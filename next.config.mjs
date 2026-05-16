@@ -9,6 +9,8 @@ const nextConfig = {
       { protocol: "https", hostname: "images.unsplash.com" },
       // Blogger (imagen actual del Hero, default seed)
       { protocol: "https", hostname: "blogger.googleusercontent.com" },
+      // Higgsfield CDN (imágenes generadas con Nano Banana)
+      { protocol: "https", hostname: "d8j0ntlcm91z4.cloudfront.net" },
     ],
   },
 };
