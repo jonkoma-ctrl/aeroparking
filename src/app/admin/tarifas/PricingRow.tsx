@@ -13,8 +13,6 @@ interface PricingRowProps {
   pricePerDay: number;
   description: string | null;
   active: boolean;
-  isReference?: boolean;
-  externalCheckoutUrl?: string | null;
   minDays?: number | null;
   maxDays?: number | null;
   durationDiscounts?: Discount[] | null;
@@ -31,8 +29,6 @@ export function PricingRow(props: PricingRowProps) {
 
   // Advanced fields state
   const [price, setPrice] = useState(String(props.pricePerDay));
-  const [isReference, setIsReference] = useState(props.isReference || false);
-  const [externalUrl, setExternalUrl] = useState(props.externalCheckoutUrl || "");
   const [minDays, setMinDays] = useState(props.minDays ? String(props.minDays) : "");
   const [maxDays, setMaxDays] = useState(props.maxDays ? String(props.maxDays) : "");
   const [discounts, setDiscounts] = useState<Discount[]>(props.durationDiscounts || []);
@@ -47,8 +43,6 @@ export function PricingRow(props: PricingRowProps) {
       body: JSON.stringify({
         id: props.id,
         pricePerDay: parseInt(price, 10),
-        isReference,
-        externalCheckoutUrl: externalUrl || null,
         minDays: minDays ? parseInt(minDays, 10) : null,
         maxDays: maxDays ? parseInt(maxDays, 10) : null,
         durationDiscounts: discounts.length > 0 ? discounts : null,
@@ -113,11 +107,6 @@ export function PricingRow(props: PricingRowProps) {
           )}
         </td>
         <td className="px-4 py-3 text-brand-500 text-xs">
-          {props.isReference && (
-            <span className="mr-2 inline-flex rounded-full bg-yellow-100 px-2 py-0.5 text-xs font-medium text-yellow-800">
-              Referencia
-            </span>
-          )}
           {props.description || "—"}
           {hasDiscounts && (
             <span className="ml-2 inline-flex rounded-full bg-purple-100 px-2 py-0.5 text-xs font-medium text-purple-800">
@@ -150,35 +139,18 @@ export function PricingRow(props: PricingRowProps) {
                 Configuración avanzada — {props.destination} / {props.serviceType}
               </h3>
 
-              <div className="grid gap-4 md:grid-cols-2">
+              <div className="grid grid-cols-2 gap-2">
                 <div>
-                  <label className="mb-1 block text-xs font-medium text-brand-600">
-                    <input type="checkbox" checked={isReference}
-                      onChange={(e) => setIsReference(e.target.checked)}
-                      className="mr-2" />
-                    Es precio de referencia (checkout externo AA2000)
-                  </label>
-                  {isReference && (
-                    <input type="url" value={externalUrl}
-                      onChange={(e) => setExternalUrl(e.target.value)}
-                      placeholder="https://tienda.aeropuertosargentina.com/..."
-                      className="mt-1 w-full rounded border border-brand-200 px-2 py-1.5 text-sm" />
-                  )}
+                  <label className="mb-1 block text-xs font-medium text-brand-600">Mín. días</label>
+                  <input type="number" value={minDays} onChange={(e) => setMinDays(e.target.value)}
+                    placeholder="sin mínimo"
+                    className="w-full rounded border border-brand-200 px-2 py-1.5 text-sm" />
                 </div>
-
-                <div className="grid grid-cols-2 gap-2">
-                  <div>
-                    <label className="mb-1 block text-xs font-medium text-brand-600">Mín. días</label>
-                    <input type="number" value={minDays} onChange={(e) => setMinDays(e.target.value)}
-                      placeholder="sin mínimo"
-                      className="w-full rounded border border-brand-200 px-2 py-1.5 text-sm" />
-                  </div>
-                  <div>
-                    <label className="mb-1 block text-xs font-medium text-brand-600">Máx. días</label>
-                    <input type="number" value={maxDays} onChange={(e) => setMaxDays(e.target.value)}
-                      placeholder="sin máximo"
-                      className="w-full rounded border border-brand-200 px-2 py-1.5 text-sm" />
-                  </div>
+                <div>
+                  <label className="mb-1 block text-xs font-medium text-brand-600">Máx. días</label>
+                  <input type="number" value={maxDays} onChange={(e) => setMaxDays(e.target.value)}
+                    placeholder="sin máximo"
+                    className="w-full rounded border border-brand-200 px-2 py-1.5 text-sm" />
                 </div>
               </div>
 

@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { Plane, Ship, Calendar, ArrowRight, Check, Clock, Sparkles, CreditCard, ExternalLink } from "lucide-react";
+import { Plane, Ship, Calendar, ArrowRight, Check, Clock, Sparkles, CreditCard } from "lucide-react";
 import { formatPrice } from "@/lib/utils";
 import { trackWidgetEvent } from "@/lib/analytics";
 import { encodePrefill } from "@/lib/booking-prefill";
@@ -99,22 +99,16 @@ export function BookingWidget({
   }
 
   function handleCTA(q: QuoteResult) {
-    if (q.isReferencePrice && q.externalCheckoutUrl) {
-      trackWidgetEvent({ name: "quote_cta_clicked", serviceType: q.serviceType, destination: "external" });
-      trackWidgetEvent({ name: "redirected_external_checkout", serviceType: q.serviceType, url: q.externalCheckoutUrl });
-      window.open(q.externalCheckoutUrl, "_blank", "noopener,noreferrer");
-    } else {
-      const prefill = encodePrefill({ s: q.serviceType, i: ingreso, r: retiro });
-      trackWidgetEvent({ name: "quote_cta_clicked", serviceType: q.serviceType, destination: "internal" });
-      trackWidgetEvent({ name: "internal_checkout_started", serviceType: q.serviceType, prefillKeys: ["s", "i", "r"] });
-      // Mapeo a destino del form unificado /reservar?destino=X
-      const destSlug = q.serviceType === "ezeiza_larga_estadia"
-        ? "ezeiza"
-        : q.serviceType === "puerto_cruceros" || q.serviceType === "puerto_larga_estadia"
-        ? "puerto"
-        : "aeroparque";
-      router.push(`/reservar?destino=${destSlug}&prefill=${prefill}`);
-    }
+    const prefill = encodePrefill({ s: q.serviceType, i: ingreso, r: retiro });
+    trackWidgetEvent({ name: "quote_cta_clicked", serviceType: q.serviceType, destination: "internal" });
+    trackWidgetEvent({ name: "internal_checkout_started", serviceType: q.serviceType, prefillKeys: ["s", "i", "r"] });
+    // Mapeo a destino del form unificado /reservar?destino=X
+    const destSlug = q.serviceType === "ezeiza_larga_estadia"
+      ? "ezeiza"
+      : q.serviceType === "puerto_cruceros" || q.serviceType === "puerto_larga_estadia"
+      ? "puerto"
+      : "aeroparque";
+    router.push(`/reservar?destino=${destSlug}&prefill=${prefill}`);
   }
 
   const wrapperClass =
@@ -297,11 +291,6 @@ function QuoteResultView({
           )}
         </div>
 
-        {quote.isReferencePrice && (
-          <p className="mt-3 text-xs text-brand-400 italic">
-            * Precio estimado de referencia. La reserva y cobro se realizan en Aeropuertos Argentina.
-          </p>
-        )}
       </div>
 
       {/* Badges */}
@@ -309,7 +298,7 @@ function QuoteResultView({
         <Badge icon="🏆" text="Mejor tarifa online" />
         <Badge icon="🚐" text="Traslado incluido" />
         <Badge icon="⚡" text="Reserva rápida" />
-        {!quote.isReferencePrice && <Badge icon="💳" text="Pagás al dejar el auto" />}
+        <Badge icon="💳" text="Pagás al dejar el auto" />
       </div>
 
       {/* CTA */}
@@ -318,11 +307,7 @@ function QuoteResultView({
         onClick={() => onCTA(quote)}
         className="mt-5 w-full rounded-xl bg-brand-900 py-3.5 text-base font-semibold text-white shadow-lg hover:bg-brand-800 transition flex items-center justify-center gap-2"
       >
-        {quote.isReferencePrice ? (
-          <>Reservar en Aeropuertos Argentina <ExternalLink className="h-4 w-4" /></>
-        ) : (
-          <>Continuar con la reserva <ArrowRight className="h-4 w-4" /></>
-        )}
+        Continuar con la reserva <ArrowRight className="h-4 w-4" />
       </button>
 
       {/* Alternatives */}
