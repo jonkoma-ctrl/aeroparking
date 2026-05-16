@@ -42,7 +42,22 @@ export const FAQ_ITEMS = [
   {
     question: "¿El estacionamiento es seguro?",
     answer:
-      "Sí. Tenemos sector de estacionamiento propio cubierto en Costa Salguero, con seguridad las 24 horas y registro de ingreso y egreso de cada vehículo.",
+      "Sí. Sector propio cubierto en Costa Salguero, vigilancia 24h con cámaras, personal uniformado en sede y registro firmado de ingreso/egreso de cada vehículo. Las llaves quedan en caja fuerte.",
+  },
+  {
+    question: "¿Está cubierto por seguro?",
+    answer:
+      "Sí. Tu auto cuenta con seguro de responsabilidad civil mientras está bajo nuestra custodia. Para cualquier reclamo, el comprobante de ingreso firmado funciona como respaldo.",
+  },
+  {
+    question: "¿Qué pasa si mi vuelo de regreso se retrasa?",
+    answer:
+      "Avisanos por WhatsApp al 11 3160 6994 cuando aterrices. Tenemos atención las 24 horas y coordinamos el horario real de tu llegada — no tenés que pagar nada extra por demoras del vuelo.",
+  },
+  {
+    question: "¿Atienden camionetas, SUVs o vehículos grandes?",
+    answer:
+      "Sí, atendemos todo tipo de vehículos de pasajeros: autos, SUVs, camionetas y minivans. El precio es el mismo, no varía por tamaño del vehículo.",
   },
   {
     question: "¿Qué tipo de factura emiten?",
