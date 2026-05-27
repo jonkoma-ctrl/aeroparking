@@ -1,9 +1,11 @@
 "use client";
 
-import { useState } from "react";
-import { Plane, Ship, Bus, Car, Train, MapPin } from "lucide-react";
+import { useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
+import { Plane, Ship, Bus, Car, Train, MapPin, Banknote } from "lucide-react";
 import type { DestinationMeta } from "@/lib/destinos";
 import type { Destino } from "@/lib/pricing";
+import { formatPrice } from "@/lib/utils";
 import { PresentialBookingForm } from "./PresentialBookingForm";
 
 const ICON_BY_KEY: Record<string, typeof Plane> = {
@@ -41,6 +43,19 @@ interface Props {
 
 export function ReservarPicker({ destinations, initialSlug }: Props) {
   const [selectedSlug, setSelectedSlug] = useState(initialSlug);
+  const searchParams = useSearchParams();
+
+  // Sincronizar con cambios de URL (?destino=...). Si el usuario llega de
+  // nuevo desde el Header dropdown o navegación interna, el state se
+  // actualiza solo para reflejar la nueva URL.
+  useEffect(() => {
+    const fromUrl = searchParams.get("destino");
+    if (fromUrl && fromUrl !== selectedSlug) {
+      const exists = destinations.some((d) => d.slug === fromUrl);
+      if (exists) setSelectedSlug(fromUrl);
+    }
+  }, [searchParams, destinations, selectedSlug]);
+
   const selected = destinations.find((d) => d.slug === selectedSlug) ?? destinations[0];
 
   const SelectedIcon = ICON_BY_KEY[selected.iconKey] ?? Plane;
@@ -63,9 +78,7 @@ export function ReservarPicker({ destinations, initialSlug }: Props) {
               <SelectedIcon className="absolute right-6 top-6 h-24 w-24 text-white/20" />
             </div>
           )}
-          {/* Gradient overlay */}
           <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
-          {/* Label */}
           <div className="absolute bottom-0 left-0 right-0 p-5 sm:p-6">
             <div className="mb-1 inline-flex items-center gap-1.5 rounded-full bg-white/15 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-widest text-white backdrop-blur-sm">
               <SelectedIcon className="h-3 w-3" />
@@ -78,6 +91,13 @@ export function ReservarPicker({ destinations, initialSlug }: Props) {
               <p className="mt-1 max-w-xl text-sm text-white/80 sm:text-base">
                 {selected.description}
               </p>
+            )}
+            {/* Transfer cost note — solo aparece si la tarifa tiene traslado no incluido */}
+            {selected.transferCostPerLeg && (
+              <div className="mt-2 inline-flex items-center gap-1.5 rounded-md bg-amber-400/95 px-2.5 py-1 text-xs font-semibold text-brand-950 shadow-soft">
+                <Banknote className="h-3.5 w-3.5" />
+                Traslado: {formatPrice(selected.transferCostPerLeg)} por tramo
+              </div>
             )}
           </div>
         </div>

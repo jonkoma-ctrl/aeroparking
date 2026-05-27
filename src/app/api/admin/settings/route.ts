@@ -19,7 +19,7 @@ export async function GET() {
 export async function PATCH(req: NextRequest) {
   try {
     const body = await req.json();
-    const { heroImageUrl, heroImageAlt, heroTitle, heroSubtitle, whatsappPhone, contactEmail } = body;
+    const { heroImageUrl, heroImageAlt, heroTitle, heroSubtitle, whatsappPhone, contactEmail, reviewUrl } = body;
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const data: any = {};
@@ -29,6 +29,7 @@ export async function PATCH(req: NextRequest) {
     if (heroSubtitle !== undefined) data.heroSubtitle = heroSubtitle || null;
     if (whatsappPhone !== undefined) data.whatsappPhone = whatsappPhone || null;
     if (contactEmail !== undefined) data.contactEmail = contactEmail || null;
+    if (reviewUrl !== undefined) data.reviewUrl = reviewUrl || null;
 
     const row = await prisma.siteSettings.upsert({
       where: { id: "singleton" },

@@ -7,6 +7,7 @@ export interface SiteSettingsData {
   heroSubtitle: string | null;
   whatsappPhone: string | null;
   contactEmail: string | null;
+  reviewUrl: string | null;
 }
 
 const DEFAULTS: SiteSettingsData = {
@@ -17,6 +18,7 @@ const DEFAULTS: SiteSettingsData = {
   heroSubtitle: null,
   whatsappPhone: "5491131606994",
   contactEmail: "reservas@nrauditores.com.ar",
+  reviewUrl: null,
 };
 
 export async function getSiteSettings(): Promise<SiteSettingsData> {
@@ -30,6 +32,7 @@ export async function getSiteSettings(): Promise<SiteSettingsData> {
       heroSubtitle: row.heroSubtitle ?? DEFAULTS.heroSubtitle,
       whatsappPhone: row.whatsappPhone ?? DEFAULTS.whatsappPhone,
       contactEmail: row.contactEmail ?? DEFAULTS.contactEmail,
+      reviewUrl: row.reviewUrl ?? DEFAULTS.reviewUrl,
     };
   } catch {
     return DEFAULTS;

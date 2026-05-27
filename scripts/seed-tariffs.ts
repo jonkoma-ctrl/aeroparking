@@ -73,7 +73,7 @@ const TARIFFS: TariffSeed[] = [
     destination: "ezeiza",
     serviceType: "larga_estadia",
     pricePerDay: 40000,
-    description: "Estacionamiento Costa Salguero + traslado opcional a Ezeiza ($40k por tramo).",
+    description: "Estacionamiento Costa Salguero + traslado opcional al aeropuerto (con cargo configurable).",
     isReference: false,
     transferIncluded: false,
     transferCostPerLeg: 40000,

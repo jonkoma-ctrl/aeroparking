@@ -20,7 +20,7 @@ export function FAQ() {
             Todo lo que necesitás saber
           </h2>
           <p className="mt-3 text-base text-brand-600 sm:text-lg">
-            Si tu duda no está acá, escribinos por WhatsApp y te respondemos al toque.
+            ¿No encontrás tu duda? Consultanos por WhatsApp y te respondemos a la brevedad.
           </p>
         </div>
 

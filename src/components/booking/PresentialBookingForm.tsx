@@ -215,7 +215,25 @@ export function PresentialBookingForm({ destino, defaultServiceType, destination
       if (!form.carModel) stepErrors.carModel = "Ingresá el modelo";
     }
 
-    // Step 3 — vuelo es opcional para no bloquear (lo recordamos al admin)
+    if (currentStep === 3) {
+      // Step 3 — Datos de viaje son obligatorios (operador lo necesita para
+      // coordinar el traslado y manejar demoras).
+      if (isCruceros) {
+        if (!form.cruiseLine || form.cruiseLine.trim().length < 2)
+          stepErrors.cruiseLine = "Indicá la naviera (ej: MSC, Costa, Royal Caribbean)";
+        if (!form.terminal || form.terminal.trim().length < 1)
+          stepErrors.terminal = "Indicá la terminal de embarque";
+      } else {
+        if (!form.departureAirline || form.departureAirline.trim().length < 2)
+          stepErrors.departureAirline = "Indicá la aerolínea de salida";
+        if (!form.departureFlight || form.departureFlight.trim().length < 2)
+          stepErrors.departureFlight = "Indicá el número de vuelo de salida";
+        if (!form.arrivalAirline || form.arrivalAirline.trim().length < 2)
+          stepErrors.arrivalAirline = "Indicá la aerolínea de regreso";
+        if (!form.arrivalFlight || form.arrivalFlight.trim().length < 2)
+          stepErrors.arrivalFlight = "Indicá el número de vuelo de regreso";
+      }
+    }
 
     if (currentStep === 4) {
       if (!form.firstName || form.firstName.length < 2)
@@ -560,29 +578,29 @@ export function PresentialBookingForm({ destino, defaultServiceType, destination
                   title={isCruceros ? "Datos del crucero" : "Datos del vuelo"}
                   description={
                     isCruceros
-                      ? "Opcional — nos ayuda a coordinar el traslado a la terminal."
-                      : "Opcional, pero recomendado — coordinamos el traslado según tu vuelo."
+                      ? "Necesitamos estos datos para coordinar el traslado a la terminal y reaccionar ante demoras."
+                      : "Necesitamos estos datos para coordinar el traslado y avisarte ante cambios en tu vuelo."
                   }
                 />
 
                 {isCruceros ? (
                   <>
-                    <Field label="Naviera">
+                    <Field label="Naviera" error={errors.cruiseLine}>
                       <input
                         type="text"
                         value={form.cruiseLine}
                         onChange={(e) => update("cruiseLine", e.target.value)}
                         placeholder="MSC, Costa, Royal Caribbean..."
-                        className={inputClass(false)}
+                        className={inputClass(!!errors.cruiseLine)}
                       />
                     </Field>
-                    <Field label="Terminal">
+                    <Field label="Terminal" error={errors.terminal}>
                       <input
                         type="text"
                         value={form.terminal}
                         onChange={(e) => update("terminal", e.target.value)}
                         placeholder="Quinquela Martín / Puerto Nuevo"
-                        className={inputClass(false)}
+                        className={inputClass(!!errors.terminal)}
                       />
                     </Field>
                   </>
@@ -592,22 +610,22 @@ export function PresentialBookingForm({ destino, defaultServiceType, destination
                       Vuelo de salida
                     </p>
                     <div className="grid gap-4 sm:grid-cols-2">
-                      <Field label="Aerolínea">
+                      <Field label="Aerolínea" error={errors.departureAirline}>
                         <input
                           type="text"
                           value={form.departureAirline}
                           onChange={(e) => update("departureAirline", e.target.value)}
                           placeholder="Aerolíneas Argentinas"
-                          className={inputClass(false)}
+                          className={inputClass(!!errors.departureAirline)}
                         />
                       </Field>
-                      <Field label="Número de vuelo">
+                      <Field label="Número de vuelo" error={errors.departureFlight}>
                         <input
                           type="text"
                           value={form.departureFlight}
                           onChange={(e) => update("departureFlight", e.target.value)}
                           placeholder="AR1234"
-                          className={inputClass(false)}
+                          className={inputClass(!!errors.departureFlight)}
                         />
                       </Field>
                     </div>
@@ -616,22 +634,22 @@ export function PresentialBookingForm({ destino, defaultServiceType, destination
                       Vuelo de regreso
                     </p>
                     <div className="grid gap-4 sm:grid-cols-2">
-                      <Field label="Aerolínea">
+                      <Field label="Aerolínea" error={errors.arrivalAirline}>
                         <input
                           type="text"
                           value={form.arrivalAirline}
                           onChange={(e) => update("arrivalAirline", e.target.value)}
                           placeholder="Aerolíneas Argentinas"
-                          className={inputClass(false)}
+                          className={inputClass(!!errors.arrivalAirline)}
                         />
                       </Field>
-                      <Field label="Número de vuelo">
+                      <Field label="Número de vuelo" error={errors.arrivalFlight}>
                         <input
                           type="text"
                           value={form.arrivalFlight}
                           onChange={(e) => update("arrivalFlight", e.target.value)}
                           placeholder="AR1235"
-                          className={inputClass(false)}
+                          className={inputClass(!!errors.arrivalFlight)}
                         />
                       </Field>
                     </div>
