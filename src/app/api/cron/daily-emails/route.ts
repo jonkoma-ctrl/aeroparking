@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 import { sendEmail } from "@/lib/email";
+import { getSiteSettings } from "@/lib/site-settings";
 import {
   buildReminderEmail,
   getReminderEmailSubject,
@@ -169,31 +170,40 @@ export async function GET(req: NextRequest) {
   }
 
   // ─── 3) Pedido de reseña: reservas completadas hace 2 días ────────────────
+  // Solo mandamos si el admin configuró una URL de reviews en /admin/settings.
+  // Sin URL configurada, salteamos este paso (mejor que mandar link inválido).
   try {
-    const { start, end } = dayBoundaries(-2);
-    const reviewCandidates = await prisma.aeroparqueReservation.findMany({
-      where: {
-        endDate: { gte: start, lt: end },
-        status: "completed",
-      },
-    });
+    const siteSettings = await getSiteSettings();
+    const reviewUrl = siteSettings.reviewUrl;
 
-    for (const r of reviewCandidates) {
-      if (!r.email) {
-        summary.reviewRequests.skipped++;
-        continue;
-      }
-      try {
-        const data = toEmailData(r);
-        await sendEmail({
-          to: r.email,
-          subject: getReviewRequestEmailSubject({ customerName: r.customerName }),
-          html: buildReviewRequestEmail(data),
-        });
-        summary.reviewRequests.sent++;
-      } catch (err) {
-        console.error("[cron/daily-emails] review-request failed for", r.externalOrderId, err);
-        summary.reviewRequests.failed++;
+    if (!reviewUrl) {
+      console.log("[cron/daily-emails] review-request skipped: no reviewUrl configured in SiteSettings");
+    } else {
+      const { start, end } = dayBoundaries(-2);
+      const reviewCandidates = await prisma.aeroparqueReservation.findMany({
+        where: {
+          endDate: { gte: start, lt: end },
+          status: "completed",
+        },
+      });
+
+      for (const r of reviewCandidates) {
+        if (!r.email) {
+          summary.reviewRequests.skipped++;
+          continue;
+        }
+        try {
+          const data = toEmailData(r);
+          await sendEmail({
+            to: r.email,
+            subject: getReviewRequestEmailSubject({ customerName: r.customerName }),
+            html: buildReviewRequestEmail(data, reviewUrl),
+          });
+          summary.reviewRequests.sent++;
+        } catch (err) {
+          console.error("[cron/daily-emails] review-request failed for", r.externalOrderId, err);
+          summary.reviewRequests.failed++;
+        }
       }
     }
   } catch (err) {

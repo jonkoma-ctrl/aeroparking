@@ -10,6 +10,7 @@ interface Settings {
   heroSubtitle: string | null;
   whatsappPhone: string | null;
   contactEmail: string | null;
+  reviewUrl: string | null;
 }
 
 export default function SettingsPage() {
@@ -20,6 +21,7 @@ export default function SettingsPage() {
     heroSubtitle: "",
     whatsappPhone: "",
     contactEmail: "",
+    reviewUrl: "",
   });
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -36,6 +38,7 @@ export default function SettingsPage() {
           heroSubtitle: data.heroSubtitle || "",
           whatsappPhone: data.whatsappPhone || "",
           contactEmail: data.contactEmail || "",
+          reviewUrl: data.reviewUrl || "",
         });
         setLoading(false);
       })
@@ -142,6 +145,22 @@ export default function SettingsPage() {
               placeholder="reservas@nrauditores.com.ar"
               className="w-full rounded border border-brand-200 px-3 py-2 text-sm"
             />
+          </div>
+
+          <div>
+            <label className="mb-1 block text-xs font-medium text-brand-600">
+              URL para reseñas (Google Business, Trustpilot, etc.)
+            </label>
+            <input
+              type="url"
+              value={settings.reviewUrl || ""}
+              onChange={(e) => setSettings({ ...settings, reviewUrl: e.target.value })}
+              placeholder="https://g.page/r/..."
+              className="w-full rounded border border-brand-200 px-3 py-2 text-sm"
+            />
+            <p className="mt-1 text-xs text-brand-500">
+              Se usa en el email de pedido de reseña post-viaje. Si está vacío, no se manda ese email.
+            </p>
           </div>
         </section>
 

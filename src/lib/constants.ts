@@ -42,7 +42,7 @@ export const FAQ_ITEMS = [
   {
     question: "¿El estacionamiento es seguro?",
     answer:
-      "Sí. Sector propio cubierto en Costa Salguero, vigilancia 24h con cámaras, personal uniformado en sede y registro firmado de ingreso/egreso de cada vehículo. Las llaves quedan en caja fuerte.",
+      "Sí. Sector propio cubierto en Costa Salguero, vigilancia 24h con cámaras, personal uniformado en sede y registro firmado de ingreso y egreso de cada vehículo. Las llaves quedan bajo resguardo del personal a cargo.",
   },
   {
     question: "¿Está cubierto por seguro?",

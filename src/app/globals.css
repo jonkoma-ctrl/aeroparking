@@ -111,7 +111,7 @@
     background-size: 200% 100%;
   }
 
-  /* Aspect ratio utilities (extra) */
+  /* Aspect ratio utilities (extra) — placeholder */
   .aspect-photo {
     aspect-ratio: 3 / 2;
   }

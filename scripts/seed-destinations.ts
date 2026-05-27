@@ -36,7 +36,7 @@ const DESTINATIONS: DestinationSeed[] = [
     shortLabel: "Ezeiza",
     iconKey: "plane",
     accentColor: "sky",
-    description: "Estacionamiento en Costa Salguero con traslado a Ezeiza ($40k por tramo).",
+    description: "Estacionamiento en Costa Salguero con traslado opcional al aeropuerto.",
     sortOrder: 20,
     imageUrl: "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=1600&q=80",
     imageAlt: "Aeropuerto Internacional de Ezeiza",

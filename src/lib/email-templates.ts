@@ -9,7 +9,8 @@ const WA_PHONE = "5491131606994";
 const WA_DISPLAY = "11 3160 6994";
 const ADMIN_MAIL = "reservas@nrauditores.com.ar";
 
-const REVIEW_GOOGLE_URL = "https://g.page/r/CXXX/review"; // TODO: reemplazar con URL real de Google Reviews
+// La URL real de review se carga dinámicamente desde SiteSettings (admin /settings).
+// Para usarla en templates, pasala via la prop `reviewUrl` o usá buildReviewRequestEmail(data, reviewUrl).
 
 // ─── Tipos compartidos ──────────────────────────────────────────────────────
 
@@ -175,22 +176,42 @@ function reservationCodeBlock(data: ReservationEmailData): string {
 /// Bloque con el instructivo de "qué hacer al llegar".
 function arrivalInstructions(): string {
   return `
+    <!-- Dirección destacada -->
     <div style="background:#eff6ff;border:1px solid #bfdbfe;border-radius:12px;padding:20px;margin-top:24px">
-      <h3 style="margin:0 0 12px;color:#1d4ed8;font-size:16px">📍 Llegada a Costa Salguero</h3>
-      <p style="margin:0 0 8px;color:#374151;font-size:14px;line-height:1.6">
-        Al llegar a nuestro estacionamiento te recibe nuestro personal, recibe tu vehículo, te cobra y te traslada al destino en nuestras unidades.
+      <h3 style="margin:0 0 12px;color:#1d4ed8;font-size:16px">📍 Dónde dejás y retirás el vehículo</h3>
+      <p style="margin:0 0 6px;color:#0f172a;font-size:17px;font-weight:700;line-height:1.4">
+        Av. Costanera Rafael Obligado s/n
       </p>
-      <p style="margin:0 0 12px;color:#374151;font-size:14px;line-height:1.6">
-        <strong>Dirección:</strong> Av. Costanera Rafael Obligado s/n, Costa Salguero, CABA
+      <p style="margin:0 0 14px;color:#0f172a;font-size:15px;line-height:1.4">
+        Costa Salguero · CABA
       </p>
-      <ul style="margin:0 0 16px;padding-left:20px;color:#374151;font-size:14px;line-height:1.8">
-        <li>Pago al dejar el vehículo: efectivo, tarjeta o transferencia</li>
-        <li>Traslado ida y vuelta incluido en nuestras unidades</li>
-        <li>Para cambios o cancelaciones, llamanos al ${WA_DISPLAY}</li>
-      </ul>
+      <p style="margin:0 0 14px;color:#374151;font-size:14px;line-height:1.6">
+        Al llegar te recibe nuestro personal, registra el vehículo, te cobra y te traslada al destino en nuestras unidades. Al regresar, te buscamos en la terminal y volvés a casa con tu auto.
+      </p>
       <a href="${MAPS_COSTA_SALGUERO}" style="display:inline-block;background:#1d4ed8;color:#fff;padding:10px 20px;border-radius:8px;text-decoration:none;font-size:14px;font-weight:600">
         📌 Ver ubicación en Google Maps
       </a>
+    </div>
+
+    <!-- Cambios y cancelaciones — bloque dedicado -->
+    <div style="background:#fef3c7;border:1px solid #fde68a;border-radius:12px;padding:20px;margin-top:16px">
+      <h3 style="margin:0 0 8px;color:#92400e;font-size:16px">📞 ¿Necesitás cambiar o cancelar?</h3>
+      <p style="margin:0 0 12px;color:#451a03;font-size:14px;line-height:1.6">
+        Escribinos por WhatsApp al <strong>${WA_DISPLAY}</strong>. Atención las 24 horas. También podés gestionar tu reserva con el botón de abajo.
+      </p>
+      <a href="https://wa.me/${WA_PHONE}" style="display:inline-block;background:#25d366;color:#fff;padding:10px 20px;border-radius:8px;text-decoration:none;font-size:14px;font-weight:600;margin-right:6px">
+        💬 Abrir WhatsApp
+      </a>
+    </div>
+
+    <!-- Recordatorios prácticos -->
+    <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:18px;margin-top:16px">
+      <p style="margin:0 0 8px;color:#0f172a;font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:1px">Tené en cuenta</p>
+      <ul style="margin:0;padding-left:20px;color:#374151;font-size:14px;line-height:1.8">
+        <li>Pago al dejar el vehículo: efectivo, tarjeta o transferencia</li>
+        <li>Cancelación gratis antes de entregar el vehículo</li>
+        <li>Si tu vuelo se retrasa, avisanos por WhatsApp al aterrizar</li>
+      </ul>
     </div>
   `;
 }
@@ -299,7 +320,9 @@ export function getWelcomeBackEmailSubject(data: { customerName: string }) {
 
 // ─── Template 4: Pedido de reseña ────────────────────────────────────────────
 
-export function buildReviewRequestEmail(data: ReservationEmailData): string {
+export function buildReviewRequestEmail(data: ReservationEmailData, reviewUrl?: string | null): string {
+  const url = reviewUrl || `${SITE_URL}/`;
+  const ctaLabel = reviewUrl ? "Dejar reseña" : "Visitar el sitio";
   const body = `
     <h2 style="margin:0 0 8px;color:#0f172a;font-size:22px">Hola ${data.customerName}, ¿cómo estuvo todo?</h2>
     <p style="margin:0 0 24px;color:#475569;font-size:15px;line-height:1.6">
@@ -310,8 +333,8 @@ export function buildReviewRequestEmail(data: ReservationEmailData): string {
       <p style="margin:0 0 16px;color:#0f172a;font-size:18px;font-weight:600">
         ⭐ ⭐ ⭐ ⭐ ⭐
       </p>
-      <a href="${REVIEW_GOOGLE_URL}" style="display:inline-block;background:#fbbf24;color:#0f172a;padding:14px 32px;border-radius:10px;text-decoration:none;font-size:15px;font-weight:700">
-        Dejar reseña en Google
+      <a href="${url}" style="display:inline-block;background:#fbbf24;color:#0f172a;padding:14px 32px;border-radius:10px;text-decoration:none;font-size:15px;font-weight:700">
+        ${ctaLabel}
       </a>
     </div>
 
@@ -340,7 +363,9 @@ export function buildAdminNotificationEmail(data: AdminNotificationData): string
   const code = data.externalOrderId || data.reservationId?.slice(0, 8) || "";
   const startStr = formatDate(data.startDate);
   const endStr = formatDate(data.endDate);
-  const adminUrl = `${SITE_URL}/admin/reservas`;
+  const adminUrl = data.reservationId
+    ? `${SITE_URL}/admin/agenda/${data.reservationId}`
+    : `${SITE_URL}/admin/agenda`;
 
   const body = `
     <h2 style="margin:0 0 8px;color:#0f172a;font-size:22px">Nueva reserva 📥</h2>

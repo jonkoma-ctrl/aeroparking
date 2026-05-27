@@ -367,6 +367,19 @@ El archivo que te baja se abre directo en Excel o Google Sheets. Tiene todas las
 
 ## 15. Historial de novedades
 
+### 17 de mayo de 2026 — Feedback del operador (lote 1)
+
+8 ajustes pedidos:
+
+- 💵 **El precio del traslado a Ezeiza** ya no aparece hardcodeado como "$40k" en la descripción. Ahora se lee de la tarifa en `/admin/tarifas` y se muestra en formato completo (`$40.000`). Si querés cambiar el valor, lo hacés desde tarifas.
+- ❓ **FAQ**: cambiado el texto introductorio ("¿No encontrás tu duda? Consultanos por WhatsApp...") y la respuesta sobre seguridad (sacamos "caja fuerte", ahora dice "bajo resguardo del personal a cargo").
+- 🔁 **Cambio de destino en `/reservar`**: si el cliente abre la página, elige Ezeiza, vuelve atrás y desde el menú elige Aeroparque, ahora la página se actualiza correctamente al destino nuevo (antes quedaba en el viejo).
+- 📧 **Email al admin**: el botón "Ver en panel admin" ahora lleva directo al detalle de la reserva en `/admin/agenda/[id]`, en vez de la página genérica.
+- 📍 **Email al cliente**: la dirección "Costa Salguero" aparece destacada como bloque grande. Antes estaba enterrada en una lista.
+- 💬 **Email al cliente**: bloque dedicado "¿Necesitás cambiar o cancelar?" con botón directo a WhatsApp. Antes era una bullet más.
+- ✈️ **Datos de vuelo obligatorios** al reservar: el paso 3 (Viaje) ya no se puede saltar. Hay que cargar aerolínea + número de vuelo (salida y regreso). Para Cruceros se piden naviera + terminal.
+- ⭐ **URL de reseñas configurable**: ya podés cargar la URL real de Google Reviews (o donde quieras que el cliente deje reseña) desde `/admin/settings`. Si está vacía, no se manda el email de pedido de reseña.
+
 ### 16 de mayo de 2026 — Sprint visual premium (look & feel)
 
 Le subimos el nivel al diseño visual sin tocar la marca:
