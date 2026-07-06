@@ -20,9 +20,9 @@ export const FAQ_ITEMS = [
       "Las reservas online se aceptan con al menos 24 horas de anticipación. Si necesitás algo más urgente, llamanos al 11 3160 6994 y lo coordinamos por teléfono.",
   },
   {
-    question: "¿El traslado al aeropuerto está incluido?",
+    question: "¿El traslado está incluido?",
     answer:
-      "Sí. El precio incluye el traslado ida y vuelta en nuestras unidades, sin costo adicional. Cubrimos Aeroparque, Ezeiza y la Terminal de Cruceros.",
+      "Para Aeroparque y la Terminal de Cruceros, sí: el precio incluye el traslado ida y vuelta en nuestras unidades, sin costo adicional. Para Ezeiza, el traslado es opcional y se abona por tramo (ida y/o vuelta) — el valor te lo mostramos al cotizar.",
   },
   {
     question: "¿Cómo y cuándo se paga?",

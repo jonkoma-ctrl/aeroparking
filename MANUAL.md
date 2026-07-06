@@ -367,6 +367,19 @@ El archivo que te baja se abre directo en Excel o Google Sheets. Tiene todas las
 
 ## 15. Historial de novedades
 
+### 3 de junio de 2026 — Feedback del operador (lote 2)
+
+- 🚐 **Cotizador de la home + Ezeiza**: ahora al cotizar Ezeiza aparece un aviso ámbar con el costo del traslado por tramo ("Traslado opcional: $40.000 por tramo") y la etiqueta de abajo dice "Traslado opcional por tramo" en vez de "Traslado incluido". El valor sale de Tarifas, no está fijo.
+- 🚐 **Reserva de Ezeiza (resumen final)**: el texto "El traslado ida y vuelta está incluido en el precio" ahora solo aparece para Aeroparque y Cruceros. Para Ezeiza dice "Traslado opcional: $40.000 por tramo. Lo coordinás y abonás al dejar el vehículo."
+- ❓ **FAQ traslado**: la respuesta ahora distingue: incluido para Aeroparque/Cruceros, opcional por tramo para Ezeiza.
+- 🔁 **Selector de destino trabado**: arreglado de raíz. Ahora podés cambiar entre Aeroparque, Ezeiza y Cruceros todas las veces que quieras y la página responde siempre.
+- 📧 **Link roto en el email interno**: el botón "Ver en panel admin" generaba un link relativo (el programa de correo lo interpretaba como archivo local). Corregido: siempre genera la URL completa del sitio.
+- 🔒 **Email interno identificado**: el mail que llega a reservas@nrauditores cuando entra una reserva ahora tiene un sello "Notificación interna — Uso del equipo" bien visible, para no confundirlo con la confirmación que recibe el cliente (esa sí tiene dirección, mapa y datos de contacto).
+- ⭐ **"5 años operando en BA"** reemplazado por **"Vasta experiencia en el rubro"**.
+- 📊 **Exportador de reservas arreglado**: el archivo ahora se abre en Excel con cada dato en su columna (antes salía todo en una sola columna). También se corrigieron los acentos y las fechas quedan en formato dd/mm/aaaa.
+
+**Nota para probar la confirmación del cliente**: mientras el modo prueba de emails esté activo, la confirmación al cliente solo se envía si la reserva se hace con uno de los emails de prueba (por ejemplo reservas@nrauditores.com.ar como email del cliente). Si reservan con cualquier otro email, solo llega la notificación interna.
+
 ### 17 de mayo de 2026 — Feedback del operador (lote 1)
 
 8 ajustes pedidos:

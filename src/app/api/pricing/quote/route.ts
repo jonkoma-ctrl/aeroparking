@@ -23,6 +23,8 @@ type PrismaPricing = {
   maxDays: number | null;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   durationDiscounts: any;
+  transferIncluded: boolean;
+  transferCostPerLeg: number | null;
 };
 
 function toRule(row: PrismaPricing): PricingRule {
@@ -37,6 +39,8 @@ function toRule(row: PrismaPricing): PricingRule {
     maxDays: row.maxDays,
     durationDiscounts: (row.durationDiscounts as DurationDiscount[] | null) || [],
     description: row.description,
+    transferIncluded: row.transferIncluded,
+    transferCostPerLeg: row.transferCostPerLeg,
   };
 }
 

@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { useSearchParams } from "next/navigation";
+import { useEffect, useRef, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Plane, Ship, Bus, Car, Train, MapPin, Banknote } from "lucide-react";
 import type { DestinationMeta } from "@/lib/destinos";
 import type { Destino } from "@/lib/pricing";
@@ -44,17 +44,30 @@ interface Props {
 export function ReservarPicker({ destinations, initialSlug }: Props) {
   const [selectedSlug, setSelectedSlug] = useState(initialSlug);
   const searchParams = useSearchParams();
+  const router = useRouter();
 
-  // Sincronizar con cambios de URL (?destino=...). Si el usuario llega de
-  // nuevo desde el Header dropdown o navegación interna, el state se
-  // actualiza solo para reflejar la nueva URL.
+  // Sincronizar SOLO cuando cambia el parámetro de la URL (navegación desde
+  // el Header, deep-link, back/forward). El ref guarda el último valor visto:
+  // así un click en un chip (que cambia el state pero no la URL todavía) no
+  // se ve pisado por este efecto.
+  const lastUrlParam = useRef(searchParams.get("destino"));
   useEffect(() => {
     const fromUrl = searchParams.get("destino");
-    if (fromUrl && fromUrl !== selectedSlug) {
-      const exists = destinations.some((d) => d.slug === fromUrl);
-      if (exists) setSelectedSlug(fromUrl);
+    if (fromUrl !== lastUrlParam.current) {
+      lastUrlParam.current = fromUrl;
+      if (fromUrl && destinations.some((d) => d.slug === fromUrl)) {
+        setSelectedSlug(fromUrl);
+      }
     }
-  }, [searchParams, destinations, selectedSlug]);
+  }, [searchParams, destinations]);
+
+  // Al clickear un chip: actualizar state + URL (sin recargar). Mantener la
+  // URL en sync evita estados divergentes al navegar con back/forward.
+  function selectDestination(slug: string) {
+    setSelectedSlug(slug);
+    lastUrlParam.current = slug;
+    router.replace(`/reservar?destino=${slug}`, { scroll: false });
+  }
 
   const selected = destinations.find((d) => d.slug === selectedSlug) ?? destinations[0];
 
@@ -118,7 +131,7 @@ export function ReservarPicker({ destinations, initialSlug }: Props) {
               <button
                 key={d.slug}
                 type="button"
-                onClick={() => setSelectedSlug(d.slug)}
+                onClick={() => selectDestination(d.slug)}
                 className={`flex items-center gap-2 rounded-xl border-2 px-3 py-3 text-sm font-medium transition ${
                   isSelected
                     ? accent

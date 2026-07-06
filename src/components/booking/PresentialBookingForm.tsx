@@ -24,6 +24,7 @@ import {
   type PresentialReservationInput,
 } from "@/lib/validations";
 import { CONTACT } from "@/lib/constants";
+import { formatPrice } from "@/lib/utils";
 import type { Destino } from "@/lib/pricing";
 import type { DestinationMeta } from "@/lib/destinos";
 
@@ -776,10 +777,21 @@ export function PresentialBookingForm({ destino, defaultServiceType, destination
                       dejar el vehículo. Aceptamos efectivo, tarjeta y transferencia.
                     </span>
                   </p>
-                  <p className="mt-2 flex items-start gap-2">
-                    <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-brand-900" />
-                    <span>El traslado ida y vuelta está incluido en el precio.</span>
-                  </p>
+                  {destinationMeta?.transferCostPerLeg ? (
+                    <p className="mt-2 flex items-start gap-2">
+                      <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-brand-900" />
+                      <span>
+                        <strong className="text-brand-900">Traslado opcional:</strong>{" "}
+                        {formatPrice(destinationMeta.transferCostPerLeg)} por tramo (ida y/o
+                        vuelta). Lo coordinás y abonás al dejar el vehículo.
+                      </span>
+                    </p>
+                  ) : (
+                    <p className="mt-2 flex items-start gap-2">
+                      <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-brand-900" />
+                      <span>El traslado ida y vuelta está incluido en el precio.</span>
+                    </p>
+                  )}
                 </div>
 
                 {submitError && (
