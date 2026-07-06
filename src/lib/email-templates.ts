@@ -368,9 +368,13 @@ export function buildAdminNotificationEmail(data: AdminNotificationData): string
     : `${SITE_URL}/admin/agenda`;
 
   const body = `
+    <div style="background:#0f172a;border-radius:8px;padding:8px 14px;margin-bottom:20px;display:inline-block">
+      <p style="margin:0;color:#fbbf24;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:2px">🔒 Notificación interna — Uso del equipo</p>
+    </div>
     <h2 style="margin:0 0 8px;color:#0f172a;font-size:22px">Nueva reserva 📥</h2>
     <p style="margin:0 0 24px;color:#475569;font-size:15px;line-height:1.6">
-      Entró una reserva por la web. Los datos abajo:
+      Entró una reserva por la web. El cliente recibió su propio email de confirmación
+      con la dirección, el instructivo de llegada y el contacto para cambios.
     </p>
 
     <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:18px;margin-bottom:24px">

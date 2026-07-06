@@ -2,6 +2,12 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 
 // GET /api/admin/export?dest=&serviceType=&status=&from=&to=
+//
+// Genera un CSV compatible con Excel en configuración regional española:
+//  - Separador ";" (Excel es-AR/es-ES interpreta la coma como decimal y
+//    mete todo en una sola columna si se usa ",").
+//  - BOM UTF-8 al inicio para que Excel muestre bien acentos y ñ.
+//  - Todos los campos entre comillas, con comillas internas escapadas.
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
   const dest = searchParams.get("dest");
@@ -26,35 +32,52 @@ export async function GET(req: NextRequest) {
     orderBy: { startDate: "desc" },
   });
 
-  const header = "Pedido,Estado,Destino,Servicio,Cliente,Email,Telefono,DNI,Patente,Marca,Modelo,Ingreso,Retiro,Precio,Aerolinea Salida,Vuelo Salida,Aerolinea Arribo,Vuelo Arribo,Hora Arribo,Pasajeros";
+  const SEP = ";";
 
-  const rows = reservations.map((r) => {
-    const fmt = (d: Date) => d.toISOString().slice(0, 10);
-    return [
+  // Escapar un valor para CSV: siempre entre comillas, comillas internas dobladas.
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const q = (v: any): string => {
+    const s = v === null || v === undefined ? "" : String(v);
+    return `"${s.replace(/"/g, '""')}"`;
+  };
+
+  const fmtDate = (d: Date) =>
+    `${String(d.getDate()).padStart(2, "0")}/${String(d.getMonth() + 1).padStart(2, "0")}/${d.getFullYear()}`;
+
+  const header = [
+    "Pedido", "Estado", "Destino", "Servicio", "Cliente", "Email", "Telefono",
+    "DNI", "Patente", "Marca", "Modelo", "Ingreso", "Retiro", "Precio",
+    "Aerolinea Salida", "Vuelo Salida", "Aerolinea Arribo", "Vuelo Arribo",
+    "Hora Arribo", "Pasajeros",
+  ].map(q).join(SEP);
+
+  const rows = reservations.map((r) =>
+    [
       r.externalOrderId,
       r.status,
       r.destination,
       r.serviceType,
-      `"${r.customerName}"`,
+      r.customerName,
       r.email || "",
       r.phone || "",
       r.dni || "",
       r.licensePlate,
-      `"${r.carBrand}"`,
-      `"${r.carModel}"`,
-      fmt(r.startDate),
-      fmt(r.endDate),
-      r.price,
+      r.carBrand,
+      r.carModel,
+      fmtDate(r.startDate),
+      fmtDate(r.endDate),
+      r.price ?? "",
       r.departureAirline || "",
       r.departureFlight || "",
       r.arrivalAirline || "",
       r.arrivalFlight || "",
       r.arrivalTime || "",
-      r.passengers || "",
-    ].join(",");
-  });
+      r.passengers ?? "",
+    ].map(q).join(SEP)
+  );
 
-  const csv = [header, ...rows].join("\n");
+  // BOM UTF-8 para que Excel detecte la codificación correctamente.
+  const csv = "\uFEFF" + [header, ...rows].join("\r\n");
 
   return new NextResponse(csv, {
     headers: {

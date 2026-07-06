@@ -36,6 +36,10 @@ export interface PricingRule {
   maxDays?: number | null;
   durationDiscounts?: DurationDiscount[] | null;
   description?: string | null;
+  /** false → el traslado se cobra aparte por tramo (Ezeiza) */
+  transferIncluded?: boolean;
+  /** ARS por tramo, solo cuando transferIncluded === false */
+  transferCostPerLeg?: number | null;
 }
 
 export interface QuoteInput {
@@ -59,6 +63,10 @@ export interface QuoteResult {
   isReferencePrice: boolean;
   externalCheckoutUrl?: string | null;
   description?: string | null;
+  /** false → el traslado se cobra aparte por tramo. El total NO lo incluye. */
+  transferIncluded: boolean;
+  /** ARS por tramo cuando el traslado no está incluido. */
+  transferCostPerLeg: number | null;
 }
 
 export type ValidationResult =
@@ -139,6 +147,8 @@ export function calculateQuote(input: QuoteInput, rule: PricingRule): QuoteResul
     isReferencePrice: rule.isReference,
     externalCheckoutUrl: rule.externalCheckoutUrl,
     description: rule.description,
+    transferIncluded: rule.transferIncluded !== false,
+    transferCostPerLeg: rule.transferIncluded === false ? (rule.transferCostPerLeg ?? null) : null,
   };
 }
 

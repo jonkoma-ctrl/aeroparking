@@ -201,7 +201,7 @@ export function BookingWidget({
             </button>
 
             <div className="mt-4 flex flex-wrap items-center justify-center gap-3 text-xs text-brand-500">
-              <span className="flex items-center gap-1"><Check className="h-3.5 w-3.5 text-green-600" /> Traslado incluido</span>
+              <span className="flex items-center gap-1"><Check className="h-3.5 w-3.5 text-green-600" /> {destino === "ezeiza" ? "Traslado opcional por tramo" : "Traslado incluido"}</span>
               <span className="flex items-center gap-1"><Clock className="h-3.5 w-3.5 text-green-600" /> Reserva en 2 min</span>
               <span className="flex items-center gap-1"><CreditCard className="h-3.5 w-3.5 text-green-600" /> Pagás al dejar el auto</span>
             </div>
@@ -291,12 +291,23 @@ function QuoteResultView({
           )}
         </div>
 
+        {/* Traslado no incluido (Ezeiza): mostrar costo por tramo */}
+        {!quote.transferIncluded && quote.transferCostPerLeg ? (
+          <div className="mt-4 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2.5 text-sm text-amber-800">
+            🚐 <strong>Traslado opcional:</strong> {formatPrice(quote.transferCostPerLeg)} por
+            tramo (ida y/o vuelta). No está incluido en el precio de la cochera.
+          </div>
+        ) : null}
       </div>
 
       {/* Badges */}
       <div className="mt-4 flex flex-wrap gap-2">
         <Badge icon="🏆" text="Mejor tarifa online" />
-        <Badge icon="🚐" text="Traslado incluido" />
+        {quote.transferIncluded ? (
+          <Badge icon="🚐" text="Traslado incluido" />
+        ) : (
+          <Badge icon="🚐" text="Traslado opcional por tramo" />
+        )}
         <Badge icon="⚡" text="Reserva rápida" />
         <Badge icon="💳" text="Pagás al dejar el auto" />
       </div>

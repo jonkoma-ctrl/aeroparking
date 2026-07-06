@@ -96,7 +96,7 @@ export function Benefits() {
                   { value: "+2.000", label: "Viajeros atendidos" },
                   { value: "4.8★", label: "Rating promedio" },
                   { value: "24/7", label: "Atención" },
-                  { value: "5 años", label: "Operando en BA" },
+                  { value: "★★★", label: "Vasta experiencia en el rubro" },
                 ].map((s) => (
                   <div key={s.label} className="text-center">
                     <div className="text-stat-xl font-display text-white tabular-nums">
