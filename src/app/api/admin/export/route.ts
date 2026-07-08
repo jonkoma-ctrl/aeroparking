@@ -44,11 +44,20 @@ export async function GET(req: NextRequest) {
   const fmtDate = (d: Date) =>
     `${String(d.getDate()).padStart(2, "0")}/${String(d.getMonth() + 1).padStart(2, "0")}/${d.getFullYear()}`;
 
+  // Extrae "HH:MM" desde un DateTime (hora AR, UTC-3) como fallback si el
+  // campo de hora en string viniera vacío.
+  const fmtTime = (d: Date) => {
+    const ar = new Date(d.getTime() - 3 * 60 * 60 * 1000);
+    return `${String(ar.getUTCHours()).padStart(2, "0")}:${String(ar.getUTCMinutes()).padStart(2, "0")}`;
+  };
+
   const header = [
     "Pedido", "Estado", "Destino", "Servicio", "Cliente", "Email", "Telefono",
-    "DNI", "Patente", "Marca", "Modelo", "Ingreso", "Retiro", "Precio",
-    "Aerolinea Salida", "Vuelo Salida", "Aerolinea Arribo", "Vuelo Arribo",
-    "Hora Arribo", "Pasajeros",
+    "DNI", "Patente", "Marca", "Modelo",
+    "Fecha Ingreso", "Hora Ingreso", "Fecha Retiro", "Hora Retiro",
+    "Precio",
+    "Aerolinea Salida", "Vuelo Salida", "Aerolinea Regreso", "Vuelo Regreso",
+    "Pasajeros",
   ].map(q).join(SEP);
 
   const rows = reservations.map((r) =>
@@ -65,13 +74,14 @@ export async function GET(req: NextRequest) {
       r.carBrand,
       r.carModel,
       fmtDate(r.startDate),
+      r.checkInTime || fmtTime(r.startDate),
       fmtDate(r.endDate),
+      r.arrivalTime || fmtTime(r.endDate),
       r.price ?? "",
       r.departureAirline || "",
       r.departureFlight || "",
       r.arrivalAirline || "",
       r.arrivalFlight || "",
-      r.arrivalTime || "",
       r.passengers ?? "",
     ].map(q).join(SEP)
   );
