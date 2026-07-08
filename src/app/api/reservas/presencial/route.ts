@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 import { presentialReservationSchema } from "@/lib/validations";
+import { calculateStays } from "@/lib/pricing";
 import { sendEmail } from "@/lib/email";
 import {
   buildReservationEmail,
@@ -72,6 +73,23 @@ export async function POST(req: NextRequest) {
     const startDate = new Date(`${data.startDate}T${data.checkInTime}`);
     const endDate = new Date(`${data.endDate}T${data.arrivalTime}`);
 
+    // Precio estimado de la cochera según tarifa vigente y estadías.
+    // El pago es presencial, pero guardamos el estimado para que la agenda
+    // y el dashboard muestren el monto. El traslado de Ezeiza (opcional) se
+    // suma al cobrar en sede, no acá.
+    let estimatedPrice = 0;
+    try {
+      const tariff = await prisma.servicePricing.findFirst({
+        where: { destination: data.destination, serviceType: data.serviceType, active: true },
+      });
+      if (tariff) {
+        const stays = calculateStays(startDate, endDate);
+        estimatedPrice = Math.round(stays.totalEquivalent * tariff.pricePerDay);
+      }
+    } catch (e) {
+      console.error("[reservas/presencial] no se pudo calcular precio estimado:", e);
+    }
+
     const reservation = await prisma.aeroparqueReservation.create({
       data: {
         externalOrderId: code,
@@ -86,7 +104,7 @@ export async function POST(req: NextRequest) {
         carModel: data.carModel,
         startDate,
         endDate,
-        price: 0, // pago presencial: el monto final se carga al cobrar
+        price: estimatedPrice, // estimado según tarifa; el monto final se ajusta al cobrar
         passengers: data.passengers,
         checkInTime: data.checkInTime,
         arrivalTime: data.arrivalTime,
@@ -119,7 +137,7 @@ export async function POST(req: NextRequest) {
       arrivalAirline: data.arrivalAirline || null,
       arrivalFlight: data.arrivalFlight || null,
       passengers: data.passengers,
-      price: null,
+      price: estimatedPrice || null,
     };
 
     // Mail de confirmación al cliente (best-effort, no rompe el create si falla)
