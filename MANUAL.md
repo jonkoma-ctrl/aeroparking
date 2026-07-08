@@ -367,6 +367,10 @@ El archivo que te baja se abre directo en Excel o Google Sheets. Tiene todas las
 
 ## 15. Historial de novedades
 
+### 3 de junio de 2026 — Horario de entrada en el reporte
+
+- 🕒 El exportador de reservas ahora incluye el **horario de entrada** (hora de ingreso) además de la fecha. Reorganizamos las columnas para que quede claro: "Fecha Ingreso", "Hora Ingreso", "Fecha Retiro", "Hora Retiro". Antes solo salían las fechas y una columna suelta "Hora Arribo".
+
 ### 3 de junio de 2026 — Feedback del operador (lote 2)
 
 - 🚐 **Cotizador de la home + Ezeiza**: ahora al cotizar Ezeiza aparece un aviso ámbar con el costo del traslado por tramo ("Traslado opcional: $40.000 por tramo") y la etiqueta de abajo dice "Traslado opcional por tramo" en vez de "Traslado incluido". El valor sale de Tarifas, no está fijo.
