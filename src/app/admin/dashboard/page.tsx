@@ -49,13 +49,18 @@ export default async function DashboardPage({ searchParams }: PageProps) {
   const destFilter = sp.dest && sp.dest !== "todos" ? sp.dest : undefined;
   const statusFilter = sp.status && sp.status !== "todos" ? sp.status : undefined;
 
+  // Filtramos por FECHA DE CREACIÓN de la reserva (createdAt), no por la fecha
+  // de ingreso al estacionamiento. Así el operador ve las reservas que
+  // entraron en el período — incluidas las que son para viajar a futuro
+  // (ej: reservas de julio cargadas en junio). Filtrar por startDate escondía
+  // todas las reservas con fecha de viaje futura.
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const where: any = { startDate: { gte: from, lte: to } };
+  const where: any = { createdAt: { gte: from, lte: to } };
   if (destFilter) where.destination = destFilter;
   if (statusFilter) where.status = statusFilter;
 
   const [aeroRows, destinations] = await Promise.all([
-    prisma.aeroparqueReservation.findMany({ where, orderBy: { startDate: "desc" } }),
+    prisma.aeroparqueReservation.findMany({ where, orderBy: { createdAt: "desc" } }),
     listActiveDestinations(),
   ]);
 
@@ -74,7 +79,7 @@ export default async function DashboardPage({ searchParams }: PageProps) {
   // Período anterior para deltas
   const prev = previousRange(from, to);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const prevWhere: any = { startDate: { gte: prev.from, lte: prev.to } };
+  const prevWhere: any = { createdAt: { gte: prev.from, lte: prev.to } };
   if (destFilter) prevWhere.destination = destFilter;
   if (statusFilter) prevWhere.status = statusFilter;
   const prevRows = await prisma.aeroparqueReservation.findMany({ where: prevWhere });

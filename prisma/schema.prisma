@@ -73,6 +73,10 @@ model AeroparqueReservation {
   checkInTime         String?
   passengers          Int?
 
+  // Crucero (destino puerto / serviceType cruceros)
+  cruiseLine          String?
+  terminal            String?
+
   // Notas
   notes            String?  @db.Text
 

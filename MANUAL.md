@@ -367,6 +367,13 @@ El archivo que te baja se abre directo en Excel o Google Sheets. Tiene todas las
 
 ## 15. Historial de novedades
 
+### 3 de junio de 2026 — Feedback del operador (lote 3)
+
+- 📊 **Dashboard ahora muestra las reservas de Cruceros (y todas las futuras)**: antes el panel filtraba por fecha de ingreso al estacionamiento mirando solo los últimos 30 días hacia atrás, así que las reservas cargadas para viajar más adelante (ej: un crucero en julio reservado en junio) no aparecían. Ahora filtra por **fecha en que se cargó la reserva**, que es lo natural para ver "cuántas reservas entraron".
+- 🚢 **Datos del crucero (naviera y terminal) ahora se guardan**: antes al reservar Cruceros esos datos no quedaban registrados. Ya se guardan y quedan en la ficha de la reserva.
+- ⚠️ **Mensaje de error más claro al reservar**: si algún dato queda mal cargado, el sistema ahora dice exactamente qué campo revisar en lugar del genérico "Datos inválidos".
+- 🕒 **Horario de ingreso/salida en el reporte** (ya estaba deployado, quedó del lote anterior): el reporte trae columnas "Fecha Ingreso", "Hora Ingreso", "Fecha Retiro", "Hora Retiro".
+
 ### 3 de junio de 2026 — Horario de entrada en el reporte
 
 - 🕒 El exportador de reservas ahora incluye el **horario de entrada** (hora de ingreso) además de la fecha. Reorganizamos las columnas para que quede claro: "Fecha Ingreso", "Hora Ingreso", "Fecha Retiro", "Hora Retiro". Antes solo salían las fechas y una columna suelta "Hora Arribo".

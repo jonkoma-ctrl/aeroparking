@@ -51,8 +51,15 @@ export async function POST(req: NextRequest) {
     const parsed = presentialReservationSchema.safeParse(body);
 
     if (!parsed.success) {
+      const flat = parsed.error.flatten();
+      // Primer mensaje de error concreto (campo o refine cross-field) para
+      // mostrarle al cliente algo accionable en vez de "Datos inválidos".
+      const firstFieldError = Object.values(flat.fieldErrors).flat()[0];
+      const firstFormError = flat.formErrors[0];
+      const msg = firstFieldError || firstFormError || "Revisá los datos ingresados";
+      console.error("[reservas/presencial] validación falló:", JSON.stringify(flat));
       return NextResponse.json(
-        { error: "Datos inválidos", details: parsed.error.flatten() },
+        { error: msg, details: flat },
         { status: 400 }
       );
     }
@@ -87,6 +94,8 @@ export async function POST(req: NextRequest) {
         departureFlight: data.departureFlight || null,
         arrivalAirline: data.arrivalAirline || null,
         arrivalFlight: data.arrivalFlight || null,
+        cruiseLine: data.cruiseLine || null,
+        terminal: data.terminal || null,
         notes: data.notes || null,
       },
     });
