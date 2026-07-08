@@ -367,6 +367,12 @@ El archivo que te baja se abre directo en Excel o Google Sheets. Tiene todas las
 
 ## 15. Historial de novedades
 
+### 8 de julio de 2026 — Feedback del operador (lote 4)
+
+- 💰 **Cotizador de Aeroparque arreglado**: daba "No hay servicios disponibles" para estadías cortas (1-3 días). Tenía cargados topes viejos (mínimo 4 días / máximo 14) que no correspondían al servicio actual. Los limpiamos: ahora cotiza cualquier duración. También sacamos una tarifa vieja de "Cruceros en Aeroparque" que había quedado colgada.
+- 🏷️ **Las reservas ahora muestran el precio estimado en la Agenda**: antes figuraban en $0. Ahora, al reservar, el sistema calcula el precio según la tarifa vigente y las estadías, y lo guarda. El monto final se ajusta igual al cobrar en sede.
+- ℹ️ **Sobre "Datos inválidos" al reservar**: revisamos los 3 destinos y las reservas se crean correctamente. Lo que pasó en la prueba fue una combinación de (a) versión vieja de la página guardada en el navegador — se soluciona con Ctrl+F5 — y (b) fechas elegidas dentro de las 24hs de anticipación (el sistema pide mínimo 24hs). Ahora el sistema avisa exactamente qué corregir en lugar del mensaje genérico.
+
 ### 3 de junio de 2026 — Feedback del operador (lote 3)
 
 - 📊 **Dashboard ahora muestra las reservas de Cruceros (y todas las futuras)**: antes el panel filtraba por fecha de ingreso al estacionamiento mirando solo los últimos 30 días hacia atrás, así que las reservas cargadas para viajar más adelante (ej: un crucero en julio reservado en junio) no aparecían. Ahora filtra por **fecha en que se cargó la reserva**, que es lo natural para ver "cuántas reservas entraron".
