@@ -80,6 +80,13 @@ model AeroparqueReservation {
   // Notas
   notes            String?  @db.Text
 
+  // QR + control de acceso (check-in/out en Costa Salguero)
+  qrToken          String?  @unique  // código corto tipeable (6 chars) que va en el QR
+  checkedInAt      DateTime?          // cuándo ingresó el auto a la sede
+  checkedOutAt     DateTime?          // cuándo se retiró
+  checkInBy        String?            // quién marcó el ingreso (personal)
+  checkOutBy       String?            // quién marcó el retiro
+
   // Auditoría
   rawEmailSubject  String?  // DEPRECATED — legacy AA2000 webhook, sin uso desde may-2026
   rawEmailBody     String?  @db.Text   // DEPRECATED — legacy AA2000 webhook, sin uso desde may-2026

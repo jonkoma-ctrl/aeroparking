@@ -6,6 +6,17 @@
 
 ---
 
+## Novedad destacada — Código QR y Vista del día
+
+Ahora cada reserva genera un **código QR** que le llega al cliente por email. El personal de Costa Salguero puede:
+
+- **Escanear el QR** (📷 Escáner en el menú) con el celular para registrar el ingreso del auto y el retiro, sin buscar la reserva a mano. Si la cámara no lee, se puede tipear el código corto de 6 letras.
+- Abrir la **Vista del día** (🗓️ en el menú) a la mañana para ver todos los autos que ingresan (o retiran) ese día, ordenados por hora. Se puede **imprimir** para tener la lista en papel.
+
+Ver secciones 17 (Escáner) y 18 (Vista del día) para el detalle.
+
+---
+
 ## Índice
 
 1. [Qué es Aeroparking](#1-que-es-aeroparking)
@@ -490,3 +501,46 @@ Le subimos el nivel al diseño visual sin tocar la marca:
 - **Cambios que querés sumar al sistema** (nuevas pantallas, integraciones): anotalos y mandáselos a Jon.
 
 Este manual se actualiza cada vez que se hace un cambio importante. Si ves algo que no encaja con la realidad (un botón que cambió de lugar, una pantalla nueva que no está documentada), avisanos.
+
+---
+
+## 17. Escáner de ingreso / retiro (QR)
+
+**URL**: [aeroparking.vercel.app/admin/scan](https://aeroparking.vercel.app/admin/scan)
+
+Cada reserva genera un código QR que le llega al cliente en el email de confirmación. Con el escáner registrás cuándo el auto **entra** y cuándo **se retira**, sin buscar la reserva a mano.
+
+### Cómo usarlo
+
+1. Entrá a **Escáner** (📷 en el menú) desde el celular.
+2. Elegí qué querés registrar arriba:
+   - **Automático** (recomendado): el primer escaneo de una reserva registra el ingreso, el segundo el retiro.
+   - **Ingreso** o **Retiro**: forzás uno u otro.
+3. Tocá **"Escanear QR"** → se abre la cámara → apuntá al QR del cliente.
+4. La pantalla te muestra en verde ✓ si se registró, o en rojo ✗ con el motivo si algo no cierra (ej: reserva cancelada, ya registrada).
+
+### Si la cámara no lee el QR
+
+Debajo del botón de la cámara hay un campo **"Ingresá el código"**. Pedile al cliente el código de 6 letras que figura en su email (ej: `A7K2QP`) y escribilo ahí → **Buscar**.
+
+### Qué pasa al escanear
+
+- **Ingreso**: la reserva pasa a estado "En sede" y queda registrada la hora real.
+- **Retiro**: la reserva pasa a "Completada" con la hora real de salida.
+
+---
+
+## 18. Vista del día
+
+**URL**: [aeroparking.vercel.app/admin/dia](https://aeroparking.vercel.app/admin/dia)
+
+Es la pantalla que el personal abre a la mañana para saber **qué autos vienen hoy**. Muestra las reservas ordenadas por hora, con todos los datos que necesitás.
+
+### Cómo usarla
+
+- Arriba elegís **Ingresos** (autos que llegan) o **Retiros** (autos que se van) ese día.
+- Con las flechas **← Hoy →** te movés entre días. Podés preparar la lista del día siguiente la noche anterior.
+- Cada fila muestra: hora, cliente, patente, vehículo, destino, vuelo y una casilla para tildar.
+- Botón **Imprimir**: saca la lista en papel (sin los menús, solo la tabla) para tenerla a mano en la playa.
+
+La casilla de la derecha se tilda sola en verde cuando el auto ya registró su ingreso/retiro por el escáner, o la podés tildar a mano en la copia impresa.
