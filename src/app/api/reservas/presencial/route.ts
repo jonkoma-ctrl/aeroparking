@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 import { presentialReservationSchema } from "@/lib/validations";
 import { calculateStays } from "@/lib/pricing";
+import { generateQrToken, qrPngBuffer } from "@/lib/qr";
 import { sendEmail } from "@/lib/email";
 import {
   buildReservationEmail,
@@ -90,6 +91,9 @@ export async function POST(req: NextRequest) {
       console.error("[reservas/presencial] no se pudo calcular precio estimado:", e);
     }
 
+    // Token QR único (para el check-in con escáner en Costa Salguero)
+    const qrToken = generateQrToken();
+
     const reservation = await prisma.aeroparqueReservation.create({
       data: {
         externalOrderId: code,
@@ -115,6 +119,7 @@ export async function POST(req: NextRequest) {
         cruiseLine: data.cruiseLine || null,
         terminal: data.terminal || null,
         notes: data.notes || null,
+        qrToken,
       },
     });
 
@@ -138,6 +143,7 @@ export async function POST(req: NextRequest) {
       arrivalFlight: data.arrivalFlight || null,
       passengers: data.passengers,
       price: estimatedPrice || null,
+      qrToken,
     };
 
     // Mail de confirmación al cliente (best-effort, no rompe el create si falla)

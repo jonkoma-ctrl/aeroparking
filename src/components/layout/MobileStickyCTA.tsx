@@ -27,7 +27,7 @@ export function MobileStickyCTA() {
 
   return (
     <div
-      className={`fixed inset-x-0 bottom-0 z-30 border-t border-brand-200 bg-white px-4 py-3 shadow-elevated transition-transform duration-300 sm:hidden ${
+      className={`fixed inset-x-0 bottom-0 z-30 print:hidden border-t border-brand-200 bg-white px-4 py-3 shadow-elevated transition-transform duration-300 sm:hidden ${
         visible ? "translate-y-0" : "translate-y-full"
       }`}
     >

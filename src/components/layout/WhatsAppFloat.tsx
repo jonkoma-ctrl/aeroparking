@@ -12,7 +12,7 @@ export function WhatsAppFloat({ phone = "5491131606994" }: { phone?: string }) {
       target="_blank"
       rel="noopener noreferrer"
       aria-label="Consultá por WhatsApp"
-      className="group fixed bottom-5 right-5 z-40 flex h-14 w-14 items-center justify-center rounded-full bg-[#25d366] shadow-elevated transition-transform hover:scale-110 hover:bg-[#1ebe5a] sm:bottom-6 sm:right-6 sm:h-16 sm:w-16"
+      className="group fixed bottom-5 right-5 z-40 print:hidden flex h-14 w-14 items-center justify-center rounded-full bg-[#25d366] shadow-elevated transition-transform hover:scale-110 hover:bg-[#1ebe5a] sm:bottom-6 sm:right-6 sm:h-16 sm:w-16"
     >
       {/* WhatsApp SVG */}
       <svg

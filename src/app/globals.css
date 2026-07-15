@@ -44,6 +44,12 @@
   }
 }
 
+/* Impresión: ocultar navegación global y dejar solo el contenido */
+@media print {
+  header, footer { display: none !important; }
+  body { background: white !important; }
+}
+
 @layer utilities {
   .text-balance {
     text-wrap: balance;

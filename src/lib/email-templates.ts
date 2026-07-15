@@ -44,6 +44,22 @@ export interface ReservationEmailData {
   passengers?: number | null;
   destinationImageUrl?: string | null;
   destinationImageAlt?: string | null;
+  qrToken?: string | null;
+}
+
+/** Bloque QR para el email de confirmación (código de acceso a la sede). */
+function qrBlock(qrToken: string | null | undefined): string {
+  if (!qrToken) return "";
+  const qrImg = `${SITE_URL}/api/qr/${qrToken}`;
+  return `
+    <div style="margin-top:24px;border:2px solid #1e3a8a;border-radius:12px;padding:20px;text-align:center;background:#f8fafc">
+      <p style="margin:0 0 4px;color:#1e3a8a;font-size:14px;font-weight:700;text-transform:uppercase;letter-spacing:1px">Tu código de ingreso</p>
+      <p style="margin:0 0 14px;color:#64748b;font-size:13px">Mostralo al llegar a Costa Salguero para registrar tu ingreso.</p>
+      <img src="${qrImg}" alt="Código QR de la reserva" width="200" height="200" style="display:block;margin:0 auto;width:200px;height:200px" />
+      <p style="margin:14px 0 0;color:#0f172a;font-size:22px;font-weight:800;letter-spacing:4px;font-family:monospace">${qrToken}</p>
+      <p style="margin:6px 0 0;color:#94a3b8;font-size:12px">Si el escáner no lee el QR, dictá este código.</p>
+    </div>
+  `;
 }
 
 // ─── Helpers de markup ───────────────────────────────────────────────────────
@@ -245,6 +261,7 @@ export function buildReservationEmail(data: ReservationEmailData): string {
     </p>
     ${reservationCodeBlock(data)}
     ${reservationTable(data)}
+    ${qrBlock(data.qrToken)}
     ${arrivalInstructions()}
     ${manageReservationCta(data)}
   `;
