@@ -25,6 +25,7 @@ import {
 } from "@/lib/validations";
 import { CONTACT } from "@/lib/constants";
 import { formatPrice } from "@/lib/utils";
+import { CarPicker } from "./CarPicker";
 import type { Destino } from "@/lib/pricing";
 import type { DestinationMeta } from "@/lib/destinos";
 
@@ -548,26 +549,15 @@ export function PresentialBookingForm({ destino, defaultServiceType, destination
                     maxLength={10}
                   />
                 </Field>
-                <div className="grid gap-4 sm:grid-cols-2">
-                  <Field label="Marca" error={errors.carBrand}>
-                    <input
-                      type="text"
-                      value={form.carBrand}
-                      onChange={(e) => update("carBrand", e.target.value)}
-                      placeholder="Toyota"
-                      className={inputClass(!!errors.carBrand)}
-                    />
-                  </Field>
-                  <Field label="Modelo" error={errors.carModel}>
-                    <input
-                      type="text"
-                      value={form.carModel}
-                      onChange={(e) => update("carModel", e.target.value)}
-                      placeholder="Corolla"
-                      className={inputClass(!!errors.carModel)}
-                    />
-                  </Field>
-                </div>
+                <CarPicker
+                  brand={form.carBrand}
+                  model={form.carModel}
+                  onBrandChange={(v) => update("carBrand", v)}
+                  onModelChange={(v) => update("carModel", v)}
+                  brandError={errors.carBrand}
+                  modelError={errors.carModel}
+                  inputClass={inputClass}
+                />
               </div>
             )}
 

@@ -378,6 +378,10 @@ El archivo que te baja se abre directo en Excel o Google Sheets. Tiene todas las
 
 ## 15. Historial de novedades
 
+### 15 de julio de 2026 — Selección de marca y modelo en la reserva
+
+- 🚗 En el paso "Vehículo" de la reserva, la **marca** y el **modelo** ahora se eligen de una lista desplegable (con las marcas y modelos más comunes en Argentina) en vez de escribirse a mano. Es más rápido y evita errores de tipeo. Si el auto no está en la lista, la opción "Otra marca / Otro modelo" permite escribirlo libre.
+
 ### 8 de julio de 2026 — Feedback del operador (lote 4)
 
 - 💰 **Cotizador de Aeroparque arreglado**: daba "No hay servicios disponibles" para estadías cortas (1-3 días). Tenía cargados topes viejos (mínimo 4 días / máximo 14) que no correspondían al servicio actual. Los limpiamos: ahora cotiza cualquier duración. También sacamos una tarifa vieja de "Cruceros en Aeroparque" que había quedado colgada.
