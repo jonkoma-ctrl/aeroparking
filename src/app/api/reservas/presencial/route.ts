@@ -91,7 +91,7 @@ export async function POST(req: NextRequest) {
       console.error("[reservas/presencial] no se pudo calcular precio estimado:", e);
     }
 
-    // Token QR único (para el check-in con escáner en Costa Salguero)
+    // Token QR único (para el check-in con escáner en BA Ferial (ex Costa Salguero))
     const qrToken = generateQrToken();
 
     const reservation = await prisma.aeroparqueReservation.create({

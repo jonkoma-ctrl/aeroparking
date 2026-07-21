@@ -7,7 +7,7 @@ import { ReservarPicker } from "@/components/booking/ReservarPicker";
 export const metadata: Metadata = {
   title: `Reservar — ${BRAND_NAME}`,
   description:
-    "Reservá tu estacionamiento en Costa Salguero con traslado al destino que elijas: Aeroparque, Ezeiza o Terminal de Cruceros.",
+    "Reservá tu estacionamiento en BA Ferial (ex Costa Salguero) con traslado al destino que elijas: Aeroparque, Ezeiza o Terminal de Cruceros.",
 };
 
 export const dynamic = "force-dynamic";

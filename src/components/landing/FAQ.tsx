@@ -80,7 +80,7 @@ export function FAQ() {
                 ¿Quedó alguna duda?
               </h3>
               <p className="mt-1 text-sm text-brand-600">
-                Atención humana 24 horas. Te respondemos al toque por WhatsApp.
+                Atención las 24 horas. Te respondemos a la brevedad por WhatsApp.
               </p>
             </div>
             <Link

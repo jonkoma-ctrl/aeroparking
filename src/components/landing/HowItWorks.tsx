@@ -12,7 +12,7 @@ const steps = [
   {
     n: "02",
     icon: Car,
-    title: "Llegás a Costa Salguero",
+    title: "Llegás a BA Ferial (ex Costa Salguero)",
     description: "Te recibe el personal, registra tu vehículo y guarda las llaves en caja fuerte.",
     time: "5–10 min",
   },

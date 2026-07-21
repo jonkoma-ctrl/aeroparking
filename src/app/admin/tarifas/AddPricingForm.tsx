@@ -83,7 +83,7 @@ export function AddPricingForm() {
           type="text"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
-          placeholder="Larga Estadía Costa Salguero"
+          placeholder="Larga Estadía BA Ferial (ex Costa Salguero)"
           className="w-64 rounded-md border border-brand-200 px-3 py-2 text-sm"
         />
       </div>

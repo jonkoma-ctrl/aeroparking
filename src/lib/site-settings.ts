@@ -13,7 +13,7 @@ export interface SiteSettingsData {
 const DEFAULTS: SiteSettingsData = {
   heroImageUrl:
     "https://sdpvjoczsukegmpi.public.blob.vercel-storage.com/hero/costa-salguero-valet.png",
-  heroImageAlt: "Estacionamiento Aeroparking en Costa Salguero — valet uniformado, sector bajo techo",
+  heroImageAlt: "Estacionamiento Aeroparking en BA Ferial (ex Costa Salguero) — valet uniformado, sector bajo techo",
   heroTitle: null,
   heroSubtitle: null,
   whatsappPhone: "5491131606994",

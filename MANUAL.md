@@ -8,7 +8,7 @@
 
 ## Novedad destacada — Código QR y Vista del día
 
-Ahora cada reserva genera un **código QR** que le llega al cliente por email. El personal de Costa Salguero puede:
+Ahora cada reserva genera un **código QR** que le llega al cliente por email. El personal de BA Ferial (ex Costa Salguero) puede:
 
 - **Escanear el QR** (📷 Escáner en el menú) con el celular para registrar el ingreso del auto y el retiro, sin buscar la reserva a mano. Si la cámara no lee, se puede tipear el código corto de 6 letras.
 - Abrir la **Vista del día** (🗓️ en el menú) a la mañana para ver todos los autos que ingresan (o retiran) ese día, ordenados por hora. Se puede **imprimir** para tener la lista en papel.
@@ -72,7 +72,7 @@ Seis tarjetas grandes con los números clave:
 - **Reservas en el período**: cuántas reservas hubo en el rango que estás mirando, con comparación contra el período anterior (por ejemplo, este mes vs el mes pasado).
 - **Facturación**: total que se cobró.
 - **Ticket promedio**: cuánto gasta en promedio cada cliente.
-- **Autos en sede hoy**: cuántos autos están en este momento en Costa Salguero (con check-in hecho).
+- **Autos en sede hoy**: cuántos autos están en este momento en BA Ferial (ex Costa Salguero) (con check-in hecho).
 - **No-show rate**: porcentaje de clientes que reservaron y no aparecieron.
 - **Cancelación rate**: porcentaje de cancelaciones sobre reservas finalizadas.
 
@@ -142,7 +142,7 @@ Si ese cliente ya tuvo otra reserva que se canceló y le dimos crédito, vas a v
 |---|---|---|
 | **Pendiente** | Reserva apenas creada, falta confirmar | Caso raro, casi no aparece |
 | **Confirmada** | El sistema mandó el email al cliente | Al ratito de crearse |
-| **En sede** | El auto está en Costa Salguero | Cuando llega el cliente y te entrega el auto |
+| **En sede** | El auto está en BA Ferial (ex Costa Salguero) | Cuando llega el cliente y te entrega el auto |
 | **Completada** | Reserva terminada, el cliente retiró el auto | Cuando se va el cliente |
 | **Cancelada** | El cliente avisó que no viene | Si avisó antes de check-in, gratis. Si fue después, depende del caso |
 | **No-show** | El cliente reservó y nunca apareció | Si pasaron 24h del horario y no vino |
@@ -300,7 +300,7 @@ Acá editás cosas globales del sitio que ve el cliente.
 Es la imagen y el título grande que aparece arriba de todo en la página principal.
 
 - **Imagen principal**: subí la foto que querés que aparezca de fondo. Recomendado: horizontal, buena calidad, máximo 5MB.
-- **Alt text**: descripción para personas con lectores de pantalla (accesibilidad). Algo simple como "Estacionamiento Costa Salguero".
+- **Alt text**: descripción para personas con lectores de pantalla (accesibilidad). Algo simple como "Estacionamiento BA Ferial (ex Costa Salguero)".
 - **Título**: el texto grande. Si lo dejás vacío, usa el texto por defecto. Si querés cambiarlo, escribí el nuevo.
 - **Subtítulo**: el texto debajo del título. Misma lógica.
 
@@ -378,6 +378,11 @@ El archivo que te baja se abre directo en Excel o Google Sheets. Tiene todas las
 
 ## 15. Historial de novedades
 
+### 15 de julio de 2026 — Cambio de nombre a BA Ferial + ajustes de texto
+
+- 🏟️ En toda la web y los emails, "Costa Salguero" pasó a decir **"BA Ferial (ex Costa Salguero)"** (en las menciones principales) o **"BA Ferial"** (en las repeticiones dentro de una misma pantalla, para no cargar el texto).
+- ✏️ En la tarjeta "¿Quedó alguna duda?" del final de la web, el texto ahora dice *"Atención las 24 horas. Te respondemos a la brevedad por WhatsApp"* (antes decía "al toque").
+
 ### 15 de julio de 2026 — Selección de marca y modelo en la reserva
 
 - 🚗 En el paso "Vehículo" de la reserva, la **marca** y el **modelo** ahora se eligen de una lista desplegable (con las marcas y modelos más comunes en Argentina) en vez de escribirse a mano. Es más rápido y evita errores de tipeo. Si el auto no está en la lista, la opción "Otra marca / Otro modelo" permite escribirlo libre.
@@ -420,7 +425,7 @@ El archivo que te baja se abre directo en Excel o Google Sheets. Tiene todas las
 - ❓ **FAQ**: cambiado el texto introductorio ("¿No encontrás tu duda? Consultanos por WhatsApp...") y la respuesta sobre seguridad (sacamos "caja fuerte", ahora dice "bajo resguardo del personal a cargo").
 - 🔁 **Cambio de destino en `/reservar`**: si el cliente abre la página, elige Ezeiza, vuelve atrás y desde el menú elige Aeroparque, ahora la página se actualiza correctamente al destino nuevo (antes quedaba en el viejo).
 - 📧 **Email al admin**: el botón "Ver en panel admin" ahora lleva directo al detalle de la reserva en `/admin/agenda/[id]`, en vez de la página genérica.
-- 📍 **Email al cliente**: la dirección "Costa Salguero" aparece destacada como bloque grande. Antes estaba enterrada en una lista.
+- 📍 **Email al cliente**: la dirección "BA Ferial (ex Costa Salguero)" aparece destacada como bloque grande. Antes estaba enterrada en una lista.
 - 💬 **Email al cliente**: bloque dedicado "¿Necesitás cambiar o cancelar?" con botón directo a WhatsApp. Antes era una bullet más.
 - ✈️ **Datos de vuelo obligatorios** al reservar: el paso 3 (Viaje) ya no se puede saltar. Hay que cargar aerolínea + número de vuelo (salida y regreso). Para Cruceros se piden naviera + terminal.
 - ⭐ **URL de reseñas configurable**: ya podés cargar la URL real de Google Reviews (o donde quieras que el cliente deje reseña) desde `/admin/settings`. Si está vacía, no se manda el email de pedido de reseña.
@@ -443,7 +448,7 @@ Le subimos el nivel al diseño visual sin tocar la marca:
 
 ### 16 de mayo de 2026 — Fotos propias + tiempos realistas + sede visible
 
-- 📸 **Hero nuevo**: foto generada por IA del estacionamiento Costa Salguero con valet uniformado caminando hacia cámara. Más cercano a la realidad de la operación que la foto de Blogger que estaba antes.
+- 📸 **Hero nuevo**: foto generada por IA del estacionamiento BA Ferial (ex Costa Salguero) con valet uniformado caminando hacia cámara. Más cercano a la realidad de la operación que la foto de Blogger que estaba antes.
 - 🏢 **Sección nueva "Conocé nuestra sede"** entre "Cómo funciona" y "Por qué confiar". Muestra 3 fotos: sector cubierto con cámaras, recepción con personal uniformado, y la furgoneta de traslado cargando equipaje. Incluye dirección y botón a Google Maps.
 - ⏱️ **Tiempos realistas en "Cómo funciona"**: antes decía "15 min al aeropuerto" sin distinguir destinos. Ahora dice: "Aeroparque o Cruceros: 15 min. Ezeiza: 45–60 min según tráfico". Confiable.
 - 🖼️ Las fotos son placeholders de IA hasta que el cliente nos pase fotos reales. En cuanto las tengamos las reemplazamos.
@@ -458,7 +463,7 @@ Le subimos el nivel al diseño visual sin tocar la marca:
 - ⭐ **Sección nueva "Lo que dicen"**: 3 testimonios con estrellas. Por ahora son ejemplos realistas que se pueden reemplazar más adelante con reseñas reales (de Google, etc.).
 - 🏆 **"Por qué confiar"**: cards más visuales con stats al final (+2.000 viajeros, 4.8★, 5 años operando).
 - ❓ **FAQ ampliado** con 4 preguntas nuevas: seguro, vuelo retrasado, camionetas/SUVs. Primera abierta por default, animación suave al abrir. Card de "¿Quedó alguna duda?" con botón directo a WhatsApp.
-- 🎯 **CTA final más punchy**: badge con rating, copy "Tu próximo viaje empieza en Costa Salguero", garantías (cancelación gratis, sin cargos ocultos, seguro incluido).
+- 🎯 **CTA final más punchy**: badge con rating, copy "Tu próximo viaje empieza en BA Ferial (ex Costa Salguero)", garantías (cancelación gratis, sin cargos ocultos, seguro incluido).
 
 ### 14 de mayo de 2026 — Limpieza total AA2000
 

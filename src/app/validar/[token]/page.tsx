@@ -54,7 +54,7 @@ export default async function ValidarPage({
   } else if (reservation.checkedInAt) {
     tone = "amber";
     title = "Vehículo en sede";
-    subtitle = "El auto está registrado en Costa Salguero.";
+    subtitle = "El auto está registrado en BA Ferial (ex Costa Salguero).";
   } else {
     tone = "green";
     title = "Reserva válida";

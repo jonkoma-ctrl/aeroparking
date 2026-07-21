@@ -51,7 +51,7 @@ export async function Hero() {
   ]);
 
   const heroImage = settings.heroImageUrl;
-  const heroAlt = settings.heroImageAlt || "Estacionamiento Aeroparking en Costa Salguero";
+  const heroAlt = settings.heroImageAlt || "Estacionamiento Aeroparking en BA Ferial (ex Costa Salguero)";
   const customTitle = settings.heroTitle;
   const customSubtitle = settings.heroSubtitle;
 
@@ -80,7 +80,7 @@ export async function Hero() {
           <Reveal>
             <div className="inline-flex items-center gap-2 rounded-full border border-accent-300/40 bg-accent-500/15 px-3.5 py-1.5 text-xs font-semibold text-accent-200 backdrop-blur-sm shadow-inner-soft sm:px-4 sm:text-sm">
               <Sparkles className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
-              Costa Salguero · Frente al río · 24h
+              BA Ferial · Frente al río · 24h
             </div>
           </Reveal>
 
@@ -98,7 +98,7 @@ export async function Hero() {
           <Reveal delay={140}>
             <p className="mt-6 max-w-2xl text-base leading-relaxed text-brand-100/85 text-pretty sm:text-lg lg:text-xl">
               {customSubtitle ||
-                "Estacioná en Costa Salguero y volá tranquilo. Sector cubierto, vigilancia 24h, traslado en nuestras unidades a Aeroparque, Ezeiza o Cruceros."}
+                "Estacioná en BA Ferial (ex Costa Salguero) y volá tranquilo. Sector cubierto, vigilancia 24h, traslado en nuestras unidades a Aeroparque, Ezeiza o Cruceros."}
             </p>
           </Reveal>
 

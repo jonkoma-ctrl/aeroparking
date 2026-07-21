@@ -11,7 +11,7 @@ const testimonials = [
   },
   {
     quote:
-      "Vuelo de las 6am. A las 4:30 estábamos en Costa Salguero, en 15 min en Aeroparque. Súper organizados y amables. Repetimos seguro.",
+      "Vuelo de las 6am. A las 4:30 estábamos en BA Ferial (ex Costa Salguero), en 15 min en Aeroparque. Súper organizados y amables. Repetimos seguro.",
     name: "Federico R.",
     context: "Aeroparque · Viaje de trabajo",
     rating: 5,

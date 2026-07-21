@@ -54,7 +54,7 @@ type DbServiceType = "drop_go" | "larga_estadia" | "cruceros";
 interface Props {
   destino: Destino;
   /// Service type por defecto. Para Aeroparque y Ezeiza usamos "larga_estadia"
-  /// (el cliente deja el auto en Costa Salguero, lo trasladamos al aeropuerto).
+  /// (el cliente deja el auto en BA Ferial (ex Costa Salguero), lo trasladamos al aeropuerto).
   /// Para Puerto, "cruceros".
   defaultServiceType?: DbServiceType;
   /// Meta dinámica desde DB. Si se pasa, sobrescribe los defaults hardcoded.
@@ -374,7 +374,7 @@ export function PresentialBookingForm({ destino, defaultServiceType, destination
             <div className="mt-8 rounded-xl bg-blue-50 p-5 text-sm leading-relaxed text-blue-900">
               <p className="font-semibold">¿Qué sigue?</p>
               <ul className="mt-2 list-disc pl-5 text-blue-800">
-                <li>Llegá a Costa Salguero en la fecha y hora reservada</li>
+                <li>Llegá a BA Ferial (ex Costa Salguero) en la fecha y hora reservada</li>
                 <li>Mostrá este código al personal</li>
                 <li>El pago se hace al dejar el vehículo (efectivo, tarjeta o transferencia)</li>
               </ul>
@@ -538,7 +538,7 @@ export function PresentialBookingForm({ destino, defaultServiceType, destination
                 <SectionHeader
                   icon={Car}
                   title="Tu vehículo"
-                  description="Para identificarlo cuando llegues a Costa Salguero."
+                  description="Para identificarlo cuando llegues a BA Ferial."
                 />
                 <Field label="Patente" error={errors.licensePlate} helpText="Sin guiones ni espacios — ej. AB123CD">
                   <input
