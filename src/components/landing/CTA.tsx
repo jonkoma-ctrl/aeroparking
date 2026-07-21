@@ -36,7 +36,7 @@ export function CTA() {
             <h2 className="font-display text-[clamp(2.25rem,6vw,4.5rem)] font-extrabold leading-[1] tracking-[-0.035em] text-white text-balance">
               Tu próximo viaje empieza en{" "}
               <span className="bg-gradient-to-r from-accent-300 via-accent-400 to-uniform-500 bg-clip-text text-transparent">
-                Costa Salguero
+                BA Ferial (ex Costa Salguero)
               </span>
               .
             </h2>

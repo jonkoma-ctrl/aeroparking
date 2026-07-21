@@ -6,7 +6,7 @@ export const CONTACT = {
   phone: "11 3160 6994",
   whatsapp: "5491131606994",
   email: "reservas@nrauditores.com.ar",
-  address: "Costa Salguero, Ciudad Autónoma de Buenos Aires",
+  address: "BA Ferial (ex Costa Salguero), Ciudad Autónoma de Buenos Aires",
 };
 
 /// Anticipación mínima al reservar online (en horas). Para reservas con menos
@@ -27,7 +27,7 @@ export const FAQ_ITEMS = [
   {
     question: "¿Cómo y cuándo se paga?",
     answer:
-      "El pago se realiza en el momento que dejás el vehículo en nuestro estacionamiento de Costa Salguero. Aceptamos efectivo, tarjeta y transferencia.",
+      "El pago se realiza en el momento que dejás el vehículo en nuestro estacionamiento de BA Ferial (ex Costa Salguero). Aceptamos efectivo, tarjeta y transferencia.",
   },
   {
     question: "¿Qué pasa si me cancelan el vuelo?",
@@ -42,7 +42,7 @@ export const FAQ_ITEMS = [
   {
     question: "¿El estacionamiento es seguro?",
     answer:
-      "Sí. Sector propio cubierto en Costa Salguero, vigilancia 24h con cámaras, personal uniformado en sede y registro firmado de ingreso y egreso de cada vehículo. Las llaves quedan bajo resguardo del personal a cargo.",
+      "Sí. Sector propio cubierto en BA Ferial (ex Costa Salguero), vigilancia 24h con cámaras, personal uniformado en sede y registro firmado de ingreso y egreso de cada vehículo. Las llaves quedan bajo resguardo del personal a cargo.",
   },
   {
     question: "¿Está cubierto por seguro?",

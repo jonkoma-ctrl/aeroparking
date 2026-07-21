@@ -40,7 +40,7 @@ export function OurFacility() {
               Conocé nuestra sede
             </p>
             <h2 className="font-display text-huge-2 text-brand-900 text-balance">
-              Costa Salguero, frente al río
+              BA Ferial (ex Costa Salguero), frente al río
             </h2>
             <p className="mt-4 text-base text-brand-600 text-pretty sm:text-lg">
               Sector cubierto y privado, vigilancia 24 horas, personal uniformado, vehículos propios para el traslado. Así trabajamos.
@@ -75,7 +75,7 @@ export function OurFacility() {
                 <p className="font-display text-2xl font-bold text-brand-900 sm:text-3xl">
                   Av. Costanera Rafael Obligado
                   <br />
-                  <span className="text-brand-600">Costa Salguero · CABA</span>
+                  <span className="text-brand-600">BA Ferial · CABA</span>
                 </p>
                 <div className="mt-4 grid grid-cols-3 gap-4 sm:max-w-md">
                   <DistanceItem distance="4 km" to="Aeroparque" />

@@ -91,7 +91,7 @@ export default function SettingsPage() {
               <input
                 value={settings.heroImageAlt || ""}
                 onChange={(e) => setSettings({ ...settings, heroImageAlt: e.target.value })}
-                placeholder="Estacionamiento Costa Salguero"
+                placeholder="Estacionamiento BA Ferial (ex Costa Salguero)"
                 className="w-full rounded border border-brand-200 px-3 py-2 text-sm"
               />
             </div>
@@ -115,7 +115,7 @@ export default function SettingsPage() {
               value={settings.heroSubtitle || ""}
               onChange={(e) => setSettings({ ...settings, heroSubtitle: e.target.value })}
               rows={2}
-              placeholder="Estacionamiento propio en Costa Salguero con traslado incluido..."
+              placeholder="Estacionamiento propio en BA Ferial (ex Costa Salguero) con traslado incluido..."
               className="w-full rounded border border-brand-200 px-3 py-2 text-sm"
             />
           </div>

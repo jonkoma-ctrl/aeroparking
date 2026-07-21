@@ -54,7 +54,7 @@ function qrBlock(qrToken: string | null | undefined): string {
   return `
     <div style="margin-top:24px;border:2px solid #1e3a8a;border-radius:12px;padding:20px;text-align:center;background:#f8fafc">
       <p style="margin:0 0 4px;color:#1e3a8a;font-size:14px;font-weight:700;text-transform:uppercase;letter-spacing:1px">Tu código de ingreso</p>
-      <p style="margin:0 0 14px;color:#64748b;font-size:13px">Mostralo al llegar a Costa Salguero para registrar tu ingreso.</p>
+      <p style="margin:0 0 14px;color:#64748b;font-size:13px">Mostralo al llegar a BA Ferial para registrar tu ingreso.</p>
       <img src="${qrImg}" alt="Código QR de la reserva" width="200" height="200" style="display:block;margin:0 auto;width:200px;height:200px" />
       <p style="margin:14px 0 0;color:#0f172a;font-size:22px;font-weight:800;letter-spacing:4px;font-family:monospace">${qrToken}</p>
       <p style="margin:6px 0 0;color:#94a3b8;font-size:12px">Si el escáner no lee el QR, dictá este código.</p>
@@ -128,7 +128,7 @@ function wrapInLayout(bodyHtml: string, opts: { showContactBlock?: boolean } = {
     <!-- Footer -->
     <div style="background:#f3f4f6;border-radius:0 0 12px 12px;padding:16px;text-align:center;border:1px solid #e5e7eb;border-top:0">
       <p style="margin:0;color:#9ca3af;font-size:12px">
-        © 2026 AEROPARKING — Costa Salguero, CABA
+        © 2026 AEROPARKING — BA Ferial (ex Costa Salguero), CABA
       </p>
     </div>
 
@@ -184,7 +184,7 @@ function reservationCodeBlock(data: ReservationEmailData): string {
     <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:18px;margin-bottom:24px;text-align:center">
       <p style="margin:0 0 4px;color:#64748b;font-size:11px;text-transform:uppercase;letter-spacing:1.5px;font-weight:600">Tu código de reserva</p>
       <p style="margin:0;color:#0f172a;font-size:28px;font-weight:800;letter-spacing:3px">${code}</p>
-      <p style="margin:8px 0 0;color:#94a3b8;font-size:12px">Mostralo al llegar a Costa Salguero</p>
+      <p style="margin:8px 0 0;color:#94a3b8;font-size:12px">Mostralo al llegar a BA Ferial</p>
     </div>
   `;
 }
@@ -199,7 +199,7 @@ function arrivalInstructions(): string {
         Av. Costanera Rafael Obligado s/n
       </p>
       <p style="margin:0 0 14px;color:#0f172a;font-size:15px;line-height:1.4">
-        Costa Salguero · CABA
+        BA Ferial (ex Costa Salguero) · CABA
       </p>
       <p style="margin:0 0 14px;color:#374151;font-size:14px;line-height:1.6">
         Al llegar te recibe nuestro personal, registra el vehículo, te cobra y te traslada al destino en nuestras unidades. Al regresar, te buscamos en la terminal y volvés a casa con tu auto.
@@ -279,7 +279,7 @@ export function buildReminderEmail(data: ReservationEmailData): string {
   const body = `
     <h2 style="margin:0 0 8px;color:#0f172a;font-size:22px">Tu viaje es mañana, ${data.customerName} 👋</h2>
     <p style="margin:0 0 24px;color:#475569;font-size:15px;line-height:1.6">
-      Te dejamos un recordatorio de tu reserva. Esperamos verte mañana en Costa Salguero.
+      Te dejamos un recordatorio de tu reserva. Esperamos verte mañana en BA Ferial (ex Costa Salguero).
     </p>
     ${reservationCodeBlock(data)}
     ${reservationTable(data)}
