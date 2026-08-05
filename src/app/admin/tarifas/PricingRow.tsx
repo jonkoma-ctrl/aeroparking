@@ -32,8 +32,6 @@ export function PricingRow(props: PricingRowProps) {
 
   // Advanced fields state
   const [price, setPrice] = useState(String(props.pricePerDay));
-  const [minDays, setMinDays] = useState(props.minDays ? String(props.minDays) : "");
-  const [maxDays, setMaxDays] = useState(props.maxDays ? String(props.maxDays) : "");
   const [discounts, setDiscounts] = useState<Discount[]>(props.durationDiscounts || []);
   const [transferIncluded, setTransferIncluded] = useState(props.transferIncluded !== false);
   const [transferCostPerLeg, setTransferCostPerLeg] = useState(props.transferCostPerLeg ? String(props.transferCostPerLeg) : "");
@@ -53,8 +51,11 @@ export function PricingRow(props: PricingRowProps) {
       body: JSON.stringify({
         id: props.id,
         pricePerDay: parseInt(price, 10),
-        minDays: minDays ? parseInt(minDays, 10) : null,
-        maxDays: maxDays ? parseInt(maxDays, 10) : null,
+        // minDays/maxDays quedan deprecados — limpiamos cualquier valor viejo
+        // que confundía y rompía las cotizaciones. El rango de precios lo
+        // define la grilla, no estos campos.
+        minDays: null,
+        maxDays: null,
         durationDiscounts: discounts.length > 0 ? discounts : null,
         transferIncluded,
         transferCostPerLeg: transferCostPerLeg ? parseInt(transferCostPerLeg, 10) : null,
@@ -170,22 +171,7 @@ export function PricingRow(props: PricingRowProps) {
                 Configuración avanzada — {props.destination} / {props.serviceType}
               </h3>
 
-              <div className="grid grid-cols-2 gap-2">
-                <div>
-                  <label className="mb-1 block text-xs font-medium text-brand-600">Mín. días</label>
-                  <input type="number" value={minDays} onChange={(e) => setMinDays(e.target.value)}
-                    placeholder="sin mínimo"
-                    className="w-full rounded border border-brand-200 px-2 py-1.5 text-sm" />
-                </div>
-                <div>
-                  <label className="mb-1 block text-xs font-medium text-brand-600">Máx. días</label>
-                  <input type="number" value={maxDays} onChange={(e) => setMaxDays(e.target.value)}
-                    placeholder="sin máximo"
-                    className="w-full rounded border border-brand-200 px-2 py-1.5 text-sm" />
-                </div>
-              </div>
-
-              <div className="mt-5 rounded-lg border border-amber-200 bg-amber-50 p-3">
+              <div className="rounded-lg border border-amber-200 bg-amber-50 p-3">
                 <label className="mb-2 block text-xs font-medium text-amber-800">
                   <input type="checkbox" checked={transferIncluded}
                     onChange={(e) => setTransferIncluded(e.target.checked)}
