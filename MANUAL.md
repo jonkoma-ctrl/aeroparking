@@ -378,6 +378,12 @@ El archivo que te baja se abre directo en Excel o Google Sheets. Tiene todas las
 
 ## 15. Historial de novedades
 
+### 15 de julio de 2026 — Grilla de precios por cantidad de días
+
+- 💵 **Nueva forma de cargar precios en Tarifas**: además del precio lineal (precio × días), ahora podés cargar una **grilla de precios por cantidad de días** con el valor TOTAL de cada tramo. Por ejemplo: 1 día = $39.000, 2 días = $70.000, 3 días = $95.000, y "cada día adicional = $12.000". Es como funcionan los estacionamientos de aeropuerto: el que deja 4 días no paga 4 × el precio de 1 día, paga el precio establecido de la grilla.
+- ⚙️ Se carga desde **Tarifas → ⚙ Avanzado → Grilla de precios por día**. Agregás un tramo por cada cantidad de días con su precio total, y el precio del día adicional. Si cargás la grilla, tiene prioridad sobre el precio lineal. Si no cargás grilla, sigue funcionando el precio lineal de siempre.
+- Las tarifas con grilla muestran un cartelito verde "Grilla · N tramos" en la lista.
+
 ### 15 de julio de 2026 — Cambio de nombre a BA Ferial + ajustes de texto
 
 - 🏟️ En toda la web y los emails, "Costa Salguero" pasó a decir **"BA Ferial (ex Costa Salguero)"** (en las menciones principales) o **"BA Ferial"** (en las repeticiones dentro de una misma pantalla, para no cargar el texto).
