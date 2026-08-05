@@ -139,7 +139,12 @@ model ServicePricing {
   externalCheckoutUrl String?                    // DEPRECATED — legacy AA2000, sin uso desde may-2026
   minDays             Int?
   maxDays             Int?
-  durationDiscounts   Json?    // [{fromDays, pctOff}]
+  durationDiscounts   Json?    // [{fromDays, pctOff}] — descuento % (legacy, opcional)
+  // Grilla de precios por cantidad de días: [{days, price}] con precio ABSOLUTO
+  // por tramo (ej: 1 día=$39k, 2 días=$70k, 3 días=$95k). Si está cargada,
+  // tiene prioridad sobre el precio lineal (pricePerDay × días).
+  priceTable          Json?    // [{days: number, price: number}]
+  extraDayPrice       Int?     // precio por cada día adicional después del último tramo de la grilla
   transferIncluded    Boolean  @default(true)   // false → cobra traslado aparte (Ezeiza)
   transferCostPerLeg  Int?                       // ARS por tramo de traslado (solo si no incluido)
   updatedAt           DateTime @updatedAt

@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 import { presentialReservationSchema } from "@/lib/validations";
-import { calculateStays } from "@/lib/pricing";
+import { calculateStays, calculateDays, priceForDays } from "@/lib/pricing";
 import { generateQrToken, qrPngBuffer } from "@/lib/qr";
 import { sendEmail } from "@/lib/email";
 import {
@@ -84,8 +84,17 @@ export async function POST(req: NextRequest) {
         where: { destination: data.destination, serviceType: data.serviceType, active: true },
       });
       if (tariff) {
-        const stays = calculateStays(startDate, endDate);
-        estimatedPrice = Math.round(stays.totalEquivalent * tariff.pricePerDay);
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const table = (tariff.priceTable as any) || null;
+        if (Array.isArray(table) && table.length > 0) {
+          // Grilla de precios: indexar por días calendario
+          const days = calculateDays(startDate, endDate);
+          estimatedPrice = priceForDays(days, table, tariff.extraDayPrice, tariff.pricePerDay);
+        } else {
+          // Modelo lineal por estadías
+          const stays = calculateStays(startDate, endDate);
+          estimatedPrice = Math.round(stays.totalEquivalent * tariff.pricePerDay);
+        }
       }
     } catch (e) {
       console.error("[reservas/presencial] no se pudo calcular precio estimado:", e);

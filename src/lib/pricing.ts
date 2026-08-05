@@ -25,6 +25,12 @@ export interface DurationDiscount {
   pctOff: number;
 }
 
+/** Fila de la grilla de precios: N días → precio total absoluto. */
+export interface PriceTier {
+  days: number;
+  price: number;
+}
+
 export interface PricingRule {
   id?: string;
   destination: Destino;
@@ -40,6 +46,53 @@ export interface PricingRule {
   transferIncluded?: boolean;
   /** ARS por tramo, solo cuando transferIncluded === false */
   transferCostPerLeg?: number | null;
+  /** Grilla de precios por cantidad de días (absoluto). Prioridad sobre lineal. */
+  priceTable?: PriceTier[] | null;
+  /** Precio por día adicional después del último tramo de la grilla. */
+  extraDayPrice?: number | null;
+}
+
+/**
+ * Calcula el precio total según la grilla de precios (si está cargada) o
+ * el modelo lineal (días × pricePerDay) como fallback.
+ *
+ * Con grilla:
+ *  - Si existe un tramo exacto para `days`, usa ese precio.
+ *  - Si `days` supera el máximo tramo, precio = precio_del_máximo +
+ *    (days − días_máximo) × extraDayPrice (o × precio_promedio si no hay extra).
+ *  - Si `days` es menor al mínimo tramo, usa el primer tramo.
+ */
+export function priceForDays(
+  days: number,
+  priceTable: PriceTier[] | null | undefined,
+  extraDayPrice: number | null | undefined,
+  pricePerDayFallback: number
+): number {
+  const table = (priceTable || []).filter((t) => t && t.days > 0 && t.price >= 0).sort((a, b) => a.days - b.days);
+  if (table.length === 0) {
+    // Sin grilla: lineal
+    return days * pricePerDayFallback;
+  }
+  // Tramo exacto
+  const exact = table.find((t) => t.days === days);
+  if (exact) return exact.price;
+
+  const min = table[0];
+  const max = table[table.length - 1];
+
+  if (days <= min.days) return min.price;
+
+  if (days > max.days) {
+    const extra = extraDayPrice && extraDayPrice > 0
+      ? extraDayPrice
+      : Math.round(max.price / max.days); // fallback: precio promedio del último tramo
+    return max.price + (days - max.days) * extra;
+  }
+
+  // days está entre dos tramos definidos pero sin fila exacta:
+  // usamos el tramo inmediato inferior (más conservador = el cliente paga el del tramo menor cumplido).
+  const lower = [...table].reverse().find((t) => t.days <= days) || min;
+  return lower.price;
 }
 
 export interface QuoteInput {
@@ -67,6 +120,8 @@ export interface QuoteResult {
   transferIncluded: boolean;
   /** ARS por tramo cuando el traslado no está incluido. */
   transferCostPerLeg: number | null;
+  /** true → el precio salió de la grilla (no es por día). */
+  usedPriceTable: boolean;
 }
 
 export type ValidationResult =
@@ -128,10 +183,27 @@ export function pickDiscount(days: number, discounts: DurationDiscount[] | null 
 
 export function calculateQuote(input: QuoteInput, rule: PricingRule): QuoteResult {
   const days = calculateDays(input.ingreso, input.retiro);
-  const subtotal = days * rule.pricePerDay;
-  const discountPct = pickDiscount(days, rule.durationDiscounts);
-  const discountAmount = Math.round((subtotal * discountPct) / 100);
-  const total = subtotal - discountAmount;
+  const hasTable = Array.isArray(rule.priceTable) && rule.priceTable.length > 0;
+
+  let subtotal: number;
+  let discountPct: number;
+  let discountAmount: number;
+  let total: number;
+
+  if (hasTable) {
+    // Grilla de precios: el total sale directo de la tabla. Sin descuento %
+    // (la grilla YA es el precio final por tramo).
+    total = priceForDays(days, rule.priceTable, rule.extraDayPrice, rule.pricePerDay);
+    subtotal = total;
+    discountPct = 0;
+    discountAmount = 0;
+  } else {
+    // Modelo lineal + descuento % (legacy)
+    subtotal = days * rule.pricePerDay;
+    discountPct = pickDiscount(days, rule.durationDiscounts);
+    discountAmount = Math.round((subtotal * discountPct) / 100);
+    total = subtotal - discountAmount;
+  }
 
   return {
     destination: rule.destination,
@@ -149,6 +221,7 @@ export function calculateQuote(input: QuoteInput, rule: PricingRule): QuoteResul
     description: rule.description,
     transferIncluded: rule.transferIncluded !== false,
     transferCostPerLeg: rule.transferIncluded === false ? (rule.transferCostPerLeg ?? null) : null,
+    usedPriceTable: hasTable,
   };
 }
 

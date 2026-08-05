@@ -281,7 +281,8 @@ function QuoteResultView({
               {formatPrice(quote.total)}
             </p>
             <p className="text-sm text-brand-500 mt-1">
-              {quote.days} día{quote.days !== 1 ? "s" : ""} · {formatPrice(quote.pricePerDay)}/día
+              {quote.days} día{quote.days !== 1 ? "s" : ""}
+              {quote.usedPriceTable ? "" : ` · ${formatPrice(quote.pricePerDay)}/día`}
             </p>
           </div>
           {quote.discountPct > 0 && (

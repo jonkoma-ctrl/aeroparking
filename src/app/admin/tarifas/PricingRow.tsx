@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { formatPrice } from "@/lib/utils";
 
 interface Discount { fromDays: number; pctOff: number }
+interface Tier { days: number; price: number }
 
 interface PricingRowProps {
   id: string;
@@ -18,6 +19,8 @@ interface PricingRowProps {
   durationDiscounts?: Discount[] | null;
   transferIncluded?: boolean;
   transferCostPerLeg?: number | null;
+  priceTable?: Tier[] | null;
+  extraDayPrice?: number | null;
   updatedAt: string;
 }
 
@@ -34,9 +37,16 @@ export function PricingRow(props: PricingRowProps) {
   const [discounts, setDiscounts] = useState<Discount[]>(props.durationDiscounts || []);
   const [transferIncluded, setTransferIncluded] = useState(props.transferIncluded !== false);
   const [transferCostPerLeg, setTransferCostPerLeg] = useState(props.transferCostPerLeg ? String(props.transferCostPerLeg) : "");
+  const [tiers, setTiers] = useState<Tier[]>(
+    (props.priceTable || []).slice().sort((a, b) => a.days - b.days)
+  );
+  const [extraDayPrice, setExtraDayPrice] = useState(props.extraDayPrice ? String(props.extraDayPrice) : "");
 
   async function saveAll() {
     setLoading(true);
+    const cleanTiers = tiers
+      .filter((t) => t.days > 0 && t.price >= 0)
+      .sort((a, b) => a.days - b.days);
     await fetch("/api/admin/pricing", {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
@@ -48,6 +58,8 @@ export function PricingRow(props: PricingRowProps) {
         durationDiscounts: discounts.length > 0 ? discounts : null,
         transferIncluded,
         transferCostPerLeg: transferCostPerLeg ? parseInt(transferCostPerLeg, 10) : null,
+        priceTable: cleanTiers.length > 0 ? cleanTiers : null,
+        extraDayPrice: extraDayPrice ? parseInt(extraDayPrice, 10) : null,
       }),
     });
     setShowAdvanced(false);
@@ -79,7 +91,21 @@ export function PricingRow(props: PricingRowProps) {
     setDiscounts(discounts.filter((_, i) => i !== idx));
   }
 
+  function addTier() {
+    const lastDays = tiers.length > 0 ? Math.max(...tiers.map((t) => t.days)) : 0;
+    setTiers([...tiers, { days: lastDays + 1, price: 0 }]);
+  }
+  function updateTier(idx: number, field: keyof Tier, value: string) {
+    const copy = [...tiers];
+    copy[idx] = { ...copy[idx], [field]: parseInt(value, 10) || 0 };
+    setTiers(copy);
+  }
+  function removeTier(idx: number) {
+    setTiers(tiers.filter((_, i) => i !== idx));
+  }
+
   const hasDiscounts = (props.durationDiscounts?.length || 0) > 0;
+  const hasTable = (props.priceTable?.length || 0) > 0;
 
   return (
     <>
@@ -108,7 +134,12 @@ export function PricingRow(props: PricingRowProps) {
         </td>
         <td className="px-4 py-3 text-brand-500 text-xs">
           {props.description || "—"}
-          {hasDiscounts && (
+          {hasTable && (
+            <span className="ml-2 inline-flex rounded-full bg-emerald-100 px-2 py-0.5 text-xs font-medium text-emerald-800">
+              Grilla · {props.priceTable!.length} tramos
+            </span>
+          )}
+          {hasDiscounts && !hasTable && (
             <span className="ml-2 inline-flex rounded-full bg-purple-100 px-2 py-0.5 text-xs font-medium text-purple-800">
               {props.durationDiscounts!.length} desc.
             </span>
@@ -173,9 +204,65 @@ export function PricingRow(props: PricingRowProps) {
                 )}
               </div>
 
+              {/* Grilla de precios por cantidad de días */}
+              <div className="mt-5 rounded-lg border border-brand-200 bg-brand-50/50 p-4">
+                <div className="mb-1 flex items-center justify-between">
+                  <label className="text-sm font-semibold text-brand-800">💵 Grilla de precios por día</label>
+                  <button onClick={addTier}
+                    className="rounded-md bg-brand-900 px-2.5 py-1 text-xs font-medium text-white hover:bg-brand-800">
+                    + Agregar tramo
+                  </button>
+                </div>
+                <p className="mb-3 text-xs text-brand-500">
+                  Cargá el precio TOTAL para cada cantidad de días (ej: 1 día = $39.000, 2 días = $70.000).
+                  Si cargás la grilla, <strong>tiene prioridad</strong> sobre el precio lineal de arriba.
+                </p>
+
+                {tiers.length === 0 ? (
+                  <p className="text-xs text-brand-400 italic">
+                    Sin grilla. El precio se calcula lineal (cantidad de días × precio por día).
+                  </p>
+                ) : (
+                  <div className="space-y-2">
+                    <div className="grid grid-cols-[1fr_1fr_auto] gap-2 text-[11px] font-semibold uppercase tracking-wide text-brand-400">
+                      <span>Cantidad de días</span>
+                      <span>Precio total</span>
+                      <span></span>
+                    </div>
+                    {tiers.map((t, idx) => (
+                      <div key={idx} className="grid grid-cols-[1fr_1fr_auto] items-center gap-2">
+                        <div className="flex items-center gap-1.5">
+                          <input type="number" min={1} value={t.days}
+                            onChange={(e) => updateTier(idx, "days", e.target.value)}
+                            className="w-full rounded border border-brand-200 px-2 py-1.5 text-sm" />
+                          <span className="text-xs text-brand-500">día{t.days !== 1 ? "s" : ""}</span>
+                        </div>
+                        <div className="flex items-center gap-1">
+                          <span className="text-brand-500">$</span>
+                          <input type="number" min={0} step={1000} value={t.price}
+                            onChange={(e) => updateTier(idx, "price", e.target.value)}
+                            className="w-full rounded border border-brand-200 px-2 py-1.5 text-sm" />
+                        </div>
+                        <button onClick={() => removeTier(idx)}
+                          className="text-xs text-red-500 hover:text-red-700">✕</button>
+                      </div>
+                    ))}
+                    {/* Precio por día adicional */}
+                    <div className="mt-3 flex items-center gap-2 border-t border-brand-200 pt-3">
+                      <span className="text-xs text-brand-600">Cada día adicional (después del último tramo):</span>
+                      <span className="text-brand-500">$</span>
+                      <input type="number" min={0} step={1000} value={extraDayPrice}
+                        onChange={(e) => setExtraDayPrice(e.target.value)}
+                        placeholder="ej: 12000"
+                        className="w-28 rounded border border-brand-200 px-2 py-1.5 text-sm" />
+                    </div>
+                  </div>
+                )}
+              </div>
+
               <div className="mt-5">
                 <div className="mb-2 flex items-center justify-between">
-                  <label className="text-xs font-medium text-brand-600">Descuentos por duración</label>
+                  <label className="text-xs font-medium text-brand-600">Descuentos por duración (opcional, solo si NO usás grilla)</label>
                   <button onClick={addDiscount}
                     className="text-xs font-medium text-brand-600 hover:text-brand-900">
                     + Agregar descuento

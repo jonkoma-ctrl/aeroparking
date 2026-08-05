@@ -80,6 +80,8 @@ export default async function AdminTarifasPage() {
                     durationDiscounts={p.durationDiscounts as { fromDays: number; pctOff: number }[] | null}
                     transferIncluded={p.transferIncluded}
                     transferCostPerLeg={p.transferCostPerLeg}
+                    priceTable={p.priceTable as { days: number; price: number }[] | null}
+                    extraDayPrice={p.extraDayPrice}
                     updatedAt={formatDateTime(p.updatedAt)}
                   />
                 ))}

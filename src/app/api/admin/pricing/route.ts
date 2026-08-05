@@ -52,7 +52,7 @@ export async function POST(req: NextRequest) {
 export async function PATCH(req: NextRequest) {
   try {
     const body = await req.json();
-    const { id, pricePerDay, active, minDays, maxDays, durationDiscounts, description, transferIncluded, transferCostPerLeg } = body;
+    const { id, pricePerDay, active, minDays, maxDays, durationDiscounts, description, transferIncluded, transferCostPerLeg, priceTable, extraDayPrice } = body;
 
     if (!id) {
       return NextResponse.json({ error: "Falta id" }, { status: 400 });
@@ -68,6 +68,8 @@ export async function PATCH(req: NextRequest) {
     if (description !== undefined) data.description = description;
     if (transferIncluded != null) data.transferIncluded = transferIncluded;
     if (transferCostPerLeg !== undefined) data.transferCostPerLeg = transferCostPerLeg;
+    if (priceTable !== undefined) data.priceTable = priceTable;
+    if (extraDayPrice !== undefined) data.extraDayPrice = extraDayPrice;
 
     const pricing = await prisma.servicePricing.update({
       where: { id },

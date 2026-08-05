@@ -8,6 +8,7 @@ import {
   type Destino,
   type ServiceType,
   type DurationDiscount,
+  type PriceTier,
 } from "@/lib/pricing";
 
 type PrismaPricing = {
@@ -25,6 +26,9 @@ type PrismaPricing = {
   durationDiscounts: any;
   transferIncluded: boolean;
   transferCostPerLeg: number | null;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  priceTable: any;
+  extraDayPrice: number | null;
 };
 
 function toRule(row: PrismaPricing): PricingRule {
@@ -41,6 +45,8 @@ function toRule(row: PrismaPricing): PricingRule {
     description: row.description,
     transferIncluded: row.transferIncluded,
     transferCostPerLeg: row.transferCostPerLeg,
+    priceTable: (row.priceTable as PriceTier[] | null) || null,
+    extraDayPrice: row.extraDayPrice,
   };
 }
 
