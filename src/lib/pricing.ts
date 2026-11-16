@@ -198,8 +198,9 @@ export function calculateQuote(input: QuoteInput, rule: PricingRule): QuoteResul
     discountPct = 0;
     discountAmount = 0;
   } else {
-    // Modelo lineal + descuento % (legacy)
-    subtotal = days * rule.pricePerDay;
+    // Modelo lineal: estadías (24 h indivisible + medias estadías) × precio,
+    // la misma cuenta con la que se cobra (lib/reservation-total.ts).
+    subtotal = Math.round(calculateStays(input.ingreso, input.retiro).totalEquivalent * rule.pricePerDay);
     discountPct = pickDiscount(days, rule.durationDiscounts);
     discountAmount = Math.round((subtotal * discountPct) / 100);
     total = subtotal - discountAmount;
