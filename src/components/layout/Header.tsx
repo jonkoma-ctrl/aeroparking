@@ -1,5 +1,6 @@
 "use client";
 
+import { KingParkLogo } from "@/components/brand/KingParkLogo";
 import { useState } from "react";
 import Link from "next/link";
 import { Menu, X, ChevronDown } from "lucide-react";
@@ -13,7 +14,6 @@ const navItems = [
 
 const bookingOptions = [
   { label: "Aeroparque", href: "/reservar?destino=aeroparque" },
-  { label: "Ezeiza", href: "/reservar?destino=ezeiza" },
   { label: "Terminal de Cruceros", href: "/reservar?destino=puerto" },
 ];
 
@@ -25,9 +25,7 @@ export function Header() {
     <header className="sticky top-0 z-50 border-b border-brand-100 bg-white/95 backdrop-blur-sm">
       <div className="container-main flex h-16 items-center justify-between px-4 sm:px-6 lg:px-8">
         <Link href="/" className="flex items-center group">
-          <span className="font-display text-xl font-extrabold tracking-tight text-brand-900">
-            AERO<span className="text-accent-500 transition-colors group-hover:text-accent-400">PARKING</span>
-          </span>
+          <KingParkLogo tone="light" />
         </Link>
 
         {/* Desktop nav */}

@@ -52,8 +52,8 @@ function qrBlock(qrToken: string | null | undefined): string {
   if (!qrToken) return "";
   const qrImg = `${SITE_URL}/api/qr/${qrToken}`;
   return `
-    <div style="margin-top:24px;border:2px solid #1e3a8a;border-radius:12px;padding:20px;text-align:center;background:#f8fafc">
-      <p style="margin:0 0 4px;color:#1e3a8a;font-size:14px;font-weight:700;text-transform:uppercase;letter-spacing:1px">Tu código de ingreso</p>
+    <div style="margin-top:24px;border:2px solid #16223f;border-radius:12px;padding:20px;text-align:center;background:#f8fafc">
+      <p style="margin:0 0 4px;color:#16223f;font-size:14px;font-weight:700;text-transform:uppercase;letter-spacing:1px">Tu código de ingreso</p>
       <p style="margin:0 0 14px;color:#64748b;font-size:13px">Mostralo al llegar a BA Ferial para registrar tu ingreso.</p>
       <img src="${qrImg}" alt="Código QR de la reserva" width="200" height="200" style="display:block;margin:0 auto;width:200px;height:200px" />
       <p style="margin:14px 0 0;color:#0f172a;font-size:22px;font-weight:800;letter-spacing:4px;font-family:monospace">${qrToken}</p>
@@ -92,12 +92,13 @@ function wrapInLayout(bodyHtml: string, opts: { showContactBlock?: boolean } = {
   <div style="max-width:600px;margin:0 auto;padding:20px">
 
     <!-- Header -->
-    <div style="background:#0f172a;border-radius:12px 12px 0 0;padding:24px;text-align:center">
-      <h1 style="margin:0;color:#fff;font-size:24px;letter-spacing:1px;font-weight:800">
-        AERO<span style="color:#60a5fa">PARKING</span>
+    <div style="background:#16223f;border-radius:12px 12px 0 0;padding:24px;text-align:center">
+      <div style="margin:0 auto 6px;color:#fbb820;font-size:22px;line-height:1">&#9819;</div>
+      <h1 style="margin:0;color:#fff;font-size:26px;letter-spacing:-0.5px;font-weight:800">
+        King<span style="color:#fbb820">Park</span>
       </h1>
-      <p style="margin:8px 0 0;color:#94a3b8;font-size:13px">
-        Estacionamiento &middot; Traslados &middot; Aeroparque · Ezeiza · Cruceros
+      <p style="margin:8px 0 0;color:#9cadd2;font-size:13px">
+        Estacionamiento en BA Ferial &middot; Traslado a Aeroparque y Cruceros
       </p>
     </div>
 
@@ -112,7 +113,7 @@ function wrapInLayout(bodyHtml: string, opts: { showContactBlock?: boolean } = {
       <div style="margin-top:32px;padding-top:24px;border-top:1px solid #f3f4f6;text-align:center">
         <p style="margin:0 0 8px;color:#6b7280;font-size:13px">¿Necesitás ayuda? Atención las 24 horas.</p>
         <p style="margin:0;color:#374151;font-size:14px">
-          <a href="https://wa.me/${WA_PHONE}" style="color:#0f172a;font-weight:600;text-decoration:none">
+          <a href="https://wa.me/${WA_PHONE}" style="color:#16223f;font-weight:600;text-decoration:none">
             WhatsApp ${WA_DISPLAY}
           </a>
         </p>
@@ -128,7 +129,7 @@ function wrapInLayout(bodyHtml: string, opts: { showContactBlock?: boolean } = {
     <!-- Footer -->
     <div style="background:#f3f4f6;border-radius:0 0 12px 12px;padding:16px;text-align:center;border:1px solid #e5e7eb;border-top:0">
       <p style="margin:0;color:#9ca3af;font-size:12px">
-        © 2026 AEROPARKING — BA Ferial (ex Costa Salguero), CABA
+        © 2026 KingPark — BA Ferial (ex Costa Salguero), CABA
       </p>
     </div>
 
@@ -270,7 +271,7 @@ export function buildReservationEmail(data: ReservationEmailData): string {
 
 export function getReservationEmailSubject(data: { customerName: string; destination: string; externalOrderId?: string }) {
   const ref = data.externalOrderId ? ` #${data.externalOrderId}` : "";
-  return `AEROPARKING — Reserva confirmada${ref} — ${destinoShort(data.destination)}`;
+  return `KingPark — Reserva confirmada${ref} — ${destinoShort(data.destination)}`;
 }
 
 // ─── Template 2: Recordatorio 24hs antes ─────────────────────────────────────
@@ -301,7 +302,7 @@ export function buildReminderEmail(data: ReservationEmailData): string {
 }
 
 export function getReminderEmailSubject(data: { customerName: string; destination: string }) {
-  return `AEROPARKING — Recordatorio: tu viaje a ${destinoShort(data.destination)} es mañana`;
+  return `KingPark — Recordatorio: tu viaje a ${destinoShort(data.destination)} es mañana`;
 }
 
 // ─── Template 3: Bienvenida post-retiro ──────────────────────────────────────
@@ -332,7 +333,7 @@ export function buildWelcomeBackEmail(data: ReservationEmailData): string {
 }
 
 export function getWelcomeBackEmailSubject(data: { customerName: string }) {
-  return `AEROPARKING — Bienvenido de vuelta, ${data.customerName}`;
+  return `KingPark — Bienvenido de vuelta, ${data.customerName}`;
 }
 
 // ─── Template 4: Pedido de reseña ────────────────────────────────────────────
@@ -364,7 +365,7 @@ export function buildReviewRequestEmail(data: ReservationEmailData, reviewUrl?: 
 }
 
 export function getReviewRequestEmailSubject(data: { customerName: string }) {
-  return `AEROPARKING — ${data.customerName}, ¿nos dejás tu opinión?`;
+  return `KingPark — ${data.customerName}, ¿nos dejás tu opinión?`;
 }
 
 // ─── Template 5: Aviso al admin (interno) ────────────────────────────────────

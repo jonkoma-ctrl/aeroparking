@@ -63,7 +63,7 @@ export function Benefits() {
               No somos cualquier estacionamiento
             </h2>
             <p className="mt-4 text-base text-brand-600 text-pretty sm:text-lg">
-              Más de 2.000 viajeros eligieron Aeroparking porque hacemos las cosas como las haríamos con nuestro propio auto.
+              Más de 2.000 viajeros ya nos eligieron porque hacemos las cosas como las haríamos con nuestro propio auto.
             </p>
           </div>
         </Reveal>

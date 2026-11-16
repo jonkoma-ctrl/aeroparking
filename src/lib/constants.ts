@@ -1,4 +1,4 @@
-export const BRAND_NAME = process.env.NEXT_PUBLIC_BRAND_NAME || "AEROPARKING";
+export const BRAND_NAME = process.env.NEXT_PUBLIC_BRAND_NAME || "KingPark";
 
 /// Datos de contacto que se muestran al cliente en CTAs y mails.
 /// Mantener sincronizado con email-templates.ts y Settings (cuando exista en DB).
@@ -22,12 +22,12 @@ export const FAQ_ITEMS = [
   {
     question: "¿El traslado está incluido?",
     answer:
-      "Para Aeroparque y la Terminal de Cruceros, sí: el precio incluye el traslado ida y vuelta en nuestras unidades, sin costo adicional. Para Ezeiza, el traslado es opcional y se abona por tramo (ida y/o vuelta) — el valor te lo mostramos al cotizar.",
+      "Para Aeroparque y la Terminal de Cruceros, sí: el precio incluye el traslado ida y vuelta en nuestras unidades, sin costo adicional.",
   },
   {
     question: "¿Cómo y cuándo se paga?",
     answer:
-      "El pago se realiza en el momento que dejás el vehículo en nuestro estacionamiento de BA Ferial (ex Costa Salguero). Aceptamos efectivo, tarjeta y transferencia.",
+      "Se paga online al reservar, con Mercado Pago: tarjeta de crédito, débito o dinero en cuenta. Apenas se aprueba el pago te llega el mail con tu código QR, y al llegar a BA Ferial (ex Costa Salguero) no tenés que abonar nada.",
   },
   {
     question: "¿Qué pasa si me cancelan el vuelo?",

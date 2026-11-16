@@ -5,7 +5,7 @@ import Link from "next/link";
  * convierte mucho — la gente prefiere consultar antes de reservar.
  */
 export function WhatsAppFloat({ phone = "5491131606994" }: { phone?: string }) {
-  const message = encodeURIComponent("Hola! Te consulto por una reserva en Aeroparking.");
+  const message = encodeURIComponent("Hola! Te consulto por una reserva en KingPark.");
   return (
     <Link
       href={`https://wa.me/${phone}?text=${message}`}

@@ -44,7 +44,7 @@ export function CTA() {
 
           <Reveal delay={180}>
             <p className="mx-auto mt-6 max-w-2xl text-base text-brand-200/90 text-pretty sm:text-lg">
-              Reservá en 2 minutos. Pagás cuando dejás el auto. Y volvés a casa sin esperas, garantizado.
+              Reservá y pagá en 2 minutos. Te llevamos, te traemos y volvés a casa sin esperas.
             </p>
           </Reveal>
 

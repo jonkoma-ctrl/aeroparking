@@ -141,15 +141,6 @@ export function BookingWidget({
               </button>
               <button
                 type="button"
-                onClick={() => { setDestino("ezeiza"); setServiceType(""); markInteraction(); }}
-                className={`flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium transition ${
-                  destino === "ezeiza" ? "bg-white text-brand-900 shadow-sm" : "text-brand-500 hover:text-brand-700"
-                }`}
-              >
-                <Plane className="h-4 w-4" /> Ezeiza
-              </button>
-              <button
-                type="button"
                 onClick={() => { setDestino("puerto"); setServiceType(""); markInteraction(); }}
                 className={`flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium transition ${
                   destino === "puerto" ? "bg-white text-brand-900 shadow-sm" : "text-brand-500 hover:text-brand-700"
@@ -203,7 +194,7 @@ export function BookingWidget({
             <div className="mt-4 flex flex-wrap items-center justify-center gap-3 text-xs text-brand-500">
               <span className="flex items-center gap-1"><Check className="h-3.5 w-3.5 text-green-600" /> {destino === "ezeiza" ? "Traslado opcional por tramo" : "Traslado incluido"}</span>
               <span className="flex items-center gap-1"><Clock className="h-3.5 w-3.5 text-green-600" /> Reserva en 2 min</span>
-              <span className="flex items-center gap-1"><CreditCard className="h-3.5 w-3.5 text-green-600" /> Pagás al dejar el auto</span>
+              <span className="flex items-center gap-1"><CreditCard className="h-3.5 w-3.5 text-green-600" /> Pago online con Mercado Pago</span>
             </div>
           </form>
         )}
@@ -310,7 +301,7 @@ function QuoteResultView({
           <Badge icon="🚐" text="Traslado opcional por tramo" />
         )}
         <Badge icon="⚡" text="Reserva rápida" />
-        <Badge icon="💳" text="Pagás al dejar el auto" />
+        <Badge icon="💳" text="Pago online con Mercado Pago" />
       </div>
 
       {/* CTA */}

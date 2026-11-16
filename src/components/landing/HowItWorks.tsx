@@ -20,7 +20,7 @@ const steps = [
     n: "03",
     icon: Plane,
     title: "Te llevamos al destino",
-    description: "Aeroparque o Cruceros: 15 min. Ezeiza: 45–60 min según tráfico. Coordinamos para llegar con tiempo.",
+    description: "Aeroparque y la Terminal de Cruceros están a 15 minutos. Coordinamos para que llegues con tiempo.",
     time: "Según destino",
   },
   {

@@ -1,3 +1,4 @@
+import { KingParkLogo } from "@/components/brand/KingParkLogo";
 import Link from "next/link";
 import { CONTACT } from "@/lib/constants";
 
@@ -9,14 +10,12 @@ export function Footer() {
           {/* Brand */}
           <div>
             <div className="flex items-center">
-              <span className="font-display text-xl font-extrabold tracking-tight text-white">
-                AERO<span className="text-accent-400">PARKING</span>
-              </span>
+              <KingParkLogo tone="dark" />
             </div>
             <p className="mt-4 text-sm leading-relaxed text-brand-400">
               Estacionamiento &middot; Traslados &middot; Valet
               <br />
-              Aeroparque &middot; Ezeiza &middot; Cruceros
+              Aeroparque &middot; Terminal de Cruceros
             </p>
           </div>
 
@@ -32,14 +31,6 @@ export function Footer() {
                   className="transition-colors hover:text-white"
                 >
                   Aeroparque Jorge Newbery
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/reservar?destino=ezeiza"
-                  className="transition-colors hover:text-white"
-                >
-                  Aeropuerto de Ezeiza
                 </Link>
               </li>
               <li>
@@ -90,7 +81,7 @@ export function Footer() {
         </div>
 
         <div className="mt-12 border-t border-brand-800 pt-6 text-center text-xs text-brand-500">
-          &copy; 2026 AEROPARKING
+          &copy; 2026 KingPark
         </div>
       </div>
     </footer>
