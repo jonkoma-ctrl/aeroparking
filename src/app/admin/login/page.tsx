@@ -1,12 +1,14 @@
 "use client";
 
 import { useState, Suspense } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 
 function LoginForm() {
-  const router = useRouter();
   const searchParams = useSearchParams();
-  const from = searchParams.get("from") || "/admin/dashboard";
+  // Sólo volvemos a pantallas del panel (nunca a una URL externa ni al login).
+  const fromParam = searchParams.get("from") || "";
+  const from =
+    fromParam.startsWith("/admin") && !fromParam.startsWith("/admin/login") ? fromParam : "/admin/dashboard";
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -16,16 +18,27 @@ function LoginForm() {
     setLoading(true);
     setError("");
 
-    const res = await fetch("/api/admin/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ password }),
-    });
+    let res: Response;
+    try {
+      res = await fetch("/api/admin/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ password }),
+      });
+    } catch {
+      setError("Sin conexión. Probá de nuevo.");
+      setLoading(false);
+      return;
+    }
 
     if (res.ok) {
-      router.push(from);
+      // Navegación completa (no router.push): el menú lateral precarga las
+      // pantallas del panel antes del login y Next guarda esa redirección al
+      // login; con router.push se quedaba colgado en "...".
+      window.location.assign(from);
     } else {
-      setError("Clave incorrecta");
+      const data = await res.json().catch(() => ({}));
+      setError(data.error || "Clave incorrecta");
       setLoading(false);
     }
   }
