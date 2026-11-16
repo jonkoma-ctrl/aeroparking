@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { ArrowRight } from "lucide-react";
 
 /**
@@ -13,6 +14,9 @@ import { ArrowRight } from "lucide-react";
  */
 export function MobileStickyCTA() {
   const [visible, setVisible] = useState(false);
+  const pathname = usePathname() || "/";
+  // En las páginas de reserva/gestión/admin el botón no suma: ya estás ahí.
+  const hidden = /^\/(reservar|mi-reserva|admin|validar)/.test(pathname);
 
   useEffect(() => {
     function handle() {
@@ -24,6 +28,8 @@ export function MobileStickyCTA() {
     window.addEventListener("scroll", handle, { passive: true });
     return () => window.removeEventListener("scroll", handle);
   }, []);
+
+  if (hidden) return null;
 
   return (
     <div
