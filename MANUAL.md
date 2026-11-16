@@ -378,6 +378,13 @@ El archivo que te baja se abre directo en Excel o Google Sheets. Tiene todas las
 
 ## 15. Historial de novedades
 
+### 16 de noviembre de 2026 — "Mi reserva": el cliente se autogestiona
+
+- 🔐 Para ver una reserva ahora hace falta **el código + el mail** con el que se reservó, o entrar con el botón **"Gestionar mi reserva" del mail** (ese link entra directo). Con el código solo ya no se ve nada: antes cualquiera que adivinara un código veía nombre, patente y fechas.
+- El cliente puede, solo: **ver su QR**, **reenviarse el mail con el QR**, **cambiar la patente** (mientras el auto no haya ingresado) y **pedir extensión o cancelación**.
+- Extensión y cancelación siguen siendo **pedidos**: quedan en la reserva con estado "Extensión solicitada" / "Cancelación solicitada" y una nota con la diferencia a cobrar o el motivo. Las gestiona el equipo.
+- Cada cambio que hace el cliente queda anotado en las notas de la reserva (ej. "CAMBIO DE PATENTE (cliente): AA000AA → AB123CD").
+
 ### 16 de noviembre de 2026 — Ahora somos KingPark y se cobra online
 
 - 👑 **Nueva marca: KingPark.** Cambiaron el logo, los colores y el nombre en la web y en todos los mails. Los códigos de reserva nuevos empiezan con **KP-** (los viejos AP- siguen funcionando en el escáner).

@@ -1,89 +1,44 @@
 import { NextRequest, NextResponse } from "next/server";
-import { prisma } from "@/lib/db";
+import { findReservationWithAccess, ACCESS_DENIED } from "@/lib/reservation-access";
+import { UNPAID_STATUSES } from "@/lib/mp";
 
-// GET /api/mi-reserva?order=177666 or ?id=cmnp...
+export const dynamic = "force-dynamic";
+
+const PAID = ["confirmed", "checked_in", "completed", "cancellation_requested", "extension_requested"];
+
+// GET /api/mi-reserva?order=KP-2026-123456&t=<link firmado>  ó  &email=<mail de la reserva>
 export async function GET(req: NextRequest) {
-  const { searchParams } = new URL(req.url);
-  const order = searchParams.get("order");
-  const id = searchParams.get("id");
+  const q = req.nextUrl.searchParams;
+  const r = await findReservationWithAccess({ order: q.get("order"), email: q.get("email"), t: q.get("t") });
+  if (!r) return NextResponse.json({ error: ACCESS_DENIED }, { status: 404 });
 
-  if (!order && !id) {
-    return NextResponse.json(
-      { error: "Ingresá un número de pedido o ID de reserva" },
-      { status: 400 }
-    );
-  }
-
-  try {
-    // Try AeroparqueReservation first
-    if (order) {
-      const aeroRes = await prisma.aeroparqueReservation.findUnique({
-        where: { externalOrderId: order },
-        select: {
-          id: true,
-          externalOrderId: true,
-          destination: true,
-          serviceType: true,
-          customerName: true,
-          licensePlate: true,
-          carBrand: true,
-          carModel: true,
-          startDate: true,
-          endDate: true,
-          price: true,
-          status: true,
-          departureFlightDate: true,
-          departureAirline: true,
-          departureFlight: true,
-          arrivalAirline: true,
-          arrivalFlight: true,
-          arrivalTime: true,
-          checkInTime: true,
-          passengers: true,
-          createdAt: true,
-        },
-      });
-      if (aeroRes) {
-        return NextResponse.json({ type: "aeroparque", ...aeroRes });
-      }
-    }
-
-    // Try CruiseReservation by ID
-    if (id) {
-      const cruiseRes = await prisma.cruiseReservation.findUnique({
-        where: { id },
-        select: {
-          id: true,
-          status: true,
-          firstName: true,
-          lastName: true,
-          licensePlate: true,
-          carBrand: true,
-          carModel: true,
-          departureDate: true,
-          returnDate: true,
-          cruiseLine: true,
-          createdAt: true,
-        },
-      });
-      if (cruiseRes) {
-        return NextResponse.json({
-          type: "cruceros",
-          customerName: `${cruiseRes.firstName} ${cruiseRes.lastName}`,
-          ...cruiseRes,
-        });
-      }
-    }
-
-    return NextResponse.json(
-      { error: "Reserva no encontrada" },
-      { status: 404 }
-    );
-  } catch (error) {
-    console.error("Error fetching reservation:", error);
-    return NextResponse.json(
-      { error: "Error interno" },
-      { status: 500 }
-    );
-  }
+  const paid = PAID.includes(r.status);
+  return NextResponse.json({
+    id: r.id,
+    externalOrderId: r.externalOrderId,
+    destination: r.destination,
+    serviceType: r.serviceType,
+    customerName: r.customerName,
+    email: r.email,
+    licensePlate: r.licensePlate,
+    carBrand: r.carBrand,
+    carModel: r.carModel,
+    startDate: r.startDate,
+    endDate: r.endDate,
+    checkInTime: r.checkInTime,
+    arrivalTime: r.arrivalTime,
+    departureAirline: r.departureAirline,
+    departureFlight: r.departureFlight,
+    arrivalAirline: r.arrivalAirline,
+    arrivalFlight: r.arrivalFlight,
+    cruiseLine: r.cruiseLine,
+    passengers: r.passengers,
+    price: r.paidAmount ?? r.price,
+    status: r.status,
+    paid,
+    unpaid: (UNPAID_STATUSES as readonly string[]).includes(r.status),
+    checkedIn: !!r.checkedInAt,
+    // El QR sólo se muestra con la reserva paga.
+    qrToken: paid ? r.qrToken : null,
+  });
 }

@@ -41,6 +41,8 @@ export interface ReservationEmailData {
   arrivalAirline?: string | null;
   arrivalFlight?: string | null;
   price?: number | null;
+  /** Path firmado a "Mi reserva" (ver lib/reservation-access.ts). */
+  managePath?: string;
   passengers?: number | null;
   destinationImageUrl?: string | null;
   destinationImageAlt?: string | null;
@@ -231,12 +233,13 @@ function arrivalInstructions(): string {
 }
 
 function manageReservationCta(data: ReservationEmailData): string {
-  const lookupParam = data.externalOrderId
-    ? `order=${data.externalOrderId}`
-    : `id=${data.reservationId}`;
+  // Link firmado (entra sin pedir datos); si no vino, cae a la búsqueda por código.
+  const href = data.managePath
+    ? `${SITE_URL}${data.managePath}`
+    : `${SITE_URL}/mi-reserva${data.externalOrderId ? `?order=${data.externalOrderId}` : ""}`;
   return `
     <div style="text-align:center;margin-top:32px">
-      <a href="${SITE_URL}/mi-reserva?${lookupParam}" style="display:inline-block;background:#0f172a;color:#fff;padding:14px 32px;border-radius:10px;text-decoration:none;font-size:15px;font-weight:600">
+      <a href="${href}" style="display:inline-block;background:#1b3fc4;color:#fff;padding:14px 32px;border-radius:10px;text-decoration:none;font-size:15px;font-weight:600">
         Gestionar mi reserva
       </a>
     </div>
