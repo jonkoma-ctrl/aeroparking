@@ -1,581 +1,388 @@
-# Manual de Aeroparking
+# Manual de KingPark
 
-> Guía operativa para el equipo. Acá está todo lo que necesitás saber para usar el panel administrativo, gestionar reservas y atender consultas de clientes.
+> Guía para el equipo: cómo usar el panel, atender a los clientes y operar la playa.
 
-**Última actualización**: 2026-05-14
-
----
-
-## Novedad destacada — Código QR y Vista del día
-
-Ahora cada reserva genera un **código QR** que le llega al cliente por email. El personal de BA Ferial (ex Costa Salguero) puede:
-
-- **Escanear el QR** (📷 Escáner en el menú) con el celular para registrar el ingreso del auto y el retiro, sin buscar la reserva a mano. Si la cámara no lee, se puede tipear el código corto de 6 letras.
-- Abrir la **Vista del día** (🗓️ en el menú) a la mañana para ver todos los autos que ingresan (o retiran) ese día, ordenados por hora. Se puede **imprimir** para tener la lista en papel.
-
-Ver secciones 17 (Escáner) y 18 (Vista del día) para el detalle.
+**Última actualización**: 16 de noviembre de 2026
 
 ---
 
 ## Índice
 
-1. [Qué es Aeroparking](#1-que-es-aeroparking)
-2. [Entrar al panel administrativo](#2-entrar-al-panel-administrativo)
-3. [Pantalla principal: el Dashboard](#3-pantalla-principal-el-dashboard)
-4. [Reservas: ver la agenda completa](#4-reservas-ver-la-agenda-completa)
-5. [Detalle de una reserva: cómo gestionarla](#5-detalle-de-una-reserva-como-gestionarla)
-6. [Estados de una reserva: qué significa cada uno](#6-estados-de-una-reserva-que-significa-cada-uno)
-7. [Cómo se calcula el precio (estadía y media estadía)](#7-como-se-calcula-el-precio-estadia-y-media-estadia)
-8. [Destinos: agregar, editar, foto, descripción](#8-destinos-agregar-editar-foto-descripcion)
-9. [Tarifas: cambiar precios y descuentos](#9-tarifas-cambiar-precios-y-descuentos)
-10. [Créditos a clientes (vuelo cancelado, etc.)](#10-creditos-a-clientes-vuelo-cancelado-etc)
-11. [Ajustes del sitio: cambiar foto del hero y datos de contacto](#11-ajustes-del-sitio-cambiar-foto-del-hero-y-datos-de-contacto)
-12. [Atender consultas de clientes](#12-atender-consultas-de-clientes)
-13. [Exportar datos a Excel](#13-exportar-datos-a-excel)
-14. [Atajos del día a día (cheatsheet)](#14-atajos-del-dia-a-dia-cheatsheet)
-15. [Historial de novedades](#15-historial-de-novedades)
-16. [Quién te ayuda si algo no anda](#16-quien-te-ayuda-si-algo-no-anda)
+1. [Qué es KingPark](#1-que-es-kingpark)
+2. [Entrar al panel](#2-entrar-al-panel)
+3. [Cómo reserva y paga el cliente](#3-como-reserva-y-paga-el-cliente)
+4. [Vista del día](#4-vista-del-dia)
+5. [Escáner de ingreso y retiro (QR)](#5-escaner-de-ingreso-y-retiro-qr)
+6. [Agenda: todas las reservas](#6-agenda-todas-las-reservas)
+7. [Estados de una reserva](#7-estados-de-una-reserva)
+8. [Pedidos del cliente: cancelación y extensión](#8-pedidos-del-cliente-cancelacion-y-extension)
+9. [Dashboard y descargas a Excel](#9-dashboard-y-descargas-a-excel)
+10. [Tarifas: cambiar precios](#10-tarifas-cambiar-precios)
+11. [Cómo se calcula el precio](#11-como-se-calcula-el-precio)
+12. [Destinos](#12-destinos)
+13. [Créditos a clientes](#13-creditos-a-clientes)
+14. [Ajustes del sitio](#14-ajustes-del-sitio)
+15. [Atender consultas de clientes](#15-atender-consultas-de-clientes)
+16. [Atajos del día a día](#16-atajos-del-dia-a-dia)
+17. [Quién te ayuda](#17-quien-te-ayuda)
+18. [Historial de novedades](#18-historial-de-novedades)
 
 ---
 
-## 1. Qué es Aeroparking
+## 1. Qué es KingPark
 
-Aeroparking es nuestra web pública y el sistema interno para gestionar todo el negocio:
+KingPark es el estacionamiento de **BA Ferial (ex Costa Salguero)**, con **traslado ida y vuelta** a:
 
-- **El cliente** entra a [aeroparking.vercel.app](https://aeroparking.vercel.app), elige a dónde viaja (Aeroparque, Ezeiza, Cruceros), completa el formulario y recibe un email con la confirmación.
-- **Nosotros** vemos todas esas reservas en el panel administrativo, las gestionamos día a día y configuramos precios, destinos y datos del sitio.
+- **Aeroparque Jorge Newbery** (4 km)
+- **Terminal de Cruceros** del Puerto de Buenos Aires
 
-**Importante**: el pago se hace en presencia cuando el cliente deja el auto (efectivo, tarjeta o transferencia). La web no cobra plata online en este momento.
+El cliente entra a [kingpark.com.ar](https://kingpark.com.ar), ve el precio, reserva y **paga online con Mercado Pago**. Le llega por mail un **código QR** que muestra al llegar a la playa.
 
----
-
-## 2. Entrar al panel administrativo
-
-1. Andá a [aeroparking.vercel.app/admin/login](https://aeroparking.vercel.app/admin/login).
-2. Ingresá la contraseña que te pasamos.
-3. Al ingresar quedás logueado y vas directo al Dashboard.
-
-Si te olvidaste de la contraseña, pedísela a Jon.
+- **La plata** entra a la cuenta de Mercado Pago de **Border's Parking SRL**.
+- **Al llegar a BA Ferial no se cobra nada**: la reserva ya está paga.
+- **Dirección:** Av. Costanera Rafael Obligado 1221, CABA.
 
 ---
 
-## 3. Pantalla principal: el Dashboard
+## 2. Entrar al panel
 
-**URL**: [aeroparking.vercel.app/admin/dashboard](https://aeroparking.vercel.app/admin/dashboard)
+- **Dirección:** [kingpark.com.ar/admin/login](https://kingpark.com.ar/admin/login)
+- **Clave:** una sola para todo el equipo. La pasa Jon; **no se escribe en ningún lado ni se reenvía fuera del equipo**.
+- Una vez que entrás, ese celular o compu queda conectado **30 días**.
+- Si alguien pone **8 claves mal seguidas**, el ingreso se bloquea 15 minutos para esa conexión.
 
-Es la pantalla que ves al entrar. Te muestra cómo va el negocio de un vistazo. Tiene cuatro partes:
+### El menú del panel
 
-### Tarjetas con números (KPIs)
-
-Seis tarjetas grandes con los números clave:
-
-- **Reservas en el período**: cuántas reservas hubo en el rango que estás mirando, con comparación contra el período anterior (por ejemplo, este mes vs el mes pasado).
-- **Facturación**: total que se cobró.
-- **Ticket promedio**: cuánto gasta en promedio cada cliente.
-- **Autos en sede hoy**: cuántos autos están en este momento en BA Ferial (ex Costa Salguero) (con check-in hecho).
-- **No-show rate**: porcentaje de clientes que reservaron y no aparecieron.
-- **Cancelación rate**: porcentaje de cancelaciones sobre reservas finalizadas.
-
-Cada tarjeta muestra una flechita verde ▲ (subió) o roja ▼ (bajó) comparando con el período anterior.
-
-### Filtros
-
-Arriba de las tarjetas tenés cuatro filtros:
-
-- **Desde / Hasta**: rango de fechas.
-- **Destino**: todos, Aeroparque, Ezeiza o Cruceros.
-- **Estado**: filtrar por estado de las reservas (pendientes, confirmadas, etc.).
-
-Apretás "Aplicar" y todas las tarjetas y gráficos se actualizan.
-
-### Gráficos
-
-- **Reservas por día**: línea con la cantidad de reservas día a día.
-- **Por destino**: torta que muestra qué porcentaje de las reservas va a cada destino.
-
-### Botón "Descargar CSV"
-
-Te baja un Excel con todas las reservas que coinciden con los filtros. Útil para informes mensuales o cruzar con contabilidad.
-
----
-
-## 4. Reservas: ver la agenda completa
-
-**URL**: [aeroparking.vercel.app/admin/agenda](https://aeroparking.vercel.app/admin/agenda)
-
-Es la lista completa de reservas en formato tabla. Cada fila es una reserva con:
-
-- Fecha de ingreso y retiro
-- Destino
-- Cliente (nombre)
-- Vehículo (patente + marca + modelo)
-- Precio
-- Estado
-
-Tenés filtros arriba (destino + rango de fechas) y un botón para exportar a Excel.
-
-Click en cualquier fila para ver el detalle completo de esa reserva.
-
----
-
-## 5. Detalle de una reserva: cómo gestionarla
-
-Cuando entrás al detalle de una reserva (haciendo click en una fila de la agenda) ves toda la información del cliente:
-
-- **Datos personales**: nombre, email, teléfono.
-- **Vehículo**: patente, marca, modelo.
-- **Reserva**: fechas de ingreso y retiro, precio, cantidad de pasajeros.
-- **Vuelo** (si corresponde): aerolínea y número.
-- **Notas**: cualquier observación que dejó el cliente o que agregamos.
-
-Arriba del todo está el **estado** con un botón al lado para cambiarlo (por ejemplo, marcar que el auto llegó, que se retiró o que el cliente no apareció).
-
-### Si el cliente tiene crédito a favor
-
-Si ese cliente ya tuvo otra reserva que se canceló y le dimos crédito, vas a ver un **banner verde** al principio diciendo *"Este cliente tiene $X de crédito a favor"*. Al cobrar, descontá ese monto y después marcá el crédito como usado desde [Créditos](#10-creditos-a-clientes-vuelo-cancelado-etc).
-
----
-
-## 6. Estados de una reserva: qué significa cada uno
-
-| Estado | Qué significa | Cuándo se usa |
-|---|---|---|
-| **Pendiente** | Reserva apenas creada, falta confirmar | Caso raro, casi no aparece |
-| **Confirmada** | El sistema mandó el email al cliente | Al ratito de crearse |
-| **En sede** | El auto está en BA Ferial (ex Costa Salguero) | Cuando llega el cliente y te entrega el auto |
-| **Completada** | Reserva terminada, el cliente retiró el auto | Cuando se va el cliente |
-| **Cancelada** | El cliente avisó que no viene | Si avisó antes de check-in, gratis. Si fue después, depende del caso |
-| **No-show** | El cliente reservó y nunca apareció | Si pasaron 24h del horario y no vino |
-
-El estado lo cambiás vos manualmente desde el detalle de cada reserva.
-
----
-
-## 7. Cómo se calcula el precio (estadía y media estadía)
-
-Esta es **la regla que aprobó el operador** y la usamos siempre:
-
-- Una **estadía** = 24 horas. Es indivisible: si el cliente deja el auto solo 4 horas, igual cobra 1 estadía completa.
-- Después de las primeras 24 horas, cada bloque de hasta 12 horas adicionales = **media estadía**.
-- Dos medias se convierten automáticamente en 1 completa.
-
-### Ejemplos prácticos
-
-| Cuánto tiempo deja el auto | Cuánto cobra |
+| Sección | Para qué |
 |---|---|
-| 4 horas | 1 estadía completa |
-| 13 horas | 1 estadía completa |
-| 23 horas | 1 estadía completa |
-| 28 horas | 1 estadía + ½ |
-| 36 horas | 1 estadía + ½ |
-| 37 horas | 2 estadías completas |
-| 48 horas | 2 estadías completas |
-| 49 horas | 2 estadías + ½ |
-
-### Precios actuales (mayo 2026)
-
-- **Estadía completa**: $40.000 ARS
-- **Media estadía**: $20.000 ARS
-- **Ezeiza** suma traslado: **$40.000 por tramo**. El cliente elige sin tramo, solo ida, o ida y vuelta.
-
-Los precios los cambiás desde [Tarifas](#9-tarifas-cambiar-precios-y-descuentos).
+| 📊 Dashboard | Números del negocio y descarga a Excel |
+| 🗓️ Vista del día | Qué autos entran o salen hoy |
+| 📷 Escáner | Leer el QR del cliente en la playa |
+| 📋 Agenda | Todas las reservas |
+| 🚢 Cruceros | Reservas viejas del sistema anterior (sólo consulta) |
+| 💰 Tarifas | Precios |
+| 📍 Destinos | Aeroparque, Cruceros (y los que se sumen) |
+| 🎁 Créditos | Saldo a favor de clientes |
+| ⚙️ Ajustes | Foto de portada y datos de contacto |
 
 ---
 
-## 8. Destinos: agregar, editar, foto, descripción
+## 3. Cómo reserva y paga el cliente
 
-**URL**: [aeroparking.vercel.app/admin/destinos](https://aeroparking.vercel.app/admin/destinos)
+1. En la portada elige **Aeroparque o Cruceros** y las **fechas**: el precio aparece al instante.
+2. En el formulario carga, en este orden: **fechas y horas**, **vehículo** (marca, modelo, patente), **viaje** (vuelos o crucero) y **contacto**. El **total** se ve arriba durante todo el formulario.
+3. Toca **"Pagar"** y va a **Mercado Pago** (tarjeta de crédito, débito o dinero en cuenta). Tiene **30 minutos** para pagar.
+4. Cuando el pago se aprueba:
+   - Al cliente le llega el **mail de confirmación con el QR** y un botón **"Gestionar mi reserva"**.
+   - Al equipo le llega un **aviso a reservas@nrauditores.com.ar**.
+   - La reserva aparece en la **Agenda** y en la **Vista del día**.
+5. **Si no paga**, la reserva no aparece en ningún listado y el QR no sirve para entrar.
 
-Acá manejás los lugares a los que llevamos clientes (Aeroparque, Ezeiza, Cruceros). Si en el futuro abrimos un destino nuevo, lo agregás desde acá sin necesidad de pedir ayuda técnica.
+### Lo que el cliente puede hacer solo ("Mi reserva")
 
-### Qué tiene cada destino
+Desde el botón **"Gestionar mi reserva"** del mail (o en [kingpark.com.ar/mi-reserva](https://kingpark.com.ar/mi-reserva) con su código y su mail):
 
-- **Nombre completo**: aparece en el formulario cuando el cliente lo selecciona ("Aeroparque Jorge Newbery").
-- **Nombre corto**: aparece en chips, listas y botones ("Aeroparque").
-- **Ícono**: avión, barco, micro, auto o tren. Visual.
-- **Color**: el color con el que se destaca el destino (azul, celeste, violeta, etc.).
-- **Descripción**: texto breve que ve el cliente al elegir el destino.
-- **Foto**: imagen representativa. Se ve grande cuando el cliente selecciona el destino en el formulario.
-- **Activo / inactivo**: si está inactivo, no aparece en la web.
+- Ver su **QR**.
+- **Reenviarse el mail** con el QR.
+- **Cambiar la patente**, mientras el auto no haya entrado a la playa.
+- **Pedir una extensión** o **pedir la cancelación** (ver [sección 8](#8-pedidos-del-cliente-cancelacion-y-extension)).
+- Si no llegó a pagar, **completar el pago**.
 
-### Cómo agregar un destino nuevo
-
-1. Click en **"+ Nuevo destino"** arriba a la derecha.
-2. Poné un identificador corto (sin espacios, todo en minúsculas, ej: `cordoba`).
-3. Nombre completo, nombre corto, ícono, color.
-4. Subí una foto (recomendado: 16:9, máximo 5MB, formato JPG/PNG/WebP).
-5. Guardar.
-6. **Importante**: andá a [Tarifas](#9-tarifas-cambiar-precios-y-descuentos) y creá la tarifa para ese destino. Sin tarifa, el destino no se puede cotizar.
-
-### Cómo cambiar la foto de un destino
-
-1. En la tabla, click en **"Editar"** al lado del destino.
-2. En el bloque "Foto del destino", click en **"Cambiar"** (si ya hay foto) o **"Subir imagen"** (si no hay).
-3. Elegí el archivo y subilo.
-4. Guardar.
-
-### Cómo desactivar temporalmente un destino
-
-Click en el botón "Activo" (verde) de la tabla → pasa a "Inactivo" (gris). El destino deja de aparecer en la web. Para reactivarlo, click de nuevo.
+Todo lo que cambia el cliente queda anotado en las notas de la reserva (ej. "CAMBIO DE PATENTE (cliente): AA000AA → AB123CD").
 
 ---
 
-## 9. Tarifas: cambiar precios y descuentos
+## 4. Vista del día
 
-**URL**: [aeroparking.vercel.app/admin/tarifas](https://aeroparking.vercel.app/admin/tarifas)
+**Dirección:** [kingpark.com.ar/admin/dia](https://kingpark.com.ar/admin/dia)
 
-Acá cambiás los precios. Cada fila es una combinación destino + tipo de servicio.
+La pantalla para abrir a la mañana: **qué autos vienen hoy**, ordenados por hora.
 
-### Cambiar un precio rápido
+- Arriba elegís **Ingresos** (autos que llegan) o **Retiros** (autos que se van).
+- Con **← Hoy →** te movés entre días: podés preparar la lista de mañana la noche anterior.
+- Cada fila: hora, cliente, patente, vehículo, destino, vuelo y una casilla.
+- La casilla se **tilda sola en verde** cuando el auto se registró con el escáner.
+- Botón **Imprimir**: saca sólo la tabla, para tenerla en papel en la playa.
 
-1. Click directamente en el precio (aparece subrayado).
-2. Escribí el nuevo valor.
-3. Click en **OK**.
-
-Las reservas que ya estaban tomadas mantienen el precio que tenían cuando se hicieron — solo las nuevas usan el precio actualizado.
-
-### Configuración avanzada
-
-Click en **"⚙ Avanzado"** al final de la fila. Te abre un panel con:
-
-- **Mínimo y máximo de días**: por ejemplo, si querés que un servicio solo se pueda reservar entre 2 y 30 días.
-- **Descuentos por duración**: agregá descuentos automáticos. Por ejemplo: "Desde 7 días → 10% off". Si el cliente reserva 10 días, el sistema aplica el 10% solo. Si reserva 3 días, no aplica nada.
-- **Traslado**:
-  - **Incluido**: para Aeroparque y Cruceros (no se cobra extra).
-  - **No incluido**: para Ezeiza. Tenés que configurar el "costo por tramo" (ej: $40.000) y el cliente elige cuántos tramos en el formulario.
-
-Click en **"Guardar cambios"** al final del panel para que tome efecto.
-
-### Activar / desactivar una tarifa
-
-Click en el badge "Activa" → pasa a "Inactiva". Si la dejás inactiva, el destino no se puede reservar.
+Sólo aparecen reservas **pagas**.
 
 ---
 
-## 10. Créditos a clientes (vuelo cancelado, etc.)
+## 5. Escáner de ingreso y retiro (QR)
 
-**URL**: [aeroparking.vercel.app/admin/creditos](https://aeroparking.vercel.app/admin/creditos)
-
-Sirve para casos donde el cliente paga, pero le cancelan el vuelo o pasa algo y queremos darle crédito para una próxima reserva en vez de devolver plata.
-
-### Cómo crear un crédito
-
-1. Click en **"+ Nuevo crédito"** arriba a la derecha.
-2. Email del cliente (el mismo con el que reservó).
-3. Monto en pesos.
-4. **Motivo** (opcional pero recomendado): explicación corta, ej: *"Vuelo AA1234 cancelado el 14/05. Quedó 3hs y se llevó el auto."*
-5. **Reserva origen** (opcional): el código de la reserva donde se generó el crédito.
-6. Crear.
-
-El crédito queda **disponible** y atado al email del cliente.
-
-### Cómo aplicar un crédito
-
-1. Cuando el cliente vuelve a reservar con el mismo email, al entrar al detalle de su nueva reserva vas a ver un **banner verde** que dice *"Este cliente tiene $X de crédito a favor"*.
-2. Al cobrarle en presencia, descontá ese monto del total.
-3. Volvé a la pantalla de Créditos.
-4. Buscá el crédito por email (filtro arriba).
-5. Click en **"Marcar usado"**.
-
-El crédito queda registrado como **usado** con la fecha y deja de aparecer disponible.
-
-### Ver créditos de un cliente específico
-
-Escribí el email en el filtro **"Filtrar por email"** y apretá **Filtrar**.
-
-### Vencimiento de créditos
-
-Los créditos **no vencen automáticamente**. Si querés cerrar uno por antigüedad, click en **"Expirar"** desde la tabla.
-
----
-
-## 11. Ajustes del sitio: cambiar foto del hero y datos de contacto
-
-**URL**: [aeroparking.vercel.app/admin/settings](https://aeroparking.vercel.app/admin/settings)
-
-Acá editás cosas globales del sitio que ve el cliente.
-
-### Hero de la home
-
-Es la imagen y el título grande que aparece arriba de todo en la página principal.
-
-- **Imagen principal**: subí la foto que querés que aparezca de fondo. Recomendado: horizontal, buena calidad, máximo 5MB.
-- **Alt text**: descripción para personas con lectores de pantalla (accesibilidad). Algo simple como "Estacionamiento BA Ferial (ex Costa Salguero)".
-- **Título**: el texto grande. Si lo dejás vacío, usa el texto por defecto. Si querés cambiarlo, escribí el nuevo.
-- **Subtítulo**: el texto debajo del título. Misma lógica.
-
-### Datos de contacto
-
-- **WhatsApp**: número en formato internacional sin el `+`. Ejemplo: `5491131606994`. Aparece en los botones de WhatsApp del sitio y en los emails.
-- **Email de contacto**: aparece en el footer y al final de los emails.
-
-Click en **"Guardar cambios"**. Los cambios se ven en la web en 1-2 segundos.
-
----
-
-## 12. Atender consultas de clientes
-
-### El cliente quiere cambiar fecha o cancelar
-
-Mandalo a **[aeroparking.vercel.app/mi-reserva](https://aeroparking.vercel.app/mi-reserva)** con su código de reserva (que está en el email de confirmación). Desde ahí puede:
-
-- Ver los datos de su reserva.
-- Cancelar si todavía no entró el auto a la sede (cancelar antes de check-in = gratis).
-- Extender la estadía (si tenemos disponibilidad).
-
-Si el cambio es complicado o el auto ya está adentro, hacelo manualmente desde [Agenda](#4-reservas-ver-la-agenda-completa).
-
-### El cliente dice que no recibió el email
-
-1. Verificá la reserva en [Agenda](#4-reservas-ver-la-agenda-completa) — confirmá que el email cargado es correcto.
-2. Pedile que revise spam.
-3. Si igual no llegó, podés reenviar manualmente desde el detalle de la reserva (funcionalidad pendiente — por ahora avisale a Jon).
-
-### El cliente con vuelo cancelado
-
-1. Confirmá la reserva: código + monto pagado.
-2. Andá a [Créditos](#10-creditos-a-clientes-vuelo-cancelado-etc) → "+ Nuevo crédito".
-3. Cargá email + monto + motivo.
-4. Avisale al cliente: *"Te queda un crédito de $X a tu nombre. Cuando reserves de nuevo te lo descontamos del total."*
-
-### El cliente quiere reservar de último momento (menos de 24h)
-
-Por defecto el sistema bloquea reservas con menos de 24h de anticipación. En esos casos pasale el WhatsApp del 11 3160 6994 o creale la reserva manualmente vos.
-
----
-
-## 13. Exportar datos a Excel
-
-Tenés botones de **"Descargar CSV"** en dos lugares:
-
-- En el [Dashboard](#3-pantalla-principal-el-dashboard) — exporta con los filtros aplicados (rango fechas + destino + estado).
-- En [Agenda](#4-reservas-ver-la-agenda-completa) — exporta con los filtros aplicados.
-
-El archivo que te baja se abre directo en Excel o Google Sheets. Tiene todas las columnas: cliente, email, teléfono, patente, marca, modelo, fechas, precio, estado, etc.
-
-**Tip**: si querés un informe mensual de facturación, setá las fechas del mes en el Dashboard y descargá. Después en Excel sumás la columna "Precio".
-
----
-
-## 14. Atajos del día a día (cheatsheet)
-
-| Quiero... | Hago |
-|---|---|
-| Ver cuántas reservas hay esta semana | [Dashboard](#3-pantalla-principal-el-dashboard) → filtrar fechas |
-| Ver la lista completa de reservas | [Agenda](#4-reservas-ver-la-agenda-completa) |
-| Marcar que un auto llegó | [Agenda](#4-reservas-ver-la-agenda-completa) → click en la reserva → cambiar estado |
-| Subir una foto del Hero de la web | [Ajustes](#11-ajustes-del-sitio-cambiar-foto-del-hero-y-datos-de-contacto) |
-| Cambiar foto de un destino | [Destinos](#8-destinos-agregar-editar-foto-descripcion) → editar → cambiar imagen |
-| Subir el precio | [Tarifas](#9-tarifas-cambiar-precios-y-descuentos) → click en el precio |
-| Configurar descuento por estadía larga | [Tarifas](#9-tarifas-cambiar-precios-y-descuentos) → Avanzado |
-| Dar crédito a un cliente | [Créditos](#10-creditos-a-clientes-vuelo-cancelado-etc) → "+ Nuevo crédito" |
-| Aplicar un crédito existente | Cobrar menos al cliente + [Créditos](#10-creditos-a-clientes-vuelo-cancelado-etc) → Marcar usado |
-| Exportar a Excel | [Dashboard](#3-pantalla-principal-el-dashboard) o [Agenda](#4-reservas-ver-la-agenda-completa) → Descargar CSV |
-| Agregar un destino nuevo | [Destinos](#8-destinos-agregar-editar-foto-descripcion) → "+ Nuevo destino" → después crear tarifa |
-| Cambiar el WhatsApp de contacto | [Ajustes](#11-ajustes-del-sitio-cambiar-foto-del-hero-y-datos-de-contacto) |
-
----
-
-## 15. Historial de novedades
-
-### 16 de noviembre de 2026 — Clave nueva del panel
-
-- 🔐 **Cambió la clave del panel.** La de Aeroparking ya no funciona: todos tienen que volver a entrar una vez (también en el celular del escáner). La clave nueva la pasa Jon; no se escribe en este manual.
-- Después de 8 claves incorrectas seguidas, el login se bloquea 15 minutos para esa conexión.
-
-### 16 de noviembre de 2026 — "Mi reserva": el cliente se autogestiona
-
-- 🔐 Para ver una reserva ahora hace falta **el código + el mail** con el que se reservó, o entrar con el botón **"Gestionar mi reserva" del mail** (ese link entra directo). Con el código solo ya no se ve nada: antes cualquiera que adivinara un código veía nombre, patente y fechas.
-- El cliente puede, solo: **ver su QR**, **reenviarse el mail con el QR**, **cambiar la patente** (mientras el auto no haya ingresado) y **pedir extensión o cancelación**.
-- Extensión y cancelación siguen siendo **pedidos**: quedan en la reserva con estado "Extensión solicitada" / "Cancelación solicitada" y una nota con la diferencia a cobrar o el motivo. Las gestiona el equipo.
-- Cada cambio que hace el cliente queda anotado en las notas de la reserva (ej. "CAMBIO DE PATENTE (cliente): AA000AA → AB123CD").
-
-### 16 de noviembre de 2026 — Ahora somos KingPark y se cobra online
-
-- 👑 **Nueva marca: KingPark.** Cambiaron el logo, los colores y el nombre en la web y en todos los mails. Los códigos de reserva nuevos empiezan con **KP-** (los viejos AP- siguen funcionando en el escáner).
-- 💳 **El cliente paga online al reservar, con Mercado Pago** (tarjeta de crédito, débito o dinero en cuenta). La plata entra a la cuenta de Border's Parking SRL. **Al llegar a BA Ferial no se cobra nada.**
-- ✉️ El mail con el QR le llega al cliente **recién cuando el pago se aprueba**. Si no pagó, la reserva no aparece en la agenda, ni en la vista del día, ni en el dashboard.
-- 🚫 Si alguien muestra un código de una reserva sin pagar, el escáner dice **"Pago pendiente — no dejar ingresar"**.
-- ✈️ **Ezeiza ya no se ofrece.** Quedan Aeroparque y la Terminal de Cruceros. Se puede volver a prender desde **Destinos**.
-
-### 15 de julio de 2026 — Grilla de precios por cantidad de días
-
-- 💵 **Nueva forma de cargar precios en Tarifas**: además del precio lineal (precio × días), ahora podés cargar una **grilla de precios por cantidad de días** con el valor TOTAL de cada tramo. Por ejemplo: 1 día = $39.000, 2 días = $70.000, 3 días = $95.000, y "cada día adicional = $12.000". Es como funcionan los estacionamientos de aeropuerto: el que deja 4 días no paga 4 × el precio de 1 día, paga el precio establecido de la grilla.
-- ⚙️ Se carga desde **Tarifas → ⚙ Avanzado → Grilla de precios por día**. Agregás un tramo por cada cantidad de días con su precio total, y el precio del día adicional. Si cargás la grilla, tiene prioridad sobre el precio lineal. Si no cargás grilla, sigue funcionando el precio lineal de siempre.
-- Las tarifas con grilla muestran un cartelito verde "Grilla · N tramos" en la lista.
-
-### 15 de julio de 2026 — Cambio de nombre a BA Ferial + ajustes de texto
-
-- 🏟️ En toda la web y los emails, "Costa Salguero" pasó a decir **"BA Ferial (ex Costa Salguero)"** (en las menciones principales) o **"BA Ferial"** (en las repeticiones dentro de una misma pantalla, para no cargar el texto).
-- ✏️ En la tarjeta "¿Quedó alguna duda?" del final de la web, el texto ahora dice *"Atención las 24 horas. Te respondemos a la brevedad por WhatsApp"* (antes decía "al toque").
-
-### 15 de julio de 2026 — Selección de marca y modelo en la reserva
-
-- 🚗 En el paso "Vehículo" de la reserva, la **marca** y el **modelo** ahora se eligen de una lista desplegable (con las marcas y modelos más comunes en Argentina) en vez de escribirse a mano. Es más rápido y evita errores de tipeo. Si el auto no está en la lista, la opción "Otra marca / Otro modelo" permite escribirlo libre.
-
-### 8 de julio de 2026 — Feedback del operador (lote 4)
-
-- 💰 **Cotizador de Aeroparque arreglado**: daba "No hay servicios disponibles" para estadías cortas (1-3 días). Tenía cargados topes viejos (mínimo 4 días / máximo 14) que no correspondían al servicio actual. Los limpiamos: ahora cotiza cualquier duración. También sacamos una tarifa vieja de "Cruceros en Aeroparque" que había quedado colgada.
-- 🏷️ **Las reservas ahora muestran el precio estimado en la Agenda**: antes figuraban en $0. Ahora, al reservar, el sistema calcula el precio según la tarifa vigente y las estadías, y lo guarda. El monto final se ajusta igual al cobrar en sede.
-- ℹ️ **Sobre "Datos inválidos" al reservar**: revisamos los 3 destinos y las reservas se crean correctamente. Lo que pasó en la prueba fue una combinación de (a) versión vieja de la página guardada en el navegador — se soluciona con Ctrl+F5 — y (b) fechas elegidas dentro de las 24hs de anticipación (el sistema pide mínimo 24hs). Ahora el sistema avisa exactamente qué corregir en lugar del mensaje genérico.
-
-### 3 de junio de 2026 — Feedback del operador (lote 3)
-
-- 📊 **Dashboard ahora muestra las reservas de Cruceros (y todas las futuras)**: antes el panel filtraba por fecha de ingreso al estacionamiento mirando solo los últimos 30 días hacia atrás, así que las reservas cargadas para viajar más adelante (ej: un crucero en julio reservado en junio) no aparecían. Ahora filtra por **fecha en que se cargó la reserva**, que es lo natural para ver "cuántas reservas entraron".
-- 🚢 **Datos del crucero (naviera y terminal) ahora se guardan**: antes al reservar Cruceros esos datos no quedaban registrados. Ya se guardan y quedan en la ficha de la reserva.
-- ⚠️ **Mensaje de error más claro al reservar**: si algún dato queda mal cargado, el sistema ahora dice exactamente qué campo revisar en lugar del genérico "Datos inválidos".
-- 🕒 **Horario de ingreso/salida en el reporte** (ya estaba deployado, quedó del lote anterior): el reporte trae columnas "Fecha Ingreso", "Hora Ingreso", "Fecha Retiro", "Hora Retiro".
-
-### 3 de junio de 2026 — Horario de entrada en el reporte
-
-- 🕒 El exportador de reservas ahora incluye el **horario de entrada** (hora de ingreso) además de la fecha. Reorganizamos las columnas para que quede claro: "Fecha Ingreso", "Hora Ingreso", "Fecha Retiro", "Hora Retiro". Antes solo salían las fechas y una columna suelta "Hora Arribo".
-
-### 3 de junio de 2026 — Feedback del operador (lote 2)
-
-- 🚐 **Cotizador de la home + Ezeiza**: ahora al cotizar Ezeiza aparece un aviso ámbar con el costo del traslado por tramo ("Traslado opcional: $40.000 por tramo") y la etiqueta de abajo dice "Traslado opcional por tramo" en vez de "Traslado incluido". El valor sale de Tarifas, no está fijo.
-- 🚐 **Reserva de Ezeiza (resumen final)**: el texto "El traslado ida y vuelta está incluido en el precio" ahora solo aparece para Aeroparque y Cruceros. Para Ezeiza dice "Traslado opcional: $40.000 por tramo. Lo coordinás y abonás al dejar el vehículo."
-- ❓ **FAQ traslado**: la respuesta ahora distingue: incluido para Aeroparque/Cruceros, opcional por tramo para Ezeiza.
-- 🔁 **Selector de destino trabado**: arreglado de raíz. Ahora podés cambiar entre Aeroparque, Ezeiza y Cruceros todas las veces que quieras y la página responde siempre.
-- 📧 **Link roto en el email interno**: el botón "Ver en panel admin" generaba un link relativo (el programa de correo lo interpretaba como archivo local). Corregido: siempre genera la URL completa del sitio.
-- 🔒 **Email interno identificado**: el mail que llega a reservas@nrauditores cuando entra una reserva ahora tiene un sello "Notificación interna — Uso del equipo" bien visible, para no confundirlo con la confirmación que recibe el cliente (esa sí tiene dirección, mapa y datos de contacto).
-- ⭐ **"5 años operando en BA"** reemplazado por **"Vasta experiencia en el rubro"**.
-- 📊 **Exportador de reservas arreglado**: el archivo ahora se abre en Excel con cada dato en su columna (antes salía todo en una sola columna). También se corrigieron los acentos y las fechas quedan en formato dd/mm/aaaa.
-
-**Nota para probar la confirmación del cliente**: mientras el modo prueba de emails esté activo, la confirmación al cliente solo se envía si la reserva se hace con uno de los emails de prueba (por ejemplo reservas@nrauditores.com.ar como email del cliente). Si reservan con cualquier otro email, solo llega la notificación interna.
-
-### 17 de mayo de 2026 — Feedback del operador (lote 1)
-
-8 ajustes pedidos:
-
-- 💵 **El precio del traslado a Ezeiza** ya no aparece hardcodeado como "$40k" en la descripción. Ahora se lee de la tarifa en `/admin/tarifas` y se muestra en formato completo (`$40.000`). Si querés cambiar el valor, lo hacés desde tarifas.
-- ❓ **FAQ**: cambiado el texto introductorio ("¿No encontrás tu duda? Consultanos por WhatsApp...") y la respuesta sobre seguridad (sacamos "caja fuerte", ahora dice "bajo resguardo del personal a cargo").
-- 🔁 **Cambio de destino en `/reservar`**: si el cliente abre la página, elige Ezeiza, vuelve atrás y desde el menú elige Aeroparque, ahora la página se actualiza correctamente al destino nuevo (antes quedaba en el viejo).
-- 📧 **Email al admin**: el botón "Ver en panel admin" ahora lleva directo al detalle de la reserva en `/admin/agenda/[id]`, en vez de la página genérica.
-- 📍 **Email al cliente**: la dirección "BA Ferial (ex Costa Salguero)" aparece destacada como bloque grande. Antes estaba enterrada en una lista.
-- 💬 **Email al cliente**: bloque dedicado "¿Necesitás cambiar o cancelar?" con botón directo a WhatsApp. Antes era una bullet más.
-- ✈️ **Datos de vuelo obligatorios** al reservar: el paso 3 (Viaje) ya no se puede saltar. Hay que cargar aerolínea + número de vuelo (salida y regreso). Para Cruceros se piden naviera + terminal.
-- ⭐ **URL de reseñas configurable**: ya podés cargar la URL real de Google Reviews (o donde quieras que el cliente deje reseña) desde `/admin/settings`. Si está vacía, no se manda el email de pedido de reseña.
-
-### 16 de mayo de 2026 — Sprint visual premium (look & feel)
-
-Le subimos el nivel al diseño visual sin tocar la marca:
-
-- 🎬 **Animaciones al hacer scroll**: las tarjetas, fotos y stats aparecen suavemente cuando entran a pantalla. Sensación más viva y profesional.
-- 🔠 **Tipografía más impactante**: títulos principales más grandes y con mejor balance. Los números (+2.000, 4.8★, 24/7) se ven más fuertes.
-- 🟡 **Botones "Reservar" con degradé**: amarillo → naranja sutil + sombra cálida. Más premium y atractivo al click.
-- 🖼️ **Sección "Conocé nuestra sede"** ahora con layout asimétrico: foto grande a la izquierda + 2 chicas apiladas a la derecha. Rompe el ritmo del resto de la página y se siente más editorial.
-- ✨ **Patrones de fondo sutiles**: grid de puntos en secciones claras, líneas diagonales amarillas en la barra de stats. Le da identidad propia al sitio.
-- 🎯 **Sombras y micro-interacciones mejoradas**: las tarjetas levitan más al pasar el mouse, los iconos rotan suavemente, los botones tienen rebote sutil.
-- ⚡ **Performance**: cero librerías externas para las animaciones (usa IntersectionObserver nativo), no afecta velocidad.
-
-### 16 de mayo de 2026 — Imágenes migradas a storage propio
-
-- 📦 Las 4 imágenes generadas por IA pasaron de un CDN externo a nuestro Vercel Blob propio. URLs estables para siempre, bajo nuestro control.
-
-### 16 de mayo de 2026 — Fotos propias + tiempos realistas + sede visible
-
-- 📸 **Hero nuevo**: foto generada por IA del estacionamiento BA Ferial (ex Costa Salguero) con valet uniformado caminando hacia cámara. Más cercano a la realidad de la operación que la foto de Blogger que estaba antes.
-- 🏢 **Sección nueva "Conocé nuestra sede"** entre "Cómo funciona" y "Por qué confiar". Muestra 3 fotos: sector cubierto con cámaras, recepción con personal uniformado, y la furgoneta de traslado cargando equipaje. Incluye dirección y botón a Google Maps.
-- ⏱️ **Tiempos realistas en "Cómo funciona"**: antes decía "15 min al aeropuerto" sin distinguir destinos. Ahora dice: "Aeroparque o Cruceros: 15 min. Ezeiza: 45–60 min según tráfico". Confiable.
-- 🖼️ Las fotos son placeholders de IA hasta que el cliente nos pase fotos reales. En cuanto las tengamos las reemplazamos.
-
-### 14 de mayo de 2026 — Rediseño UX para más confianza y conversión
-
-- 💬 **WhatsApp flotante**: botón verde siempre visible abajo a la derecha en toda la web. Convierte mejor en Argentina porque la gente prefiere consultar antes de reservar.
-- 📱 **Barra fija en mobile**: al scrollear, aparece una barra abajo con "Reservar ahora". Mejora conversión en celular.
-- ✨ **Hero rediseñado**: copy más emocional ("Tu auto, en buenas manos. Empezás las vacaciones desde que lo dejás"), 3 stats grandes (+2.000 viajeros, 4.8★, 24/7) y trust signals visibles (seguro, cámaras, auto listo).
-- 🛡️ **Banda de confianza** justo después del cotizador: 5 valores clave (seguro, cámaras, personal uniformado, traslado garantizado, recomendaciones).
-- 🚗 **"Cómo funciona" rediseñado**: 4 pasos con número grande de fondo, tiempos estimados ("2 min", "15 min", etc.) y copy más cálido.
-- ⭐ **Sección nueva "Lo que dicen"**: 3 testimonios con estrellas. Por ahora son ejemplos realistas que se pueden reemplazar más adelante con reseñas reales (de Google, etc.).
-- 🏆 **"Por qué confiar"**: cards más visuales con stats al final (+2.000 viajeros, 4.8★, 5 años operando).
-- ❓ **FAQ ampliado** con 4 preguntas nuevas: seguro, vuelo retrasado, camionetas/SUVs. Primera abierta por default, animación suave al abrir. Card de "¿Quedó alguna duda?" con botón directo a WhatsApp.
-- 🎯 **CTA final más punchy**: badge con rating, copy "Tu próximo viaje empieza en BA Ferial (ex Costa Salguero)", garantías (cancelación gratis, sin cargos ocultos, seguro incluido).
-
-### 14 de mayo de 2026 — Limpieza total AA2000
-
-- 🧹 Sacamos toda referencia a Aeropuertos Argentina del sistema. El cotizador, los formularios, el panel de tarifas y los emails ya no muestran nada relacionado a "checkout externo" ni redirigen a tiendas externas.
-- 🗑️ Desactivado el flujo viejo que importaba reservas por email desde AA2000. Hoy todas las reservas se cargan desde la web propia.
-- 🔧 En "Tarifas" desapareció el checkbox "Es precio de referencia" y el campo "URL externa" — ya no aplican.
-- 📧 Mails de confirmación: los links a "Gestionar mi reserva" ahora siempre van a la URL pública de Aeroparking (antes podía aparecer un link a localhost si alguien testeaba en local — defensa agregada).
-
-### 14 de mayo de 2026 — Operación propia + bug Ezeiza
-
-- 🛬 **Aeroparque ahora es operación propia**: la larga estadía deja de redirigir a la tienda de Aeropuertos Argentina (AA2000). El cliente reserva directo con nosotros, mismo flujo que Cruceros y Ezeiza.
-- 🔧 **Bug fix Ezeiza**: el cotizador de la home tiraba "No hay servicios disponibles para esas fechas" al elegir Ezeiza. Era una inconsistencia interna en la configuración de la tarifa. Resuelto.
-- 🛑 **Drop & Go Aeroparque queda desactivado**: no operamos drop & go dentro del aeropuerto. Si en el futuro lo queremos ofrecer, se activa desde Tarifas.
-
-### 14 de mayo de 2026 — Ajustes de la home
-
-- 🛬 El cotizador rápido de la home ahora muestra los **3 destinos** (antes solo aparecían Aeroparque y Cruceros, faltaba Ezeiza).
-- 📞 El botón de WhatsApp en el Hero pasa a ser un link de **consulta** ("¿Dudas? Consultanos por WhatsApp"), claramente diferenciado del botón principal "Reservar ahora". Antes parecía otra forma de reservar.
-- ✏️ Cambiado el texto "Mercado Pago" → "Pagás al dejar el auto" en el cotizador (refleja la realidad: pago presencial).
-- 🔘 Bloque CTA del final de la home: el botón secundario decía "Reservar Puerto de BA" (genérico solo para un destino). Ahora dice **"Reservar ahora"** (botón principal) y **"Ver servicios y precios"** (secundario). El "Reservar ahora" lleva al form unificado donde el cliente elige su destino.
-
-### 14 de mayo de 2026
-
-- ✨ Manual interno disponible en `/admin/manual`.
-- 🎨 Diseño nuevo del sitio: paleta azul corporativa, tipografía nueva, Hero rediseñado.
-- 📊 **Nuevo Dashboard** con tarjetas de KPIs, gráficos y filtros.
-- 📸 **Fotos por destino**: cada destino ahora tiene una foto que el cliente ve al elegirlo. Editás desde Destinos.
-- ⚙️ **Pantalla de Ajustes**: cambiá la foto del Hero y los datos de contacto sin pedir ayuda.
-- 📧 Email de confirmación ahora muestra la foto del destino arriba.
-
-### Días previos
-
-- Sistema de **créditos a clientes** para casos de vuelo cancelado.
-- Modelo de **estadía y media estadía** para cobrar correctamente.
-- **Ezeiza** como destino con cargo de traslado configurable.
-- Formulario unificado en `/reservar` con selector de destino.
-- 4 emails automáticos al cliente: confirmación, recordatorio 24h, bienvenida post-check-in, pedido de reseña.
-
----
-
-## 16. Quién te ayuda si algo no anda
-
-- **Cualquier duda operativa o algo no funciona**: Jon ([jonkoma@gmail.com](mailto:jonkoma@gmail.com) / WhatsApp).
-- **Cambios que querés sumar al sistema** (nuevas pantallas, integraciones): anotalos y mandáselos a Jon.
-
-Este manual se actualiza cada vez que se hace un cambio importante. Si ves algo que no encaja con la realidad (un botón que cambió de lugar, una pantalla nueva que no está documentada), avisanos.
-
----
-
-## 17. Escáner de ingreso / retiro (QR)
-
-**URL**: [aeroparking.vercel.app/admin/scan](https://aeroparking.vercel.app/admin/scan)
-
-Cada reserva genera un código QR que le llega al cliente en el email de confirmación. Con el escáner registrás cuándo el auto **entra** y cuándo **se retira**, sin buscar la reserva a mano.
+**Dirección:** [kingpark.com.ar/admin/scan](https://kingpark.com.ar/admin/scan)
 
 ### Cómo usarlo
 
-1. Entrá a **Escáner** (📷 en el menú) desde el celular.
-2. Elegí qué querés registrar arriba:
-   - **Automático** (recomendado): el primer escaneo de una reserva registra el ingreso, el segundo el retiro.
+1. Abrilo en el **celular** del personal, entrá con la clave y **dale permiso a la cámara**.
+   *Tip:* agregalo a la pantalla de inicio del celular para tenerlo como una app.
+2. Elegí el modo arriba:
+   - **Automático** (recomendado): el primer escaneo registra el **ingreso**; el segundo, el **retiro**.
    - **Ingreso** o **Retiro**: forzás uno u otro.
-3. Tocá **"Escanear QR"** → se abre la cámara → apuntá al QR del cliente.
-4. La pantalla te muestra en verde ✓ si se registró, o en rojo ✗ con el motivo si algo no cierra (ej: reserva cancelada, ya registrada).
+3. Tocá **"Escanear QR"** y apuntá al QR del cliente.
+4. Verde ✓ = registrado. Rojo ✗ = no se registró, con el motivo.
 
-### Si la cámara no lee el QR
+### Si la cámara no lee
 
-Debajo del botón de la cámara hay un campo **"Ingresá el código"**. Pedile al cliente el código de 6 letras que figura en su email (ej: `A7K2QP`) y escribilo ahí → **Buscar**.
+Debajo de la cámara hay un campo **"Ingresá el código"**: pedile al cliente el **código de 6 letras** que está debajo del QR en su mail (ej. `A7K2QP`) y tocá **Buscar**. También sirve el código de reserva (ej. `KP-2026-123456`).
+
+### Cuándo NO dejar entrar
+
+- **"Pago pendiente — no dejar ingresar"**: la reserva no está paga. El cliente puede pagarla desde "Mi reserva"; cuando se apruebe, se vuelve a escanear.
+- **"Reserva cancelada"**.
+- **"No encontramos ninguna reserva"**: el código no existe. Revisá que lo hayan tipeado bien.
 
 ### Qué pasa al escanear
 
-- **Ingreso**: la reserva pasa a estado "En sede" y queda registrada la hora real.
-- **Retiro**: la reserva pasa a "Completada" con la hora real de salida.
+- **Ingreso:** la reserva pasa a **"En sede"** con la hora real.
+- **Retiro:** pasa a **"Completada"** con la hora real.
 
 ---
 
-## 18. Vista del día
+## 6. Agenda: todas las reservas
 
-**URL**: [aeroparking.vercel.app/admin/dia](https://aeroparking.vercel.app/admin/dia)
+**Dirección:** [kingpark.com.ar/admin/agenda](https://kingpark.com.ar/admin/agenda)
 
-Es la pantalla que el personal abre a la mañana para saber **qué autos vienen hoy**. Muestra las reservas ordenadas por hora, con todos los datos que necesitás.
+La lista completa de reservas **pagas**: fechas, destino, cliente, vehículo, precio y estado. Arriba hay filtros por destino y fechas, y el botón para **descargar a Excel**.
 
-### Cómo usarla
+Tocá una fila para ver el **detalle**: datos del cliente, vehículo, fechas, vuelos o crucero, **notas** (ahí quedan los pedidos y cambios del cliente) y el **estado**.
 
-- Arriba elegís **Ingresos** (autos que llegan) o **Retiros** (autos que se van) ese día.
-- Con las flechas **← Hoy →** te movés entre días. Podés preparar la lista del día siguiente la noche anterior.
-- Cada fila muestra: hora, cliente, patente, vehículo, destino, vuelo y una casilla para tildar.
-- Botón **Imprimir**: saca la lista en papel (sin los menús, solo la tabla) para tenerla a mano en la playa.
+### Cambiar el estado a mano
 
-La casilla de la derecha se tilda sola en verde cuando el auto ya registró su ingreso/retiro por el escáner, o la podés tildar a mano en la copia impresa.
+En el detalle, al lado del estado, hay tres botones:
+
+| Botón | Qué hace |
+|---|---|
+| ✓ verde | **Confirmar** (deja la reserva activa) |
+| ✓ azul | **Completar** (el cliente ya retiró el auto) |
+| ✗ rojo | **Cancelar** |
+
+Normalmente no hace falta: el escáner pone "En sede" y "Completada" solo.
+
+### Si el cliente tiene crédito a favor
+
+En el detalle vas a ver un **cartel verde**: *"Este cliente tiene $X de crédito a favor"*. Ver [Créditos](#13-creditos-a-clientes).
+
+---
+
+## 7. Estados de una reserva
+
+| Estado | Qué significa |
+|---|---|
+| **Pago pendiente** | Reservó pero todavía no pagó. **No aparece** en la agenda ni en la vista del día, y el escáner no la deja entrar. |
+| **Pago en revisión** | Pagó un monto distinto al de la reserva. Revisarlo con el comprobante de Mercado Pago. |
+| **Confirmada** | Pagada. Le llegó el mail con el QR. |
+| **En sede** | El auto está en BA Ferial (lo registró el escáner). |
+| **Completada** | El cliente retiró el auto. |
+| **Cancelación solicitada** | El cliente pidió cancelar desde "Mi reserva". Hay que gestionarla (ver sección 8). |
+| **Extensión solicitada** | El cliente pidió quedarse más días. Hay que gestionarla (ver sección 8). |
+| **Cancelada** | Cancelada por el equipo. |
+
+---
+
+## 8. Pedidos del cliente: cancelación y extensión
+
+Cuando el cliente pide algo desde "Mi reserva", la reserva cambia de estado y en las **notas** queda el detalle. **Nada se cancela ni se devuelve solo**: lo gestiona el equipo.
+
+### Cancelación solicitada
+
+1. Abrí la reserva en la [Agenda](#6-agenda-todas-las-reservas) y leé el motivo en las notas.
+2. Escribile al cliente (mail o WhatsApp) para confirmar.
+3. Según lo que se acuerde:
+   - **Devolución:** se hace desde la cuenta de **Mercado Pago de Border's** (buscar el pago por el código de reserva → "Devolver dinero").
+   - **Crédito para otra fecha:** crealo en [Créditos](#13-creditos-a-clientes).
+4. Pasá la reserva a **Cancelada** (✗ rojo).
+
+*La política de cancelación (hasta cuándo se devuelve, o si queda como crédito) la define Border's.*
+
+### Extensión solicitada
+
+1. En las notas figura la **nueva fecha de retiro** y la **diferencia a cobrar**, calculada con la tarifa vigente.
+2. Escribile al cliente para confirmar y cobrar la diferencia.
+3. Una vez cobrada, volvé la reserva a **Confirmada** (✓ verde).
+
+---
+
+## 9. Dashboard y descargas a Excel
+
+**Dirección:** [kingpark.com.ar/admin/dashboard](https://kingpark.com.ar/admin/dashboard)
+
+- **Tarjetas:** reservas del período, facturación, ticket promedio, autos en sede hoy, no-show y cancelaciones. Cada una compara contra el período anterior (▲ subió / ▼ bajó).
+- **Filtros:** desde/hasta, destino y estado. Las fechas filtran por **día en que se hizo la reserva** (así ves también las que son para viajar más adelante).
+- **Gráficos:** reservas por día y reparto por destino.
+
+### Descargar a Excel
+
+Botón **"Descargar CSV"** en el Dashboard o en la Agenda: baja las reservas con los filtros que tengas puestos. Se abre directo en Excel, con una columna por dato (cliente, mail, teléfono, patente, fechas y horas de ingreso y retiro, precio, estado…).
+
+*Tip:* para un informe mensual de facturación, poné las fechas del mes en el Dashboard, descargá y sumá la columna del precio.
+
+---
+
+## 10. Tarifas: cambiar precios
+
+**Dirección:** [kingpark.com.ar/admin/tarifas](https://kingpark.com.ar/admin/tarifas)
+
+Cada fila es un destino (Aeroparque o Cruceros). Los cambios **se aplican al instante** en la web. Las reservas ya hechas mantienen el precio que pagaron.
+
+### Grilla de precios por día (recomendado)
+
+Así se cobra en los estacionamientos de aeropuerto: el que deja 4 días no paga 4 veces el precio de 1 día, sino un precio establecido.
+
+1. En la fila del destino, tocá **⚙ Avanzado**.
+2. En **"Grilla de precios por día"**, cargá el **precio total** de cada cantidad de días (ej. 1 día $38.000 · 2 días $74.000 · 3 días $110.000…) con **"+ Agregar tramo"**.
+3. Cargá **"Cada día adicional"**: lo que se suma por cada día después del último tramo.
+4. **Guardar cambios.**
+
+Si un destino tiene grilla, la grilla **manda** sobre el precio simple de la fila. Las tarifas con grilla muestran el cartelito verde **"Grilla · N tramos"**.
+
+### Precio simple
+
+Si un destino no tiene grilla, se cobra **precio por estadía**: tocá el precio en la fila, escribí el nuevo valor y **OK**.
+
+### Activar o desactivar una tarifa
+
+Tocá **"Activa"** para pasarla a **"Inactiva"**. Sin tarifa activa, ese destino no se puede reservar.
+
+---
+
+## 11. Cómo se calcula el precio
+
+- **Con grilla:** cuenta los días entre el ingreso y el retiro y toma el precio de ese tramo. Si se pasa del último tramo, suma "cada día adicional" por día extra.
+- **Sin grilla (precio por estadía):**
+  - Una **estadía = 24 horas**, indivisible: 4 horas pagan 1 estadía.
+  - Pasadas las primeras 24 h, cada bloque de hasta 12 h suma **media estadía**.
+
+| Tiempo | Estadías |
+|---|---|
+| 4 h / 13 h / 23 h | 1 |
+| 28 h / 36 h | 1 ½ |
+| 37 h / 48 h | 2 |
+| 60 h | 2 ½ |
+| 72 h | 3 |
+
+El **traslado ida y vuelta está incluido** en el precio. El cliente ve **el mismo total** en la portada, en el formulario y en Mercado Pago.
+
+---
+
+## 12. Destinos
+
+**Dirección:** [kingpark.com.ar/admin/destinos](https://kingpark.com.ar/admin/destinos)
+
+Los lugares a los que llevamos clientes. Hoy están **activos Aeroparque y Cruceros**. Ezeiza está cargado pero **inactivo**.
+
+Cada destino tiene: nombre completo, nombre corto, ícono, color, **descripción** (la ve el cliente al elegirlo), **foto** y si está **activo**.
+
+- **Cambiar la foto:** "Editar" → "Cambiar" / "Subir imagen" → Guardar. Mejor horizontal, hasta 5 MB.
+- **Apagar o prender un destino:** tocá **"Activo"** ↔ **"Inactivo"**. Inactivo = desaparece de la web.
+- **Destino nuevo:** "+ Nuevo destino" → identificador corto en minúsculas (ej. `cordoba`), nombres, ícono, color y foto → Guardar. **Después creale la tarifa** en [Tarifas](#10-tarifas-cambiar-precios): sin tarifa no se puede reservar.
+
+---
+
+## 13. Créditos a clientes
+
+**Dirección:** [kingpark.com.ar/admin/creditos](https://kingpark.com.ar/admin/creditos)
+
+Saldo a favor de un cliente (por ejemplo, si le cancelan el vuelo) para usar en una próxima reserva, en vez de devolver la plata.
+
+- **Crear:** "+ Nuevo crédito" → mail del cliente (el mismo con el que reservó), monto, motivo y, si querés, el código de la reserva de origen → Crear.
+- **Usar:** cuando ese cliente vuelve a reservar, en el detalle de la reserva aparece el cartel verde con su crédito. Coordiná con él la devolución de esa parte y después, en Créditos, buscá su mail y tocá **"Marcar usado"**.
+- **Vencer:** los créditos no vencen solos. Para cerrar uno, tocá **"Expirar"**.
+
+---
+
+## 14. Ajustes del sitio
+
+**Dirección:** [kingpark.com.ar/admin/settings](https://kingpark.com.ar/admin/settings)
+
+- **Foto de portada:** la imagen de fondo de la página principal (horizontal, buena calidad, hasta 5 MB) y su descripción.
+- **Título y subtítulo de portada:** si los dejás vacíos, se usa el texto por defecto.
+- **WhatsApp:** en formato internacional sin el `+` (ej. `5491131606994`).
+- **Mail de contacto:** aparece en el pie de la web y en los mails.
+
+**Guardar cambios** → se ven en la web en segundos.
+
+---
+
+## 15. Atender consultas de clientes
+
+### "No me llegó el mail con el QR"
+
+1. Buscá la reserva en la [Agenda](#6-agenda-todas-las-reservas) y revisá que el **mail esté bien escrito**.
+2. Si no está en la Agenda, **todavía no pagó**: que entre a "Mi reserva" y complete el pago.
+3. Si está paga: que revise **spam** y, si no aparece, que entre a [kingpark.com.ar/mi-reserva](https://kingpark.com.ar/mi-reserva) con su **código y mail** y toque **"Reenviarme el mail con el QR"**.
+
+### "Quiero cambiar la patente"
+
+Lo hace solo desde "Mi reserva", mientras el auto no haya entrado. Si ya entró, cambiala vos desde el detalle de la reserva o avisale a Jon.
+
+### "Quiero cancelar" o "Quiero quedarme más días"
+
+Que lo pida desde "Mi reserva" (o por WhatsApp). Después seguí la [sección 8](#8-pedidos-del-cliente-cancelacion-y-extension).
+
+### "Me cancelaron el vuelo"
+
+Confirmá la reserva y el monto pagado, y según lo que se acuerde: **crédito** en [Créditos](#13-creditos-a-clientes) o **devolución** desde Mercado Pago.
+
+### "Vuelvo más tarde de lo reservado"
+
+Que avise por WhatsApp al **11 3160 6994** cuando aterrice. Las demoras del vuelo no tienen cargo extra.
+
+### "Quiero reservar para hoy"
+
+La web acepta reservas con **al menos 24 h de anticipación**. Para algo más urgente, coordinalo por WhatsApp.
+
+### "Pagué y me dice que no está paga"
+
+Puede tardar unos minutos en confirmarse. Si sigue igual, pedile el **comprobante de Mercado Pago** y avisale a Jon con el código de reserva.
+
+---
+
+## 16. Atajos del día a día
+
+| Quiero… | Hago… |
+|---|---|
+| Ver quién viene hoy | [Vista del día](#4-vista-del-dia) |
+| Registrar que un auto entró o salió | [Escáner](#5-escaner-de-ingreso-y-retiro-qr) |
+| Buscar una reserva | [Agenda](#6-agenda-todas-las-reservas) |
+| Atender un pedido de cancelación o extensión | [Sección 8](#8-pedidos-del-cliente-cancelacion-y-extension) |
+| Cambiar un precio | [Tarifas](#10-tarifas-cambiar-precios) → Avanzado → Grilla |
+| Apagar un destino | [Destinos](#12-destinos) → Activo/Inactivo |
+| Dar saldo a favor | [Créditos](#13-creditos-a-clientes) → "+ Nuevo crédito" |
+| Bajar las reservas a Excel | [Dashboard](#9-dashboard-y-descargas-a-excel) → Descargar CSV |
+| Cambiar la foto de portada o el WhatsApp | [Ajustes](#14-ajustes-del-sitio) |
+
+---
+
+## 17. Quién te ayuda
+
+- **Dudas o algo que no anda:** Jon (WhatsApp o [jonkoma@gmail.com](mailto:jonkoma@gmail.com)).
+- **Ideas o cambios para el sistema:** anotalos y pasáselos a Jon.
+
+Si algo de este manual no coincide con lo que ves en pantalla, avisanos para corregirlo.
+
+---
+
+## 18. Historial de novedades
+
+### 16 de noviembre de 2026 — Nace KingPark
+
+- 👑 **Nueva marca KingPark**: logo, colores y nombre en la web y los mails. Dominio **kingpark.com.ar**. Códigos de reserva nuevos con **KP-** (los **AP-** viejos siguen funcionando).
+- 💳 **Pago online con Mercado Pago** (cuenta de Border's Parking SRL). El mail con el QR sale cuando se aprueba el pago. Las reservas sin pagar no aparecen en los listados y el escáner no las deja entrar.
+- 💲 **El precio se ve desde el primer momento**: en la portada al elegir fechas y arriba de todo el formulario de reserva.
+- 🙋 **"Mi reserva"**: el cliente ve su QR, se reenvía el mail, cambia la patente y pide extensión o cancelación. Para entrar hace falta el código **y** el mail (o el botón del mail).
+- ✈️ **Ezeiza apagado**: quedan Aeroparque y la Terminal de Cruceros.
+- 🔐 **Panel más seguro**: clave nueva, sesión de 30 días, bloqueo tras 8 intentos fallidos.
+
+### Julio 2026
+
+- 💵 **Grilla de precios por cantidad de días** en Tarifas.
+- 🏟️ "Costa Salguero" pasó a **"BA Ferial (ex Costa Salguero)"**.
+- 🚗 Marca y modelo del auto con listas desplegables en la reserva.
+
+### Mayo – junio 2026 (Aeroparking)
+
+- 📷 **Código QR** en cada reserva, **escáner** y **vista del día imprimible**.
+- 📊 **Dashboard** con números, gráficos y descarga a Excel.
+- 🎁 **Créditos a clientes** y **destinos editables** con foto.
+- Operación propia en BA Ferial con traslado incluido (antes se dependía de AA2000).
