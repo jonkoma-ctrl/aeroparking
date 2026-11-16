@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 import { getServiceTypeLabel } from "@/lib/utils";
+import { UNPAID_STATUSES } from "@/lib/mp";
 
 // POST /api/scan — Registra ingreso/egreso de un vehículo por su QR/código.
 // Protegido: requiere la cookie admin_token (personal logueado).
@@ -49,6 +50,15 @@ export async function POST(req: NextRequest) {
       { ok: false, status: "not_found", error: "No encontramos ninguna reserva con ese código." },
       { status: 404 }
     );
+  }
+
+  if ((UNPAID_STATUSES as readonly string[]).includes(reservation.status)) {
+    return NextResponse.json({
+      ok: false,
+      status: "unpaid",
+      error: "Esta reserva no está paga. No dejar ingresar: el cliente tiene que completar el pago.",
+      reservation: summarize(reservation),
+    });
   }
 
   if (reservation.status === "cancelled") {

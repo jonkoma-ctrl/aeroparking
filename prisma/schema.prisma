@@ -44,7 +44,7 @@ model CruiseReservation {
 model AeroparqueReservation {
   id               String   @id @default(cuid())
   externalOrderId  String   @unique
-  status           String   @default("confirmed") // confirmed | cancelled | completed
+  status           String   @default("confirmed") // pending_payment | confirmed | checked_in | completed | cancelled | payment_rejected | payment_expired | payment_review
 
   destination      String   @default("aeroparque") // "aeroparque" | "puerto"
   serviceType      String   // "drop_go" | "larga_estadia"
@@ -86,6 +86,15 @@ model AeroparqueReservation {
   checkedOutAt     DateTime?          // cuándo se retiró
   checkInBy        String?            // quién marcó el ingreso (personal)
   checkOutBy       String?            // quién marcó el retiro
+
+  // Cobro online con Mercado Pago (cuenta de Border's Parking SRL).
+  // Mientras status = "pending_payment" la reserva no cuenta en agenda,
+  // vista del día ni escáner.
+  mpPreferenceId   String?
+  mpPaymentId      String?
+  paidAmount       Int?
+  paidAt           DateTime?
+  paymentExpiresAt DateTime?
 
   // Auditoría
   rawEmailSubject  String?  // DEPRECATED — legacy AA2000 webhook, sin uso desde may-2026

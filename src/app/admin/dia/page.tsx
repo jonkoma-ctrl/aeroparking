@@ -4,6 +4,7 @@ import { prisma } from "@/lib/db";
 import { BRAND_NAME } from "@/lib/constants";
 import { formatDate } from "@/lib/utils";
 import { PrintButton } from "@/components/admin/PrintButton";
+import { UNPAID_STATUSES } from "@/lib/mp";
 
 export const metadata: Metadata = {
   title: `Vista del día — ${BRAND_NAME}`,
@@ -50,7 +51,7 @@ export default async function DiaPage({ searchParams }: PageProps) {
   const reservations = await prisma.aeroparqueReservation.findMany({
     where: {
       [dateField]: { gte: start, lte: end },
-      status: { notIn: ["cancelled"] },
+      status: { notIn: ["cancelled", ...UNPAID_STATUSES] },
     },
     orderBy: { [dateField]: "asc" },
   });

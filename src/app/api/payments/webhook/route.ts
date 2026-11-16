@@ -1,43 +1,59 @@
 import { NextRequest, NextResponse } from "next/server";
-import { MercadoPagoConfig, Payment } from "mercadopago";
+import { Payment } from "mercadopago";
+import { mp, KP_REF_PREFIX } from "@/lib/mp";
+import { applyReservationPayment } from "@/lib/reservation-payment";
 import { prisma } from "@/lib/db";
 import { sendEmail } from "@/lib/email";
 import { buildReservationEmail, getReservationEmailSubject } from "@/lib/email-templates";
 
-const mp = new MercadoPagoConfig({
-  accessToken: process.env.MP_ACCESS_TOKEN || "",
-});
-
-// POST /api/payments/webhook — MP IPN notification
+// POST /api/payments/webhook — aviso de pago de Mercado Pago.
+// Nunca confiamos en el cuerpo: con el id consultamos el pago REAL a MP.
+// Los cobros de KingPark llevan external_reference "kp:<id>"; los demás son
+// del flujo viejo (cruceros / aeroparque legacy).
 export async function POST(req: NextRequest) {
+  const body = await req.json().catch(() => ({}) as Record<string, unknown>);
+  const q = req.nextUrl.searchParams;
+  const tipo = String(body?.type ?? body?.topic ?? q.get("type") ?? q.get("topic") ?? body?.action ?? "");
+  const paymentId = String(
+    (body?.data as { id?: unknown } | undefined)?.id ?? q.get("data.id") ?? q.get("id") ?? "",
+  );
+
+  if (!tipo.includes("payment") || !paymentId) return NextResponse.json({ ok: true });
+
+  let paymentData;
   try {
-    const body = await req.json();
+    paymentData = await new Payment(mp).get({ id: paymentId });
+  } catch (error) {
+    if ((error as { status?: number })?.status === 404) {
+      console.warn("[mp-webhook] pago inexistente, se ignora:", paymentId);
+      return NextResponse.json({ ok: true });
+    }
+    // 500 → MP reintenta más tarde (aplicar el pago es idempotente).
+    console.error("[mp-webhook] no se pudo consultar el pago", paymentId, error);
+    return NextResponse.json({ error: "reintentar" }, { status: 500 });
+  }
 
-    if (body.type === "payment" || body.action === "payment.created" || body.action === "payment.updated") {
-      const paymentId = body.data?.id;
-      if (!paymentId) return NextResponse.json({ ok: true });
+  try {
+    const externalRef = paymentData.external_reference;
+    if (!externalRef) return NextResponse.json({ ok: true });
 
-      const payment = new Payment(mp);
-      const paymentData = await payment.get({ id: paymentId });
-
-      const externalRef = paymentData.external_reference;
-      if (!externalRef) return NextResponse.json({ ok: true });
-
-      // Check if it's a cruise reservation (prefix "cruise:") or aeroparque
-      const isCruise = externalRef.startsWith("cruise:");
-      const reservationId = isCruise ? externalRef.slice(7) : externalRef;
-
-      if (isCruise) {
-        await handleCruisePayment(reservationId, paymentData, paymentId);
-      } else {
-        await handleAeroparquePayment(reservationId, paymentData, paymentId);
-      }
+    if (externalRef.startsWith(KP_REF_PREFIX)) {
+      const resultado = await applyReservationPayment(paymentData);
+      console.log(`[mp-webhook] pago ${paymentId} (${paymentData.status}) → ${resultado}`);
+      return NextResponse.json({ ok: true });
     }
 
+    const isCruise = externalRef.startsWith("cruise:");
+    const reservationId = isCruise ? externalRef.slice(7) : externalRef;
+    if (isCruise) {
+      await handleCruisePayment(reservationId, paymentData, paymentId);
+    } else {
+      await handleAeroparquePayment(reservationId, paymentData, paymentId);
+    }
     return NextResponse.json({ ok: true });
   } catch (error) {
     console.error("[mp-webhook] Error:", error);
-    return NextResponse.json({ ok: true });
+    return NextResponse.json({ error: "reintentar" }, { status: 500 });
   }
 }
 

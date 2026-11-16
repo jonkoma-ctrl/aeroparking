@@ -43,6 +43,10 @@ export default async function ValidarPage({
     tone = "red";
     title = "Código no encontrado";
     subtitle = "No existe ninguna reserva con este código.";
+  } else if (["pending_payment", "payment_rejected", "payment_expired"].includes(reservation.status)) {
+    tone = "red";
+    title = "Pago pendiente";
+    subtitle = "Esta reserva todavía no está paga. No dejar ingresar.";
   } else if (reservation.status === "cancelled") {
     tone = "red";
     title = "Reserva cancelada";
