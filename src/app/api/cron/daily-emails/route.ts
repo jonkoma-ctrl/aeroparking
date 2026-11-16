@@ -88,7 +88,8 @@ function toEmailData(r: ReservationRecord) {
 export async function GET(req: NextRequest) {
   // Auth Vercel Cron
   const auth = req.headers.get("authorization");
-  if (CRON_SECRET && auth !== `Bearer ${CRON_SECRET}`) {
+  // Sin CRON_SECRET configurado, el endpoint queda cerrado (antes quedaba abierto).
+  if (!CRON_SECRET || auth !== `Bearer ${CRON_SECRET}`) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 

@@ -378,6 +378,11 @@ El archivo que te baja se abre directo en Excel o Google Sheets. Tiene todas las
 
 ## 15. Historial de novedades
 
+### 16 de noviembre de 2026 — Clave nueva del panel
+
+- 🔐 **Cambió la clave del panel.** La de Aeroparking ya no funciona: todos tienen que volver a entrar una vez (también en el celular del escáner). La clave nueva la pasa Jon; no se escribe en este manual.
+- Después de 8 claves incorrectas seguidas, el login se bloquea 15 minutos para esa conexión.
+
 ### 16 de noviembre de 2026 — "Mi reserva": el cliente se autogestiona
 
 - 🔐 Para ver una reserva ahora hace falta **el código + el mail** con el que se reservó, o entrar con el botón **"Gestionar mi reserva" del mail** (ese link entra directo). Con el código solo ya no se ve nada: antes cualquiera que adivinara un código veía nombre, patente y fechas.

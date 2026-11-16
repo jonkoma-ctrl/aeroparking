@@ -1,21 +1,23 @@
 import { NextRequest, NextResponse } from "next/server";
+import { ADMIN_COOKIE, isValidAdminToken } from "@/lib/admin-auth";
 
-export function middleware(req: NextRequest) {
+// Todo lo del panel exige sesión: las pantallas /admin/* (redirigen al login)
+// y sus APIs (responden 401). El login es la única excepción.
+export async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
+  if (pathname === "/admin/login" || pathname === "/api/admin/login") return NextResponse.next();
 
-  // Protect /admin/* routes (except /admin/login)
-  if (pathname.startsWith("/admin") && !pathname.startsWith("/admin/login")) {
-    const token = req.cookies.get("admin_token")?.value;
-    if (token !== process.env.ADMIN_PASSWORD) {
-      const loginUrl = new URL("/admin/login", req.url);
-      loginUrl.searchParams.set("from", pathname);
-      return NextResponse.redirect(loginUrl);
-    }
+  const ok = await isValidAdminToken(req.cookies.get(ADMIN_COOKIE)?.value);
+  if (ok) return NextResponse.next();
+
+  if (pathname.startsWith("/api/")) {
+    return NextResponse.json({ error: "No autorizado" }, { status: 401 });
   }
-
-  return NextResponse.next();
+  const loginUrl = new URL("/admin/login", req.url);
+  loginUrl.searchParams.set("from", pathname);
+  return NextResponse.redirect(loginUrl);
 }
 
 export const config = {
-  matcher: ["/admin/:path*"],
+  matcher: ["/admin/:path*", "/api/admin/:path*", "/api/aeroparque/:path*", "/api/scan/:path*"],
 };
