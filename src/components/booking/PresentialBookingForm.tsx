@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo, useEffect, useRef } from "react";
 import Link from "next/link";
 import {
   Calendar,
@@ -165,6 +165,7 @@ export function PresentialBookingForm({ destino, defaultServiceType, destination
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [success, setSuccess] = useState<{ code: string } | null>(null);
+  const progressRef = useRef<HTMLDivElement>(null);
   // Total a pagar (lo calcula el servidor con la misma cuenta con que cobra)
   const [total, setTotal] = useState<number | null>(null);
   const [totalError, setTotalError] = useState(false);
@@ -201,6 +202,21 @@ export function PresentialBookingForm({ destino, defaultServiceType, destination
       cancelled = true;
     };
   }, [destino, serviceType, form.startDate, form.checkInTime, form.endDate, form.arrivalTime]);
+
+  // Si el cliente cambia de destino a mitad del flujo, se conserva todo lo
+  // cargado y el paso. Sólo cambian los datos del paso "Viaje" (vuelo vs.
+  // crucero): si ya lo había pasado y faltan los del destino nuevo, vuelve ahí.
+  const prevDestino = useRef(destino);
+  useEffect(() => {
+    if (prevDestino.current === destino) return;
+    prevDestino.current = destino;
+    setErrors({});
+    const tripDone = isCruceros
+      ? form.cruiseLine.trim().length >= 2 && form.terminal.trim().length > 0
+      : !!(form.departureAirline && form.departureFlight && form.arrivalAirline && form.arrivalFlight);
+    if (step > 3 && !tripDone) setStep(3);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [destino]);
 
   // Fechas que vienen del cotizador de la portada (?prefill=...): no se cargan dos veces.
   useEffect(() => {
@@ -306,21 +322,23 @@ export function PresentialBookingForm({ destino, defaultServiceType, destination
     return Object.keys(stepErrors).length === 0;
   }
 
+  // Al cambiar de paso volvemos al principio del FORMULARIO (la barra de
+  // progreso), no al tope de la página: arriba está la foto y la elección de
+  // destino, que ya se eligió.
+  function scrollToForm() {
+    requestAnimationFrame(() => progressRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }));
+  }
+
   function handleNext() {
     if (validateStep(step)) {
       setStep((s) => Math.min(s + 1, STEPS.length + 1));
-      // scroll to top
-      if (typeof window !== "undefined") {
-        window.scrollTo({ top: 0, behavior: "smooth" });
-      }
+      scrollToForm();
     }
   }
 
   function handleBack() {
     setStep((s) => Math.max(s - 1, 1));
-    if (typeof window !== "undefined") {
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    }
+    scrollToForm();
   }
 
   async function handleSubmit() {
@@ -500,7 +518,7 @@ export function PresentialBookingForm({ destino, defaultServiceType, destination
           </div>
 
           {/* Progress */}
-          <div className="mb-6 rounded-2xl border border-brand-200 bg-white p-4 shadow-sm">
+          <div ref={progressRef} className="mb-6 scroll-mt-20 rounded-2xl border border-brand-200 bg-white p-4 shadow-sm">
             <div className="flex items-center justify-between">
               {STEPS.map((s, idx) => {
                 const StepIcon = s.icon;
