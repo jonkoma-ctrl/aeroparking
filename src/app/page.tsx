@@ -1,5 +1,4 @@
 import { Hero } from "@/components/landing/Hero";
-import { BookingWidget } from "@/components/booking-widget/BookingWidget";
 import { TrustBar } from "@/components/landing/TrustBar";
 import { ServiceSelector } from "@/components/landing/ServiceSelector";
 import { HowItWorks } from "@/components/landing/HowItWorks";
@@ -15,7 +14,6 @@ export default async function HomePage() {
   return (
     <>
       <Hero />
-      <BookingWidget variant="hero" entryPoint="home_hero" />
       <TrustBar />
       <ServiceSelector />
       <HowItWorks />
