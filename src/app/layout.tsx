@@ -10,14 +10,12 @@ import "./globals.css";
 const display = Bricolage_Grotesque({
   subsets: ["latin"],
   variable: "--font-display",
-  weight: ["500", "600", "700", "800"],
   display: "swap",
 });
 
 const sans = Manrope({
   subsets: ["latin"],
   variable: "--font-sans",
-  weight: ["400", "500", "600", "700"],
   display: "swap",
 });
 
