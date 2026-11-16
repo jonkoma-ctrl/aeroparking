@@ -52,8 +52,8 @@ function qrBlock(qrToken: string | null | undefined): string {
   if (!qrToken) return "";
   const qrImg = `${SITE_URL}/api/qr/${qrToken}`;
   return `
-    <div style="margin-top:24px;border:2px solid #16223f;border-radius:12px;padding:20px;text-align:center;background:#f8fafc">
-      <p style="margin:0 0 4px;color:#16223f;font-size:14px;font-weight:700;text-transform:uppercase;letter-spacing:1px">Tu código de ingreso</p>
+    <div style="margin-top:24px;border:2px solid #152766;border-radius:12px;padding:20px;text-align:center;background:#f8fafc">
+      <p style="margin:0 0 4px;color:#152766;font-size:14px;font-weight:700;text-transform:uppercase;letter-spacing:1px">Tu código de ingreso</p>
       <p style="margin:0 0 14px;color:#64748b;font-size:13px">Mostralo al llegar a BA Ferial para registrar tu ingreso.</p>
       <img src="${qrImg}" alt="Código QR de la reserva" width="200" height="200" style="display:block;margin:0 auto;width:200px;height:200px" />
       <p style="margin:14px 0 0;color:#0f172a;font-size:22px;font-weight:800;letter-spacing:4px;font-family:monospace">${qrToken}</p>
@@ -92,12 +92,9 @@ function wrapInLayout(bodyHtml: string, opts: { showContactBlock?: boolean } = {
   <div style="max-width:600px;margin:0 auto;padding:20px">
 
     <!-- Header -->
-    <div style="background:#16223f;border-radius:12px 12px 0 0;padding:24px;text-align:center">
-      <div style="margin:0 auto 6px;color:#fbb820;font-size:22px;line-height:1">&#9819;</div>
-      <h1 style="margin:0;color:#fff;font-size:26px;letter-spacing:-0.5px;font-weight:800">
-        King<span style="color:#fbb820">Park</span>
-      </h1>
-      <p style="margin:8px 0 0;color:#9cadd2;font-size:13px">
+    <div style="background:#152766;border-radius:12px 12px 0 0;padding:24px;text-align:center">
+      <img src="${getSiteUrl()}/brand/logo.png?tone=dark" width="220" height="53" alt="KingPark" style="display:block;margin:0 auto;border:0;width:220px;height:auto" />
+      <p style="margin:8px 0 0;color:#bccbf6;font-size:13px">
         Estacionamiento en BA Ferial &middot; Traslado a Aeroparque y Cruceros
       </p>
     </div>
@@ -113,7 +110,7 @@ function wrapInLayout(bodyHtml: string, opts: { showContactBlock?: boolean } = {
       <div style="margin-top:32px;padding-top:24px;border-top:1px solid #f3f4f6;text-align:center">
         <p style="margin:0 0 8px;color:#6b7280;font-size:13px">¿Necesitás ayuda? Atención las 24 horas.</p>
         <p style="margin:0;color:#374151;font-size:14px">
-          <a href="https://wa.me/${WA_PHONE}" style="color:#16223f;font-weight:600;text-decoration:none">
+          <a href="https://wa.me/${WA_PHONE}" style="color:#152766;font-weight:600;text-decoration:none">
             WhatsApp ${WA_DISPLAY}
           </a>
         </p>
