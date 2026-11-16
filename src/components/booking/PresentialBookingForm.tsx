@@ -26,6 +26,7 @@ import {
 import { CONTACT } from "@/lib/constants";
 import { formatPrice } from "@/lib/utils";
 import { CarPicker } from "./CarPicker";
+import { decodePrefill } from "@/lib/booking-prefill";
 import type { Destino } from "@/lib/pricing";
 import type { DestinationMeta } from "@/lib/destinos";
 
@@ -168,20 +169,25 @@ export function PresentialBookingForm({ destino, defaultServiceType, destination
   const [total, setTotal] = useState<number | null>(null);
   const [totalError, setTotalError] = useState(false);
 
-  // Al llegar al resumen pedimos el total al servidor.
-  const onSummary = step === STEPS.length + 1;
+  // Total en vivo: apenas hay fechas pedimos el precio al servidor (la misma
+  // cuenta con la que se cobra). Sin horas todavía, usamos la misma hora en
+  // ingreso y retiro (días enteros) y lo marcamos como aproximado.
+  const totalIsApprox = !form.checkInTime || !form.arrivalTime;
   useEffect(() => {
-    if (!onSummary) return;
+    if (!form.startDate || !form.endDate || form.endDate < form.startDate) {
+      setTotal(null);
+      setTotalError(false);
+      return;
+    }
     let cancelled = false;
-    setTotal(null);
     setTotalError(false);
     const qs = new URLSearchParams({
       destination: destino,
       serviceType,
       startDate: form.startDate,
-      checkInTime: form.checkInTime,
+      checkInTime: form.checkInTime || "10:00",
       endDate: form.endDate,
-      arrivalTime: form.arrivalTime,
+      arrivalTime: form.arrivalTime || "10:00",
     });
     fetch(`/api/reservas/total?${qs}`)
       .then((r) => r.json())
@@ -194,7 +200,24 @@ export function PresentialBookingForm({ destino, defaultServiceType, destination
     return () => {
       cancelled = true;
     };
-  }, [onSummary, destino, serviceType, form.startDate, form.checkInTime, form.endDate, form.arrivalTime]);
+  }, [destino, serviceType, form.startDate, form.checkInTime, form.endDate, form.arrivalTime]);
+
+  // Fechas que vienen del cotizador de la portada (?prefill=...): no se cargan dos veces.
+  useEffect(() => {
+    try {
+      const raw = new URLSearchParams(window.location.search).get("prefill");
+      if (!raw) return;
+      const p = decodePrefill(raw);
+      if (!p) return;
+      setForm((f) => ({
+        ...f,
+        startDate: f.startDate || String(p.i).slice(0, 10),
+        endDate: f.endDate || String(p.r).slice(0, 10),
+      }));
+    } catch {
+      /* sin prefill */
+    }
+  }, []);
 
   // Defaults cómodos: hoy mañana 24hs+ → mínimo permitido es mañana
   const minDate = useMemo(() => {
@@ -509,6 +532,23 @@ export function PresentialBookingForm({ destino, defaultServiceType, destination
               })}
             </div>
           </div>
+
+          {/* Precio en vivo */}
+          {(total || totalError) && !showSummary && (
+            <div className="sticky top-16 z-20 mb-4 flex items-center justify-between gap-3 rounded-2xl border border-brand-200 bg-white/95 px-5 py-3 shadow-soft backdrop-blur">
+              {total ? (
+                <>
+                  <div className="text-xs leading-tight text-brand-600">
+                    {totalIsApprox ? "Total estimado" : "Total"}
+                    <span className="block text-[11px] text-brand-400">Traslado ida y vuelta incluido</span>
+                  </div>
+                  <div className="font-display text-2xl font-extrabold tabular-nums text-brand-900">{formatPrice(total)}</div>
+                </>
+              ) : (
+                <p className="text-sm text-red-600">No hay tarifa para esas fechas. Escribinos por WhatsApp.</p>
+              )}
+            </div>
+          )}
 
           {/* Card */}
           <div className="rounded-2xl border border-brand-200 bg-white p-6 shadow-sm sm:p-8">
