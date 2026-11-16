@@ -11,6 +11,7 @@ import {
   type ReservationRow,
 } from "@/lib/dashboard-stats";
 import { DashboardView } from "@/components/admin/DashboardView";
+import { UNPAID_STATUSES } from "@/lib/mp";
 
 export const metadata: Metadata = {
   title: `Admin — Dashboard — ${BRAND_NAME}`,
@@ -58,6 +59,7 @@ export default async function DashboardPage({ searchParams }: PageProps) {
   const where: any = { createdAt: { gte: from, lte: to } };
   if (destFilter) where.destination = destFilter;
   if (statusFilter) where.status = statusFilter;
+  else where.status = { notIn: [...UNPAID_STATUSES] };
 
   const [aeroRows, destinations] = await Promise.all([
     prisma.aeroparqueReservation.findMany({ where, orderBy: { createdAt: "desc" } }),
@@ -82,6 +84,7 @@ export default async function DashboardPage({ searchParams }: PageProps) {
   const prevWhere: any = { createdAt: { gte: prev.from, lte: prev.to } };
   if (destFilter) prevWhere.destination = destFilter;
   if (statusFilter) prevWhere.status = statusFilter;
+  else prevWhere.status = { notIn: [...UNPAID_STATUSES] };
   const prevRows = await prisma.aeroparqueReservation.findMany({ where: prevWhere });
   const prevReservations: ReservationRow[] = prevRows.map((r) => ({
     id: r.id,

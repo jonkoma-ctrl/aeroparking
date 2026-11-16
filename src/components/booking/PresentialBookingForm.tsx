@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import Link from "next/link";
 import {
   Calendar,
@@ -164,6 +164,37 @@ export function PresentialBookingForm({ destino, defaultServiceType, destination
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [success, setSuccess] = useState<{ code: string } | null>(null);
+  // Total a pagar (lo calcula el servidor con la misma cuenta con que cobra)
+  const [total, setTotal] = useState<number | null>(null);
+  const [totalError, setTotalError] = useState(false);
+
+  // Al llegar al resumen pedimos el total al servidor.
+  const onSummary = step === STEPS.length + 1;
+  useEffect(() => {
+    if (!onSummary) return;
+    let cancelled = false;
+    setTotal(null);
+    setTotalError(false);
+    const qs = new URLSearchParams({
+      destination: destino,
+      serviceType,
+      startDate: form.startDate,
+      checkInTime: form.checkInTime,
+      endDate: form.endDate,
+      arrivalTime: form.arrivalTime,
+    });
+    fetch(`/api/reservas/total?${qs}`)
+      .then((r) => r.json())
+      .then((d) => {
+        if (cancelled) return;
+        if (typeof d.total === "number" && d.total > 0) setTotal(d.total);
+        else setTotalError(true);
+      })
+      .catch(() => !cancelled && setTotalError(true));
+    return () => {
+      cancelled = true;
+    };
+  }, [onSummary, destino, serviceType, form.startDate, form.checkInTime, form.endDate, form.arrivalTime]);
 
   // Defaults cómodos: hoy mañana 24hs+ → mínimo permitido es mañana
   const minDate = useMemo(() => {
@@ -321,6 +352,12 @@ export function PresentialBookingForm({ destino, defaultServiceType, destination
         return;
       }
 
+      if (data.initPoint) {
+        // Al checkout de Mercado Pago. Dejamos "submitting" para que no se
+        // pueda volver a tocar el botón mientras carga.
+        window.location.href = data.initPoint;
+        return;
+      }
       setSuccess({ code: data.code });
       setSubmitting(false);
       if (typeof window !== "undefined") {
@@ -376,7 +413,7 @@ export function PresentialBookingForm({ destino, defaultServiceType, destination
               <ul className="mt-2 list-disc pl-5 text-blue-800">
                 <li>Llegá a BA Ferial (ex Costa Salguero) en la fecha y hora reservada</li>
                 <li>Mostrá este código al personal</li>
-                <li>El pago se hace al dejar el vehículo (efectivo, tarjeta o transferencia)</li>
+                <li>Te esperamos con el QR que te llegó por mail</li>
               </ul>
             </div>
 
@@ -435,7 +472,7 @@ export function PresentialBookingForm({ destino, defaultServiceType, destination
               Reservá tu estacionamiento + traslado
             </h1>
             <p className="mt-1 text-sm text-brand-600">
-              Pago presencial al dejar el vehículo · Atención 24 horas
+              Pago online con Mercado Pago · Atención 24 horas
             </p>
           </div>
 
@@ -752,6 +789,25 @@ export function PresentialBookingForm({ destino, defaultServiceType, destination
                   </SummarySection>
                 )}
 
+                <div className="rounded-2xl border-2 border-brand-900 bg-white p-5">
+                  <div className="flex items-baseline justify-between gap-4">
+                    <span className="text-sm font-semibold uppercase tracking-wide text-brand-600">
+                      Total a pagar
+                    </span>
+                    <span className="font-display text-3xl font-extrabold tabular-nums text-brand-900">
+                      {total ? formatPrice(total) : totalError ? "—" : "Calculando…"}
+                    </span>
+                  </div>
+                  <p className="mt-1 text-xs text-brand-500">
+                    Estacionamiento en BA Ferial + traslado ida y vuelta.
+                  </p>
+                  {totalError && (
+                    <p className="mt-2 text-sm text-red-600">
+                      No encontramos una tarifa para esas fechas. Escribinos por WhatsApp y te ayudamos.
+                    </p>
+                  )}
+                </div>
+
                 <SummarySection title="Contacto">
                   <Row label="Nombre" value={`${form.firstName} ${form.lastName}`} />
                   <Row label="Email" value={form.email} />
@@ -763,8 +819,9 @@ export function PresentialBookingForm({ destino, defaultServiceType, destination
                   <p className="flex items-start gap-2">
                     <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-brand-900" />
                     <span>
-                      <strong className="text-brand-900">Pago presencial</strong> al
-                      dejar el vehículo. Aceptamos efectivo, tarjeta y transferencia.
+                      <strong className="text-brand-900">Pagás online con Mercado Pago</strong>{" "}
+                      (tarjeta de crédito, débito o dinero en cuenta). Apenas se aprueba
+                      te llega el mail con tu código QR.
                     </span>
                   </p>
                   {destinationMeta?.transferCostPerLeg ? (
@@ -821,18 +878,18 @@ export function PresentialBookingForm({ destino, defaultServiceType, destination
                 <button
                   type="button"
                   onClick={handleSubmit}
-                  disabled={submitting}
+                  disabled={submitting || !total}
                   className="inline-flex items-center justify-center gap-2 rounded-xl bg-brand-900 px-8 py-3 text-sm font-semibold text-white transition-colors hover:bg-brand-800 disabled:cursor-not-allowed disabled:opacity-60"
                 >
                   {submitting ? (
                     <>
                       <Loader2 className="h-4 w-4 animate-spin" />
-                      Enviando...
+                      Te llevamos a Mercado Pago...
                     </>
                   ) : (
                     <>
-                      Confirmar reserva
-                      <CheckCircle2 className="h-4 w-4" />
+                      {total ? `Pagar ${formatPrice(total)}` : "Ir a pagar"}
+                      <ArrowRight className="h-4 w-4" />
                     </>
                   )}
                 </button>

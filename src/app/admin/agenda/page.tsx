@@ -11,6 +11,7 @@ import {
 } from "@/lib/utils";
 import { AeroparqueStatusButton } from "./AeroparqueStatusButton";
 import { AdminStatusButton } from "../reservas/AdminStatusButton";
+import { UNPAID_STATUSES } from "@/lib/mp";
 
 export const metadata: Metadata = {
   title: `Admin — Agenda — ${BRAND_NAME}`,
@@ -45,7 +46,10 @@ export default async function AdminAgendaPage({
   const toDate = params.to || "";
 
   const [aeroparqueRes, cruiseRes] = await Promise.all([
-    prisma.aeroparqueReservation.findMany({ orderBy: { startDate: "desc" } }),
+    prisma.aeroparqueReservation.findMany({
+      where: { status: { notIn: [...UNPAID_STATUSES] } },
+      orderBy: { startDate: "desc" },
+    }),
     prisma.cruiseReservation.findMany({ orderBy: { departureDate: "desc" } }),
   ]);
 

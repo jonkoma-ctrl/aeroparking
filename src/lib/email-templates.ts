@@ -171,7 +171,7 @@ function reservationTable(data: ReservationEmailData): string {
     rows += row("Pasajeros", String(data.passengers));
   }
   if (data.price && data.price > 0) {
-    rows += row("Total estimado", formatPrice(data.price));
+    rows += row("Total pagado", formatPrice(data.price));
   }
 
   return `<table style="width:100%;border-collapse:collapse;font-size:14px">${rows}</table>`;
@@ -224,7 +224,7 @@ function arrivalInstructions(): string {
     <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:18px;margin-top:16px">
       <p style="margin:0 0 8px;color:#0f172a;font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:1px">Tené en cuenta</p>
       <ul style="margin:0;padding-left:20px;color:#374151;font-size:14px;line-height:1.8">
-        <li>Pago al dejar el vehículo: efectivo, tarjeta o transferencia</li>
+        <li>Tu reserva ya está paga: no tenés que abonar nada al llegar</li>
         <li>Cancelación gratis antes de entregar el vehículo</li>
         <li>Si tu vuelo se retrasa, avisanos por WhatsApp al aterrizar</li>
       </ul>
@@ -410,7 +410,7 @@ export function buildAdminNotificationEmail(data: AdminNotificationData): string
       ${data.passengers ? row("Pasajeros", String(data.passengers)) : ""}
       ${data.departureAirline || data.departureFlight ? row("Vuelo salida", [data.departureAirline, data.departureFlight].filter(Boolean).join(" ")) : ""}
       ${data.arrivalAirline || data.arrivalFlight ? row("Vuelo arribo", [data.arrivalAirline, data.arrivalFlight].filter(Boolean).join(" ")) : ""}
-      ${data.price ? row("Total estimado", formatPrice(data.price)) : ""}
+      ${data.price ? row("Total pagado (Mercado Pago)", formatPrice(data.price)) : ""}
       ${data.channel ? row("Canal", data.channel) : ""}
     </table>
 

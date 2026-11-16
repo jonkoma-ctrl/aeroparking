@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
+import { UNPAID_STATUSES } from "@/lib/mp";
 
 // GET /api/admin/export?dest=&serviceType=&status=&from=&to=
 //
@@ -21,6 +22,7 @@ export async function GET(req: NextRequest) {
   if (dest && dest !== "todos") where.destination = dest;
   if (serviceType) where.serviceType = serviceType;
   if (status) where.status = status;
+  else where.status = { notIn: [...UNPAID_STATUSES] };
   if (from || to) {
     where.startDate = {};
     if (from) where.startDate.gte = new Date(from);
