@@ -10,6 +10,7 @@ import {
   buildReviewRequestEmail,
   getReviewRequestEmailSubject,
 } from "@/lib/email-templates";
+import { manageReservationPath } from "@/lib/reservation-access";
 
 /**
  * GET /api/cron/daily-emails
@@ -79,6 +80,8 @@ function toEmailData(r: ReservationRecord) {
     arrivalFlight: r.arrivalFlight,
     passengers: r.passengers,
     price: null,
+    managePath: manageReservationPath(r),
+
   };
 }
 

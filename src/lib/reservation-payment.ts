@@ -8,6 +8,7 @@ import {
   getAdminNotificationSubject,
 } from "@/lib/email-templates";
 import { KP_REF_PREFIX } from "@/lib/mp";
+import { manageReservationPath } from "@/lib/reservation-access";
 
 export const ADMIN_NOTIFY_EMAIL = "reservas@nrauditores.com.ar";
 
@@ -19,9 +20,8 @@ export interface MpPayment {
   external_reference?: string | null;
 }
 
-/** Mails de reserva confirmada: al cliente (con QR) y aviso interno. Best-effort. */
-export async function sendConfirmationEmails(r: AeroparqueReservation) {
-  const emailData = {
+function emailDataFor(r: AeroparqueReservation) {
+  return {
     customerName: r.customerName,
     externalOrderId: r.externalOrderId,
     reservationId: r.id,
@@ -41,7 +41,28 @@ export async function sendConfirmationEmails(r: AeroparqueReservation) {
     passengers: r.passengers,
     price: r.paidAmount ?? r.price ?? null,
     qrToken: r.qrToken,
+    managePath: manageReservationPath(r),
   };
+}
+
+/** Mail de confirmación (con QR) sólo al cliente. Se usa también para reenviarlo. */
+export async function sendClientConfirmation(r: AeroparqueReservation): Promise<boolean> {
+  if (!r.email) return false;
+  await sendEmail({
+    to: r.email,
+    subject: getReservationEmailSubject({
+      customerName: r.customerName,
+      destination: r.destination,
+      externalOrderId: r.externalOrderId,
+    }),
+    html: buildReservationEmail(emailDataFor(r)),
+  });
+  return true;
+}
+
+/** Mails de reserva confirmada: al cliente (con QR) y aviso interno. Best-effort. */
+export async function sendConfirmationEmails(r: AeroparqueReservation) {
+  const emailData = emailDataFor(r);
 
   if (r.email) {
     try {

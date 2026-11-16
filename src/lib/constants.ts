@@ -37,7 +37,7 @@ export const FAQ_ITEMS = [
   {
     question: "¿Puedo cancelar la reserva?",
     answer:
-      "Sí. Como el pago se hace al dejar el vehículo, cancelar antes del ingreso no tiene costo. Avisanos por mail o teléfono así liberamos el lugar.",
+      "Sí. Podés pedir la cancelación desde «Mi reserva» (el botón del mail de confirmación) o escribiéndonos por WhatsApp, y te respondemos a la brevedad.",
   },
   {
     question: "¿El estacionamiento es seguro?",
