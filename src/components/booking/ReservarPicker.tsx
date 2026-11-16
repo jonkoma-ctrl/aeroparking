@@ -150,7 +150,6 @@ export function ReservarPicker({ destinations, initialSlug }: Props) {
 
   return (
     <PresentialBookingForm
-      key={selected.slug}
       destino={selected.slug as Destino}
       destinationMeta={selected}
       headerSlot={picker}
