@@ -34,7 +34,7 @@ export async function sendEmail({ to, subject, html }: SendEmailOptions) {
 
   try {
     const info = await transporter.sendMail({
-      from: `"AEROPARKING" <${process.env.GMAIL_USER}>`,
+      from: `"KingPark" <${process.env.GMAIL_USER}>`,
       to,
       subject,
       html,

@@ -51,7 +51,7 @@ export async function Hero() {
   ]);
 
   const heroImage = settings.heroImageUrl;
-  const heroAlt = settings.heroImageAlt || "Estacionamiento Aeroparking en BA Ferial (ex Costa Salguero)";
+  const heroAlt = settings.heroImageAlt || "Estacionamiento KingPark en BA Ferial (ex Costa Salguero)";
   const customTitle = settings.heroTitle;
   const customSubtitle = settings.heroSubtitle;
 
@@ -98,7 +98,7 @@ export async function Hero() {
           <Reveal delay={140}>
             <p className="mt-6 max-w-2xl text-base leading-relaxed text-brand-100/85 text-pretty sm:text-lg lg:text-xl">
               {customSubtitle ||
-                "Estacioná en BA Ferial (ex Costa Salguero) y volá tranquilo. Sector cubierto, vigilancia 24h, traslado en nuestras unidades a Aeroparque, Ezeiza o Cruceros."}
+                "Estacioná en BA Ferial (ex Costa Salguero) y volá tranquilo. Sector cubierto, vigilancia 24h, traslado en nuestras unidades a Aeroparque o a la Terminal de Cruceros."}
             </p>
           </Reveal>
 

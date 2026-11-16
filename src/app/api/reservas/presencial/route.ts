@@ -24,7 +24,7 @@ import { BRAND_NAME } from "@/lib/constants";
 function generateOrderCode() {
   const year = new Date().getFullYear();
   const rnd = Math.floor(100000 + Math.random() * 900000); // 6 dígitos
-  return `AP-${year}-${rnd}`;
+  return `KP-${year}-${rnd}`;
 }
 
 async function generateUniqueCode(maxAttempts = 5): Promise<string> {

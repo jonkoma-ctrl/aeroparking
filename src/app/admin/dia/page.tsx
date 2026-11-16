@@ -127,7 +127,7 @@ export default async function DiaPage({ searchParams }: PageProps) {
       {/* Encabezado imprimible */}
       <div className="mb-4 hidden print:block">
         <h1 className="text-xl font-bold">
-          AEROPARKING — {tipo === "salidas" ? "Retiros" : "Ingresos"} · <span className="capitalize">{humanDate}</span>
+          KingPark — {tipo === "salidas" ? "Retiros" : "Ingresos"} · <span className="capitalize">{humanDate}</span>
         </h1>
         <p className="text-sm text-gray-600">{sorted.length} vehículo{sorted.length !== 1 ? "s" : ""}</p>
       </div>

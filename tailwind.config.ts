@@ -9,32 +9,32 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // Azul corporativo — identidad principal
+        // KingPark — tinta azul marino "realeza nocturna", identidad principal
         brand: {
-          50: "#eff6ff",
-          100: "#dbeafe",
-          200: "#bfdbfe",
-          300: "#93c5fd",
-          400: "#60a5fa",
-          500: "#3b82f6",
-          600: "#2563eb",
-          700: "#1d4ed8",
-          800: "#1e40af",
-          900: "#1e3a8a",
-          950: "#172554",
+          50: "#f3f5fa",
+          100: "#e4e9f3",
+          200: "#c6d0e6",
+          300: "#9cadd2",
+          400: "#6d85b9",
+          500: "#4c66a0",
+          600: "#3a4f86",
+          700: "#2e3f6c",
+          800: "#223055",
+          900: "#16223f",
+          950: "#0c1428",
         },
-        // Acento amarillo primario — CTAs y highlights vibrantes
+        // Dorado corona — CTAs, highlights y la corona del logo
         accent: {
-          50: "#fffbeb",
-          100: "#fef3c7",
-          200: "#fde68a",
-          300: "#fcd34d",
-          400: "#fbbf24",
-          500: "#f59e0b",
-          600: "#d97706",
-          700: "#b45309",
-          800: "#92400e",
-          900: "#78350f",
+          50: "#fffaeb",
+          100: "#fff1c4",
+          200: "#ffe187",
+          300: "#ffcd48",
+          400: "#fbb820",
+          500: "#eb9d08",
+          600: "#cb7a04",
+          700: "#a25708",
+          800: "#85450e",
+          900: "#6e3a10",
         },
         // Acento secundario champagne/rose-gold — calidez premium
         warm: {
@@ -70,14 +70,14 @@ const config: Config = {
       boxShadow: {
         // Sombras layered con tinte azul, no grises
         elevated:
-          "0 1px 2px rgba(30, 58, 138, 0.04), 0 8px 24px rgba(30, 58, 138, 0.08), 0 2px 6px rgba(30, 58, 138, 0.04)",
+          "0 1px 2px rgba(22, 34, 63, 0.04), 0 8px 24px rgba(22, 34, 63, 0.08), 0 2px 6px rgba(22, 34, 63, 0.04)",
         soft:
-          "0 1px 3px rgba(30, 58, 138, 0.06), 0 4px 12px rgba(30, 58, 138, 0.04)",
+          "0 1px 3px rgba(22, 34, 63, 0.06), 0 4px 12px rgba(22, 34, 63, 0.04)",
         // Sombras con tinte cálido para CTAs amarillos
         cta:
-          "0 4px 14px rgba(245, 158, 11, 0.35), 0 1px 3px rgba(245, 158, 11, 0.15)",
+          "0 4px 14px rgba(235, 157, 8, 0.35), 0 1px 3px rgba(235, 157, 8, 0.15)",
         "cta-hover":
-          "0 8px 22px rgba(245, 158, 11, 0.45), 0 2px 6px rgba(245, 158, 11, 0.2)",
+          "0 8px 22px rgba(235, 157, 8, 0.45), 0 2px 6px rgba(235, 157, 8, 0.2)",
         // Inner glow para badges
         "inner-soft": "inset 0 1px 0 rgba(255,255,255,0.1)",
       },

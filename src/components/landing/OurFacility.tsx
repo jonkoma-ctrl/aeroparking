@@ -77,10 +77,9 @@ export function OurFacility() {
                   <br />
                   <span className="text-brand-600">BA Ferial · CABA</span>
                 </p>
-                <div className="mt-4 grid grid-cols-3 gap-4 sm:max-w-md">
+                <div className="mt-4 grid grid-cols-2 gap-4 sm:max-w-xs">
                   <DistanceItem distance="4 km" to="Aeroparque" />
                   <DistanceItem distance="3 km" to="Puerto" />
-                  <DistanceItem distance="40 km" to="Ezeiza" />
                 </div>
               </div>
               <div className="flex items-end justify-start lg:items-center lg:justify-end">
