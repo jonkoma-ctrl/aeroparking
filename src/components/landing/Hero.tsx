@@ -1,54 +1,10 @@
-import Link from "next/link";
-import {
-  ShieldCheck,
-  Camera,
-  BadgePercent,
-  Plane,
-  Ship,
-  Bus,
-  Car,
-  Train,
-  ArrowRight,
-  Star,
-  Sparkles,
-} from "lucide-react";
+import { ShieldCheck, Camera, BadgePercent, ArrowRight, Sparkles } from "lucide-react";
 import { getSiteSettings } from "@/lib/site-settings";
-import { listActiveDestinations, type DestinationMeta } from "@/lib/destinos";
 import { Reveal } from "@/components/ui/Reveal";
-
-const ICON_BY_KEY: Record<string, typeof Plane> = {
-  plane: Plane,
-  ship: Ship,
-  bus: Bus,
-  car: Car,
-  train: Train,
-};
-
-const ACCENT_HOVER: Record<string, string> = {
-  blue: "hover:border-blue-300/70",
-  sky: "hover:border-sky-300/70",
-  violet: "hover:border-violet-300/70",
-  amber: "hover:border-amber-300/70",
-  emerald: "hover:border-emerald-300/70",
-  rose: "hover:border-rose-300/70",
-  indigo: "hover:border-indigo-300/70",
-};
-
-const ACCENT_BG: Record<string, string> = {
-  blue: "bg-blue-500",
-  sky: "bg-sky-500",
-  violet: "bg-violet-500",
-  amber: "bg-amber-500",
-  emerald: "bg-emerald-500",
-  rose: "bg-rose-500",
-  indigo: "bg-indigo-500",
-};
+import { BookingWidget } from "@/components/booking-widget/BookingWidget";
 
 export async function Hero() {
-  const [settings, destinations] = await Promise.all([
-    getSiteSettings(),
-    listActiveDestinations(),
-  ]);
+  const settings = await getSiteSettings();
 
   const heroImage = settings.heroImageUrl;
   const heroAlt = settings.heroImageAlt || "Estacionamiento KingPark en BA Ferial (ex Costa Salguero)";
@@ -102,24 +58,18 @@ export async function Hero() {
             </p>
           </Reveal>
 
-          {/* CTAs — alineados a la izquierda */}
+          {/* Cotizador primero: el precio antes que las cifras y las reseñas */}
           <Reveal delay={200}>
-            <div className="mt-8 flex flex-col items-start gap-3 sm:flex-row sm:items-center sm:gap-4">
-              <Link
-                href="/reservar"
-                className="group inline-flex items-center gap-2 rounded-2xl bg-cta-gradient px-7 py-4 text-base font-bold text-brand-950 shadow-cta transition-all hover:shadow-cta-hover hover:scale-[1.03] active:scale-[0.98] sm:text-lg"
-              >
-                Reservar ahora
-                <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
-              </Link>
-              <a
-                href="https://wa.me/5491131606994"
-                className="inline-flex items-center gap-2 rounded-2xl border-2 border-white/15 bg-white/5 px-5 py-3.5 text-sm font-semibold text-white backdrop-blur-sm transition-all hover:border-white/30 hover:bg-white/10 sm:text-base"
-              >
-                ¿Dudas? WhatsApp
-                <ArrowRight className="h-4 w-4 opacity-60" />
-              </a>
+            <div className="mt-8 max-w-3xl overflow-hidden rounded-2xl shadow-2xl ring-1 ring-white/10">
+              <BookingWidget variant="compact" defaultDestino="aeroparque" entryPoint="home_hero" />
             </div>
+            <a
+              href="https://wa.me/5491131606994"
+              className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-brand-100 underline-offset-4 hover:text-white hover:underline"
+            >
+              ¿Dudas? Escribinos por WhatsApp
+              <ArrowRight className="h-4 w-4 opacity-60" />
+            </a>
           </Reveal>
 
           {/* Quick stats — inline, no card */}
@@ -131,21 +81,6 @@ export async function Hero() {
             </dl>
           </Reveal>
 
-          {/* Destinos — más compactos, alineados */}
-          <Reveal delay={360}>
-            <div className="mt-10 sm:mt-12">
-              <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-brand-300 sm:text-xs">
-                ¿A dónde viajás?
-              </p>
-              <div className="mt-3 grid gap-2 sm:grid-cols-3 sm:max-w-3xl">
-                {destinations.slice(0, 3).map((d, i) => (
-                  <Reveal key={d.slug} delay={400 + i * 80}>
-                    <DestinationChip dest={d} />
-                  </Reveal>
-                ))}
-              </div>
-            </div>
-          </Reveal>
         </div>
 
         {/* Trust ribbon — full width abajo */}
@@ -199,37 +134,5 @@ function TrustItem({
         <div className="hidden text-[10px] text-brand-300 sm:block sm:text-[11px]">{sub}</div>
       </div>
     </div>
-  );
-}
-
-function DestinationChip({ dest }: { dest: DestinationMeta }) {
-  const Icon = ICON_BY_KEY[dest.iconKey] ?? Plane;
-  const hoverClass = ACCENT_HOVER[dest.accentColor] ?? ACCENT_HOVER.blue;
-  const iconBg = ACCENT_BG[dest.accentColor] ?? ACCENT_BG.blue;
-
-  return (
-    <Link
-      href={`/reservar?destino=${dest.slug}`}
-      className={`group relative flex items-center gap-3 overflow-hidden rounded-xl border border-white/15 bg-white/[0.06] px-3 py-3 text-left backdrop-blur-sm transition-all hover:scale-[1.02] hover:bg-white/[0.1] ${hoverClass}`}
-    >
-      {dest.imageUrl && (
-        // eslint-disable-next-line @next/next/no-img-element
-        <img
-          src={dest.imageUrl}
-          alt=""
-          className="absolute inset-0 h-full w-full object-cover opacity-15 transition-opacity duration-500 group-hover:opacity-25"
-          aria-hidden="true"
-        />
-      )}
-      <div className="absolute inset-0 bg-gradient-to-r from-brand-950/40 to-transparent" />
-      <div className={`relative flex h-10 w-10 shrink-0 items-center justify-center rounded-lg ${iconBg}`}>
-        <Icon className="h-5 w-5 text-white" />
-      </div>
-      <div className="relative min-w-0 flex-1">
-        <span className="block text-sm font-extrabold text-white">{dest.shortLabel}</span>
-        <span className="text-[10px] text-brand-200 sm:text-xs">{dest.label.split("—")[0].trim()}</span>
-      </div>
-      <ArrowRight className="relative h-4 w-4 text-brand-300 transition-transform group-hover:translate-x-0.5 group-hover:text-accent-300" />
-    </Link>
   );
 }
