@@ -378,6 +378,14 @@ El archivo que te baja se abre directo en Excel o Google Sheets. Tiene todas las
 
 ## 15. Historial de novedades
 
+### 16 de noviembre de 2026 — Ahora somos KingPark y se cobra online
+
+- 👑 **Nueva marca: KingPark.** Cambiaron el logo, los colores y el nombre en la web y en todos los mails. Los códigos de reserva nuevos empiezan con **KP-** (los viejos AP- siguen funcionando en el escáner).
+- 💳 **El cliente paga online al reservar, con Mercado Pago** (tarjeta de crédito, débito o dinero en cuenta). La plata entra a la cuenta de Border's Parking SRL. **Al llegar a BA Ferial no se cobra nada.**
+- ✉️ El mail con el QR le llega al cliente **recién cuando el pago se aprueba**. Si no pagó, la reserva no aparece en la agenda, ni en la vista del día, ni en el dashboard.
+- 🚫 Si alguien muestra un código de una reserva sin pagar, el escáner dice **"Pago pendiente — no dejar ingresar"**.
+- ✈️ **Ezeiza ya no se ofrece.** Quedan Aeroparque y la Terminal de Cruceros. Se puede volver a prender desde **Destinos**.
+
 ### 15 de julio de 2026 — Grilla de precios por cantidad de días
 
 - 💵 **Nueva forma de cargar precios en Tarifas**: además del precio lineal (precio × días), ahora podés cargar una **grilla de precios por cantidad de días** con el valor TOTAL de cada tramo. Por ejemplo: 1 día = $39.000, 2 días = $70.000, 3 días = $95.000, y "cada día adicional = $12.000". Es como funcionan los estacionamientos de aeropuerto: el que deja 4 días no paga 4 × el precio de 1 día, paga el precio establecido de la grilla.
