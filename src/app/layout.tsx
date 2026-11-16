@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Bricolage_Grotesque, Manrope } from "next/font/google";
+import { Archivo, Bricolage_Grotesque, Manrope } from "next/font/google";
 import { BRAND_NAME } from "@/lib/constants";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
@@ -10,6 +10,14 @@ import "./globals.css";
 const display = Bricolage_Grotesque({
   subsets: ["latin"],
   variable: "--font-display",
+  display: "swap",
+});
+
+// Letras del logo (casilleros KINGPARK): Archivo condensada.
+const logo = Archivo({
+  subsets: ["latin"],
+  variable: "--font-logo",
+  axes: ["wdth"],
   display: "swap",
 });
 
@@ -45,7 +53,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="es" className={`${display.variable} ${sans.variable}`}>
+    <html lang="es" className={`${display.variable} ${sans.variable} ${logo.variable}`}>
       <body className="min-h-screen bg-white font-sans antialiased">
         <Header />
         <main>{children}</main>

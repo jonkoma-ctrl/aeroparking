@@ -25,7 +25,7 @@ export async function qrPngBuffer(token: string): Promise<Buffer> {
     type: "png",
     width: 320,
     margin: 2,
-    color: { dark: "#16223f", light: "#ffffff" },
+    color: { dark: "#152766", light: "#ffffff" },
     errorCorrectionLevel: "M",
   });
 }
@@ -35,7 +35,7 @@ export async function qrDataUrl(token: string): Promise<string> {
   return QRCode.toDataURL(qrUrl(token), {
     width: 320,
     margin: 2,
-    color: { dark: "#16223f", light: "#ffffff" },
+    color: { dark: "#152766", light: "#ffffff" },
     errorCorrectionLevel: "M",
   });
 }
