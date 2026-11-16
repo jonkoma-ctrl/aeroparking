@@ -8,7 +8,6 @@ import { Menu, X, ChevronDown } from "lucide-react";
 const navItems = [
   { label: "Servicios", href: "/#servicios" },
   { label: "Cómo funciona", href: "/#como-funciona" },
-  { label: "Tarifas", href: "/#tarifas" },
   { label: "Eventos", href: "/valet-eventos" },
   { label: "FAQ", href: "/#faq" },
 ];
