@@ -88,7 +88,7 @@ export async function ServiceSelector() {
         {/* Valet eventos */}
         <div className="mx-auto mt-10 max-w-3xl rounded-3xl border border-brand-200 bg-brand-50 p-6 sm:p-8">
           <div className="flex items-start gap-4">
-            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-brand-900 text-white">
+            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-brand-50 text-brand-600 ring-1 ring-brand-100">
               <Truck className="h-6 w-6" />
             </div>
             <div className="flex-1">
@@ -101,14 +101,14 @@ export async function ServiceSelector() {
             </div>
             <Link
               href="/valet-eventos"
-              className="hidden sm:inline-flex shrink-0 items-center gap-2 rounded-full bg-brand-900 px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-brand-800"
+              className="hidden sm:inline-flex shrink-0 items-center gap-2 rounded-full bg-brand-600 px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-brand-700"
             >
               Cotizar
             </Link>
           </div>
           <Link
             href="/valet-eventos"
-            className="sm:hidden mt-4 inline-flex w-full items-center justify-center gap-2 rounded-full bg-brand-900 px-5 py-2.5 text-sm font-semibold text-white"
+            className="sm:hidden mt-4 inline-flex w-full items-center justify-center gap-2 rounded-full bg-brand-600 px-5 py-2.5 text-sm font-semibold text-white"
           >
             Cotizar evento
           </Link>

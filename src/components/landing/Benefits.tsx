@@ -49,9 +49,8 @@ const benefits = [
 
 export function Benefits() {
   return (
-    <section id="beneficios" className="relative section-padding bg-brand-50">
+    <section id="beneficios" className="relative section-padding bg-white">
       {/* Patrón sutil */}
-      <div className="absolute inset-0 bg-dots-brand opacity-40" aria-hidden="true" />
 
       <div className="container-main relative">
         <Reveal>
@@ -72,7 +71,7 @@ export function Benefits() {
           {benefits.map((benefit, i) => (
             <Reveal key={benefit.title} delay={i * 80}>
               <div className="group h-full rounded-2xl border border-brand-100 bg-white p-6 shadow-soft transition-all duration-300 hover:border-brand-200 hover:shadow-elevated hover:-translate-y-1.5">
-                <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-brand-900 text-accent-400 transition-all group-hover:scale-110 group-hover:rotate-3 group-hover:shadow-cta">
+                <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-brand-50 text-brand-600 ring-1 ring-brand-100 transition-transform group-hover:scale-105">
                   <benefit.icon className="h-6 w-6" />
                 </div>
                 <h3 className="font-display text-lg font-bold leading-tight text-brand-900">
@@ -88,10 +87,9 @@ export function Benefits() {
 
         {/* Stats strip rediseñado */}
         <Reveal delay={200}>
-          <div className="mt-16 overflow-hidden rounded-2xl border border-brand-100 bg-gradient-to-br from-brand-900 via-brand-800 to-brand-900 shadow-elevated">
-            <div className="relative bg-grid-brand bg-noise px-6 py-8 sm:px-10 sm:py-10">
-              <div className="absolute inset-0 bg-stripes-accent opacity-100" aria-hidden="true" />
-              <div className="relative grid grid-cols-2 gap-6 sm:grid-cols-4">
+          <div className="mt-16 rounded-3xl bg-brand-50/60 ring-1 ring-brand-100">
+            <div className="px-6 py-8 sm:px-10 sm:py-10">
+              <div className="grid grid-cols-2 gap-6 sm:grid-cols-4">
                 {[
                   { value: "+2.000", label: "Viajeros atendidos" },
                   { value: "4.8★", label: "Rating promedio" },
@@ -99,10 +97,10 @@ export function Benefits() {
                   { value: "★★★", label: "Vasta experiencia en el rubro" },
                 ].map((s) => (
                   <div key={s.label} className="text-center">
-                    <div className="text-stat-xl font-display text-white tabular-nums">
+                    <div className="text-stat-xl font-display text-brand-900 tabular-nums">
                       {s.value}
                     </div>
-                    <div className="mt-1 text-xs font-semibold uppercase tracking-wider text-accent-300 sm:text-sm">
+                    <div className="mt-1 text-xs font-semibold uppercase tracking-wider text-brand-500 sm:text-sm">
                       {s.label}
                     </div>
                   </div>

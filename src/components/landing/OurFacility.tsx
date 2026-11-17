@@ -87,7 +87,7 @@ export function OurFacility() {
                   href="https://maps.app.goo.gl/kZQH9UpSa5zGYxY5A"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 rounded-xl bg-brand-900 px-5 py-3 text-sm font-semibold text-white shadow-soft transition-all hover:bg-brand-800 hover:scale-[1.02]"
+                  className="inline-flex items-center gap-2 rounded-full bg-brand-600 px-5 py-3 text-sm font-semibold text-white shadow-soft transition-all hover:bg-brand-700 hover:scale-[1.02]"
                 >
                   Ver en Google Maps
                   <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -117,18 +117,18 @@ interface PhotoCardProps {
 function PhotoCard({ photo, aspect }: PhotoCardProps) {
   const Icon = photo.icon;
   return (
-    <figure className="group relative h-full overflow-hidden rounded-2xl shadow-soft transition-all duration-500 hover:shadow-elevated hover:-translate-y-1">
+    <figure className="group relative h-full overflow-hidden rounded-3xl shadow-soft ring-1 ring-brand-100 transition-all duration-500 hover:shadow-elevated hover:-translate-y-1">
       <div className={`${aspect} overflow-hidden`}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={photo.url}
           alt={photo.alt}
-          className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
+          className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
         />
       </div>
-      <div className="absolute inset-0 bg-gradient-to-t from-brand-950/95 via-brand-950/40 to-transparent" />
+      <div className="absolute inset-0 bg-gradient-to-t from-brand-950/80 via-brand-950/20 to-transparent" />
       <figcaption className="absolute bottom-0 left-0 right-0 p-5 sm:p-6">
-        <div className="mb-2 inline-flex h-9 w-9 items-center justify-center rounded-lg bg-accent-400/95 text-brand-950 shadow-soft backdrop-blur-sm transition-transform group-hover:scale-110">
+        <div className="mb-2 inline-flex h-9 w-9 items-center justify-center rounded-xl bg-white/95 text-brand-600 shadow-soft backdrop-blur-sm transition-transform group-hover:scale-110">
           <Icon className="h-4 w-4" />
         </div>
         <div className="font-display text-base font-extrabold text-white sm:text-lg">
