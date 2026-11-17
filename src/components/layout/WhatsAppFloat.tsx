@@ -1,10 +1,16 @@
+"use client";
+
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 /**
  * Botón flotante de WhatsApp siempre visible. En Argentina es estándar y
  * convierte mucho — la gente prefiere consultar antes de reservar.
  */
 export function WhatsAppFloat({ phone = "5491131606994" }: { phone?: string }) {
+  // En el panel del equipo no va: es el botón de consultas de los clientes.
+  const pathname = usePathname() || "/";
+  if (pathname.startsWith("/admin")) return null;
   const message = encodeURIComponent("Hola! Te consulto por una reserva en KingPark.");
   return (
     <Link
