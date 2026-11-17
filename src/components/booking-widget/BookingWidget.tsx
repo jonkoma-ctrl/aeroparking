@@ -185,7 +185,7 @@ export function BookingWidget({
 
             <button
               type="submit"
-              className="mt-5 w-full rounded-xl bg-brand-900 py-3.5 text-base font-semibold text-white shadow-lg hover:bg-brand-800 transition flex items-center justify-center gap-2"
+              className="mt-5 w-full rounded-full bg-brand-600 py-3.5 text-base font-semibold text-white shadow-lg hover:bg-brand-700 transition flex items-center justify-center gap-2"
             >
               Calcular tarifa
               <ArrowRight className="h-4 w-4" />
@@ -308,7 +308,7 @@ function QuoteResultView({
       <button
         type="button"
         onClick={() => onCTA(quote)}
-        className="mt-5 w-full rounded-xl bg-brand-900 py-3.5 text-base font-semibold text-white shadow-lg hover:bg-brand-800 transition flex items-center justify-center gap-2"
+        className="mt-5 w-full rounded-full bg-brand-600 py-3.5 text-base font-semibold text-white shadow-lg hover:bg-brand-700 transition flex items-center justify-center gap-2"
       >
         Continuar con la reserva <ArrowRight className="h-4 w-4" />
       </button>
