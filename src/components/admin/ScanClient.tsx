@@ -153,12 +153,12 @@ export function ScanClient() {
                 onChange={(e) => setManualCode(e.target.value.toUpperCase())}
                 placeholder="Ej: A7K2QP"
                 maxLength={12}
-                className="flex-1 rounded-lg border border-brand-300 px-3 py-2.5 text-center font-mono text-lg tracking-widest uppercase"
+                className="min-w-0 flex-1 rounded-lg border border-brand-300 px-3 py-2.5 text-center font-mono text-lg tracking-widest uppercase"
               />
               <button
                 onClick={() => manualCode.trim() && submitToken(manualCode.trim())}
                 disabled={!manualCode.trim() || loading}
-                className="rounded-lg bg-brand-900 px-5 py-2.5 text-sm font-bold text-white disabled:opacity-40"
+                className="shrink-0 rounded-lg bg-brand-900 px-4 py-2.5 text-sm font-bold text-white disabled:opacity-40"
               >
                 Buscar
               </button>
