@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
-import { BRAND_NAME } from "@/lib/constants";
+import { BRAND_NAME, CRUISE_TERMINAL } from "@/lib/constants";
 import { createReservationPreference, PAYMENT_WINDOW_MIN } from "@/lib/mp";
 
 export const dynamic = "force-dynamic";
@@ -23,7 +23,7 @@ export async function POST(req: NextRequest) {
 
   const expiresAt = new Date(Date.now() + PAYMENT_WINDOW_MIN * 60 * 1000);
   try {
-    const destLabel = r.destination === "puerto" ? "Terminal de Cruceros" : "Aeroparque";
+    const destLabel = r.destination === "puerto" ? CRUISE_TERMINAL.name : "Aeroparque";
     const { preferenceId, initPoint } = await createReservationPreference({
       reservationId: r.id,
       code: r.externalOrderId,

@@ -2,6 +2,13 @@
 export const MIN_ADVANCE_HOURS = 12; // anticipación mínima para reservar online
 export const CANCEL_REFUND_HOURS = 24; // devolución del 100 % si cancela hasta 24 h antes del ingreso
 
+/** Terminal de cruceros a la que llevamos (la única del Puerto de Buenos Aires). */
+export const CRUISE_TERMINAL = {
+  name: "Terminal de Cruceros Quinquela Martín",
+  short: "Terminal Quinquela Martín",
+  address: "Av. Pres. Ramón S. Castillo 13, CABA",
+};
+
 export const BRAND_NAME = process.env.NEXT_PUBLIC_BRAND_NAME || "KingPark";
 
 /// Datos de contacto que se muestran al cliente en CTAs y mails.
@@ -26,7 +33,7 @@ export const FAQ_ITEMS = [
   {
     question: "¿El traslado está incluido?",
     answer:
-      "Para Aeroparque y la Terminal de Cruceros, sí: el precio incluye el traslado ida y vuelta en nuestras unidades, sin costo adicional.",
+      "Sí: el precio incluye el traslado ida y vuelta en nuestras unidades a Aeroparque y a la Terminal de Cruceros Quinquela Martín (Av. Pres. Ramón S. Castillo 13), sin costo adicional.",
   },
   {
     question: "¿Cómo y cuándo se paga?",
@@ -98,7 +105,4 @@ export const CRUISE_LINES = [
   "Otra",
 ];
 
-export const TERMINALS = [
-  "Terminal Benito Quinquela Martín",
-  "Terminal 2 - Puerto Nuevo",
-];
+export const TERMINALS = ["Terminal de Cruceros Quinquela Martín"];

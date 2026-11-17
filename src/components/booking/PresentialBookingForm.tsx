@@ -23,7 +23,7 @@ import {
   presentialReservationSchema,
   type PresentialReservationInput,
 } from "@/lib/validations";
-import { CONTACT, MIN_ADVANCE_HOURS } from "@/lib/constants";
+import { CONTACT, MIN_ADVANCE_HOURS, CRUISE_TERMINAL } from "@/lib/constants";
 import { formatPrice } from "@/lib/utils";
 import { CarPicker } from "./CarPicker";
 import { decodePrefill } from "@/lib/booking-prefill";
@@ -107,7 +107,7 @@ const initialState: FormState = {
   arrivalAirline: "",
   arrivalFlight: "",
   cruiseLine: "",
-  terminal: "",
+  terminal: CRUISE_TERMINAL.name, // única terminal: va fija
   firstName: "",
   lastName: "",
   email: "",
@@ -129,7 +129,7 @@ const destinoMeta: Record<Destino, { label: string; icon: typeof Plane; accentCo
     tripLabel: "vuelo",
   },
   puerto: {
-    label: "Terminal de Cruceros",
+    label: "Terminal de Cruceros Quinquela Martín",
     icon: Ship,
     accentColor: "text-violet-600",
     tripLabel: "crucero",
@@ -680,15 +680,10 @@ export function PresentialBookingForm({ destino, defaultServiceType, destination
                         className={inputClass(!!errors.cruiseLine)}
                       />
                     </Field>
-                    <Field label="Terminal" error={errors.terminal}>
-                      <input
-                        type="text"
-                        value={form.terminal}
-                        onChange={(e) => update("terminal", e.target.value)}
-                        placeholder="Quinquela Martín / Puerto Nuevo"
-                        className={inputClass(!!errors.terminal)}
-                      />
-                    </Field>
+                    <div className="rounded-xl bg-brand-50 p-4 text-sm text-brand-800">
+                      <p className="font-semibold">Te llevamos a la {CRUISE_TERMINAL.name}</p>
+                      <p className="text-brand-600">{CRUISE_TERMINAL.address}</p>
+                    </div>
                   </>
                 ) : (
                   <>

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { prisma } from "@/lib/db";
-import { BRAND_NAME } from "@/lib/constants";
+import { BRAND_NAME, CRUISE_TERMINAL } from "@/lib/constants";
 import { formatDate } from "@/lib/utils";
 
 export const metadata: Metadata = {
@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 export const dynamic = "force-dynamic";
 
 function destinoLabel(d: string) {
-  if (d === "puerto") return "Terminal de Cruceros";
+  if (d === "puerto") return CRUISE_TERMINAL.short;
   if (d === "ezeiza") return "Aeropuerto de Ezeiza";
   return "Aeroparque Jorge Newbery";
 }
