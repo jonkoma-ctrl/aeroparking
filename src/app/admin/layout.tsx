@@ -5,7 +5,6 @@ const NAV_ITEMS = [
   { href: "/admin/dia", label: "Vista del día", icon: "🗓️" },
   { href: "/admin/scan", label: "Escáner", icon: "📷" },
   { href: "/admin/agenda", label: "Agenda", icon: "📋" },
-  { href: "/admin/reservas", label: "Cruceros", icon: "🚢" },
   { href: "/admin/tarifas", label: "Tarifas", icon: "💰" },
   { href: "/admin/destinos", label: "Destinos", icon: "📍" },
   { href: "/admin/creditos", label: "Créditos", icon: "🎁" },
