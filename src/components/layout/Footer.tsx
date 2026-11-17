@@ -10,7 +10,7 @@ export function Footer() {
           {/* Brand */}
           <div>
             <div className="flex items-center">
-              <KingParkLogo tone="dark" className="h-10 w-auto" />
+              <KingParkLogo tone="dark" className="h-14 w-auto" />
             </div>
             <p className="mt-4 text-sm leading-relaxed text-brand-400">
               Estacionamiento &middot; Traslados &middot; Valet

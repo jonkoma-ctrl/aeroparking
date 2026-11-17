@@ -518,7 +518,7 @@ export function PresentialBookingForm({ destino, defaultServiceType, destination
           </div>
 
           {/* Progress */}
-          <div ref={progressRef} className="mb-6 scroll-mt-20 rounded-2xl border border-brand-200 bg-white p-4 shadow-sm">
+          <div ref={progressRef} className="mb-6 scroll-mt-24 rounded-2xl border border-brand-200 bg-white p-4 shadow-sm">
             <div className="flex items-center justify-between">
               {STEPS.map((s, idx) => {
                 const StepIcon = s.icon;
@@ -553,7 +553,7 @@ export function PresentialBookingForm({ destino, defaultServiceType, destination
 
           {/* Precio en vivo */}
           {(total || totalError) && !showSummary && (
-            <div className="sticky top-16 z-20 mb-4 flex items-center justify-between gap-3 rounded-2xl border border-brand-200 bg-white/95 px-5 py-3 shadow-soft backdrop-blur">
+            <div className="sticky top-20 z-20 mb-4 flex items-center justify-between gap-3 rounded-2xl border border-brand-200 bg-white/95 px-5 py-3 shadow-soft backdrop-blur">
               {total ? (
                 <>
                   <div className="text-xs leading-tight text-brand-600">

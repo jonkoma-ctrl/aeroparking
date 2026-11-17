@@ -15,12 +15,12 @@ export const LOGO_BLUE = "#1b3fc4";
 export const LOGO_CELESTE = "#4fb6ec";
 export const LOGO_WHITE = "#ffffff";
 
-export function CrownA({ fill, cut }: { fill: string; cut: string }) {
+/** Corona: bloque con la "E" recortada (el recorte es transparente, se ve el fondo). */
+export function CrownA({ fill }: { fill: string; cut?: string }) {
   return (
-    <g>
-      <rect x="0" y="0" width="100" height="40" fill={fill} />
-      <path d="M8 0H34L24 14V26H76V14L66 0H92V0H8Z" fill={cut} />
-      <path d="M38 13H62L54 20V26H46V20Z" fill={fill} />
+    <g fill={fill}>
+      <path fillRule="evenodd" d="M0 0H100V40H0Z M34 0L24 14V26H76V14L66 0Z" />
+      <path d="M38 13H62L54 20V26H46V20Z" />
     </g>
   );
 }
