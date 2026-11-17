@@ -23,18 +23,18 @@ const config: Config = {
           900: "#152766",
           950: "#0d1940",
         },
-        // Dorado corona — CTAs, highlights y la corona del logo
+        // Celeste del cartel de estacionamiento — CTAs y acentos (Jon, 17-nov-2026)
         accent: {
-          50: "#fffaeb",
-          100: "#fff1c4",
-          200: "#ffe187",
-          300: "#ffcd48",
-          400: "#fbb820",
-          500: "#eb9d08",
-          600: "#cb7a04",
-          700: "#a25708",
-          800: "#85450e",
-          900: "#6e3a10",
+          50: "#eef8fe",
+          100: "#d8effc",
+          200: "#b3e1f9",
+          300: "#7fcdf4",
+          400: "#4fb6ec",
+          500: "#2a9bd8",
+          600: "#1b7db6",
+          700: "#186494",
+          800: "#19537a",
+          900: "#1a4665",
         },
         // Acento secundario champagne/rose-gold — calidez premium
         warm: {
@@ -75,9 +75,9 @@ const config: Config = {
           "0 1px 3px rgba(21, 39, 102, 0.06), 0 4px 12px rgba(21, 39, 102, 0.04)",
         // Sombras con tinte cálido para CTAs amarillos
         cta:
-          "0 4px 14px rgba(235, 157, 8, 0.35), 0 1px 3px rgba(235, 157, 8, 0.15)",
+          "0 4px 14px rgba(42, 155, 216, 0.35), 0 1px 3px rgba(42, 155, 216, 0.15)",
         "cta-hover":
-          "0 8px 22px rgba(235, 157, 8, 0.45), 0 2px 6px rgba(235, 157, 8, 0.2)",
+          "0 8px 22px rgba(42, 155, 216, 0.45), 0 2px 6px rgba(42, 155, 216, 0.2)",
         // Inner glow para badges
         "inner-soft": "inset 0 1px 0 rgba(255,255,255,0.1)",
       },

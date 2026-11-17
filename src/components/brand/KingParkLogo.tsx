@@ -1,46 +1,40 @@
 /**
- * Logo KingPark (propuesta B aprobada por Jon, 16-nov-2026).
- * Concepto: la "E" acostada es la corona (lomo abajo + tres brazos con punta)
- * y las letras van en casilleros, como cocheras.
+ * Logo KingPark — versión A (original de Jon), colores del cartel de
+ * "estacionamiento permitido": azul, celeste y blanco (Jon, 17-nov-2026).
  *
- * - KingParkCrown: la corona sola (viewBox 100×40).
- * - KingParkMark: ícono cuadrado (corona dorada sobre azul) para favicon/redes.
- * - KingParkLogo: versión horizontal (corona + KINGPARK en 8 casilleros).
- *   tone="light" para fondos claros, "dark" para fondos oscuros.
+ * Concepto: la "E" acostada recortada en el bloque es la corona, y las letras
+ * van en casilleros, como cocheras.
+ *
+ * - CrownA: la corona (viewBox 100×40). `cut` = color del recorte (el fondo).
+ * - KingParkMark: ícono cuadrado (E-corona blanca sobre azul, como el cartel).
+ * - KingParkLogo: horizontal (corona + KINGPARK en 8 casilleros).
+ *   tone="light" fondos claros, "dark" fondos oscuros.
  */
 
 export const LOGO_BLUE = "#1b3fc4";
-export const CROWN_GOLD = "#fbb820";
-const CROWN_GOLD_ON_LIGHT = "#eb9d08"; // un punto más oscuro para que se lea sobre blanco
+export const LOGO_CELESTE = "#4fb6ec";
+export const LOGO_WHITE = "#ffffff";
 
-export function CrownPaths({ fill }: { fill: string }) {
+export function CrownA({ fill, cut }: { fill: string; cut: string }) {
   return (
-    <g fill={fill}>
-      <rect x="0" y="28" width="100" height="12" />
-      <path d="M0 28V0L24 16V28Z" />
-      <path d="M38 28V16L50 0L62 16V28Z" />
-      <path d="M100 28V0L76 16V28Z" />
+    <g>
+      <rect x="0" y="0" width="100" height="40" fill={fill} />
+      <path d="M8 0H34L24 14V26H76V14L66 0H92V0H8Z" fill={cut} />
+      <path d="M38 13H62L54 20V26H46V20Z" fill={fill} />
     </g>
-  );
-}
-
-export function KingParkCrown({ className = "h-6 w-auto", color = CROWN_GOLD }: { className?: string; color?: string }) {
-  return (
-    <svg viewBox="0 0 100 40" className={className} aria-hidden="true">
-      <CrownPaths fill={color} />
-    </svg>
   );
 }
 
 export function KingParkMark({ className = "h-9 w-9" }: { className?: string }) {
   return (
     <svg viewBox="0 0 64 64" className={className} aria-hidden="true">
-      <rect width="64" height="64" rx="14" fill={LOGO_BLUE} />
-      <svg x="10" y="16" width="44" height="17.6" viewBox="0 0 100 40">
-        <CrownPaths fill={CROWN_GOLD} />
+      <rect width="64" height="64" rx="12" fill={LOGO_BLUE} />
+      <svg x="10" y="13" width="44" height="17.6" viewBox="0 0 100 40">
+        <CrownA fill={LOGO_WHITE} cut={LOGO_BLUE} />
       </svg>
-      <rect x="10" y="38" width="44" height="3.5" fill={CROWN_GOLD} />
-      <rect x="10" y="45" width="44" height="3.5" fill="#ffffff" opacity="0.6" />
+      <rect x="10" y="35" width="44" height="3.5" fill={LOGO_CELESTE} />
+      <rect x="10" y="42" width="44" height="3.5" fill={LOGO_WHITE} />
+      <rect x="10" y="49" width="44" height="3.5" fill={LOGO_CELESTE} />
     </svg>
   );
 }
@@ -51,18 +45,21 @@ const CELL = 214 / 8;
 export function KingParkLogo({
   tone = "light",
   className = "h-9 w-auto",
+  background,
 }: {
   tone?: "light" | "dark";
   className?: string;
+  /** Color del fondo donde va el logo (para el recorte de la corona). */
+  background?: string;
 }) {
-  const crown = tone === "light" ? CROWN_GOLD_ON_LIGHT : CROWN_GOLD;
-  const ink = tone === "light" ? LOGO_BLUE : "#ffffff";
+  const ink = tone === "light" ? LOGO_BLUE : LOGO_WHITE;
+  const cut = background ?? (tone === "light" ? LOGO_WHITE : "#0d1940");
   return (
     <svg viewBox="0 0 330 80" className={className} role="img" aria-label="KingPark">
       <svg x="0" y="12" width="100" height="40" viewBox="0 0 100 40">
-        <CrownPaths fill={crown} />
+        <CrownA fill={ink} cut={cut} />
       </svg>
-      <rect x="0" y="58" width="100" height="6" fill={crown} />
+      <rect x="0" y="58" width="100" height="6" fill={LOGO_CELESTE} />
       <g fill="none" stroke={ink} strokeWidth="2.4">
         <rect x="114" y="13" width="214" height="51" />
         {LETTERS.slice(1).map((_, i) => {
@@ -70,6 +67,7 @@ export function KingParkLogo({
           return <path key={i} d={`M${x} 13V64`} />;
         })}
       </g>
+      <rect x="114" y="68" width="214" height="4" fill={LOGO_CELESTE} />
       <g
         fill={ink}
         fontSize="34"
