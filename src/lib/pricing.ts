@@ -128,9 +128,19 @@ export type ValidationResult =
   | { ok: true }
   | { ok: false; field: string; message: string };
 
+/**
+ * Días a cobrar = días calendario entre la fecha de ingreso y la de retiro
+ * (mínimo 1). La hora no cuenta: el día de retiro está cubierto hasta las
+ * 23:59 (regla de Border's, Isabel, 16-nov-2026). Ej.: 19 08:00 → 22 08:01 = 3.
+ *
+ * Las fechas se arman como `${fecha}T${hora}` sin zona horaria, así que se
+ * leen con los getters locales del mismo entorno que las parseó: eso devuelve
+ * la fecha que eligió el cliente, en el server (UTC) y en el navegador.
+ */
 export function calculateDays(ingreso: Date, retiro: Date): number {
-  const diffMs = retiro.getTime() - ingreso.getTime();
-  return Math.ceil(diffMs / (1000 * 60 * 60 * 24));
+  const a = Date.UTC(ingreso.getFullYear(), ingreso.getMonth(), ingreso.getDate());
+  const b = Date.UTC(retiro.getFullYear(), retiro.getMonth(), retiro.getDate());
+  return Math.max(1, Math.round((b - a) / (1000 * 60 * 60 * 24)));
 }
 
 export interface StayBreakdown {
@@ -198,9 +208,9 @@ export function calculateQuote(input: QuoteInput, rule: PricingRule): QuoteResul
     discountPct = 0;
     discountAmount = 0;
   } else {
-    // Modelo lineal: estadías (24 h indivisible + medias estadías) × precio,
+    // Modelo lineal: días calendario × precio (el día no se fracciona),
     // la misma cuenta con la que se cobra (lib/reservation-total.ts).
-    subtotal = Math.round(calculateStays(input.ingreso, input.retiro).totalEquivalent * rule.pricePerDay);
+    subtotal = Math.round(days * rule.pricePerDay);
     discountPct = pickDiscount(days, rule.durationDiscounts);
     discountAmount = Math.round((subtotal * discountPct) / 100);
     total = subtotal - discountAmount;
