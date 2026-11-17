@@ -1,5 +1,4 @@
 import { Hero } from "@/components/landing/Hero";
-import { TrustBar } from "@/components/landing/TrustBar";
 import { ServiceSelector } from "@/components/landing/ServiceSelector";
 import { HowItWorks } from "@/components/landing/HowItWorks";
 import { OurFacility } from "@/components/landing/OurFacility";
@@ -14,7 +13,6 @@ export default async function HomePage() {
   return (
     <>
       <Hero />
-      <TrustBar />
       <ServiceSelector />
       <HowItWorks />
       {/* <PriceGrid /> — tarifas ocultas hasta que Jon decida publicarlas (16-nov) */}

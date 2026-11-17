@@ -34,9 +34,8 @@ const steps = [
 
 export function HowItWorks() {
   return (
-    <section id="como-funciona" className="relative section-padding bg-brand-50">
+    <section id="como-funciona" className="relative section-padding bg-brand-50/50">
       {/* Patrón sutil de fondo */}
-      <div className="absolute inset-0 bg-dots-brand opacity-50" aria-hidden="true" />
 
       <div className="container-main relative">
         <Reveal>
@@ -66,7 +65,7 @@ export function HowItWorks() {
                 </span>
 
                 <div className="relative">
-                  <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-brand-900 text-accent-400 shadow-soft transition-transform group-hover:scale-110 group-hover:rotate-3">
+                  <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-brand-50 text-brand-600 ring-1 ring-brand-100 transition-transform group-hover:scale-105">
                     <step.icon className="h-6 w-6" />
                   </div>
 
