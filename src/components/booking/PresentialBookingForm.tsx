@@ -23,7 +23,7 @@ import {
   presentialReservationSchema,
   type PresentialReservationInput,
 } from "@/lib/validations";
-import { CONTACT } from "@/lib/constants";
+import { CONTACT, MIN_ADVANCE_HOURS } from "@/lib/constants";
 import { formatPrice } from "@/lib/utils";
 import { CarPicker } from "./CarPicker";
 import { decodePrefill } from "@/lib/booking-prefill";
@@ -235,9 +235,9 @@ export function PresentialBookingForm({ destino, defaultServiceType, destination
     }
   }, []);
 
-  // Defaults cómodos: hoy mañana 24hs+ → mínimo permitido es mañana
+  // Anticipación mínima: 12 h (Border's, 17-nov-2026). El día mínimo es el de ahora + 12 h.
   const minDate = useMemo(() => {
-    const t = new Date(Date.now() + 24 * 60 * 60 * 1000);
+    const t = new Date(Date.now() + MIN_ADVANCE_HOURS * 60 * 60 * 1000);
     return t.toISOString().split("T")[0];
   }, []);
 
@@ -266,10 +266,10 @@ export function PresentialBookingForm({ destino, defaultServiceType, destination
         if (end <= start) {
           stepErrors.endDate = "La fecha de retiro debe ser posterior al ingreso";
         }
-        const minStart = new Date(Date.now() + 24 * 60 * 60 * 1000);
+        const minStart = new Date(Date.now() + MIN_ADVANCE_HOURS * 60 * 60 * 1000);
         if (start < minStart) {
           stepErrors.startDate =
-            "Las reservas online se aceptan con al menos 24hs de anticipación";
+            `Las reservas online se aceptan con al menos ${MIN_ADVANCE_HOURS} h de anticipación`;
         }
       }
       const pax = Number(form.passengers);

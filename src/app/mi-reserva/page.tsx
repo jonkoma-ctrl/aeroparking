@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { Loader2, Mail, Car, CalendarPlus, XCircle, QrCode, CreditCard } from "lucide-react";
 import { formatDate, getStatusLabel, getStatusColor, formatPrice } from "@/lib/utils";
-import { CONTACT } from "@/lib/constants";
+import { CONTACT, CANCEL_REFUND_HOURS } from "@/lib/constants";
 
 interface ReservationData {
   id: string;
@@ -154,6 +154,7 @@ function MiReservaContent() {
     }
   }
 
+  const canRefund = !!data && new Date(data.startDate).getTime() - Date.now() > CANCEL_REFUND_HOURS * 60 * 60 * 1000;
   const editable = data && !data.checkedIn && ["confirmed", "pending_payment", "payment_rejected", "payment_expired", "extension_requested"].includes(data.status);
 
   return (
@@ -258,6 +259,12 @@ function MiReservaContent() {
               {data.price > 0 && <Row k={data.paid ? "Pagado" : "Total"} v={formatPrice(data.price)} />}
             </dl>
 
+            {data.paid && data.status === "confirmed" && !data.checkedIn && !canRefund && (
+              <p className="rounded-xl bg-brand-50 p-3 text-xs text-brand-600">
+                Faltan menos de {CANCEL_REFUND_HOURS} h para el ingreso: la reserva ya no se puede cancelar con devolución.
+              </p>
+            )}
+
             {msg && (
               <div className={`rounded-xl p-4 text-sm ${msg.ok ? "bg-green-50 text-green-800" : "bg-red-50 text-red-700"}`}>{msg.text}</div>
             )}
@@ -271,8 +278,8 @@ function MiReservaContent() {
               {data.paid && ["confirmed", "checked_in"].includes(data.status) && (
                 <ActionBtn icon={CalendarPlus} label="Extender la estadía" onClick={() => { setPanel(panel === "extender" ? null : "extender"); setMsg(null); }} />
               )}
-              {data.paid && data.status === "confirmed" && !data.checkedIn && (
-                <ActionBtn icon={XCircle} label="Pedir cancelación" onClick={() => { setPanel(panel === "cancelar" ? null : "cancelar"); setMsg(null); }} tone="danger" />
+              {data.paid && data.status === "confirmed" && !data.checkedIn && canRefund && (
+                <ActionBtn icon={XCircle} label="Cancelar con devolución" onClick={() => { setPanel(panel === "cancelar" ? null : "cancelar"); setMsg(null); }} tone="danger" />
               )}
             </div>
 
@@ -305,7 +312,9 @@ function MiReservaContent() {
 
             {panel === "cancelar" && (
               <Box>
-                <p className="text-sm text-brand-700">Te escribimos para gestionar la cancelación.</p>
+                <p className="text-sm text-brand-700">
+                  Como faltan más de {CANCEL_REFUND_HOURS} h para el ingreso, te devolvemos el 100 % de lo que pagaste en tu medio de pago de Mercado Pago. Te escribimos para confirmarlo.
+                </p>
                 <input value={reason} onChange={(e) => setReason(e.target.value)} placeholder="Motivo (opcional)" className="w-full rounded-xl border border-brand-200 px-4 py-3 text-sm" />
                 <SubmitBtn busy={busy} onClick={cancel} label="Confirmar pedido de cancelación" tone="danger" />
               </Box>

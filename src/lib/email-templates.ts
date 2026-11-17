@@ -225,7 +225,8 @@ function arrivalInstructions(): string {
       <p style="margin:0 0 8px;color:#0f172a;font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:1px">Tené en cuenta</p>
       <ul style="margin:0;padding-left:20px;color:#374151;font-size:14px;line-height:1.8">
         <li>Tu reserva ya está paga: no tenés que abonar nada al llegar</li>
-        <li>Cancelación gratis antes de entregar el vehículo</li>
+        <li>Si cancelás hasta 24 h antes del ingreso, te devolvemos el 100 %</li>
+        <li>Tu reserva cubre el día de retiro hasta las 23:59; después se cobra una estadía extra</li>
         <li>Si tu vuelo se retrasa, avisanos por WhatsApp al aterrizar</li>
       </ul>
     </div>

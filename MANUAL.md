@@ -193,7 +193,7 @@ Cuando el cliente pide algo desde "Mi reserva", la reserva cambia de estado y en
    - **Crédito para otra fecha:** crealo en [Créditos](#13-creditos-a-clientes).
 4. Pasá la reserva a **Cancelada** (✗ rojo).
 
-*La política de cancelación (hasta cuándo se devuelve, o si queda como crédito) la define Border's.*
+**Política (Border's, nov-2026):** si cancela **hasta 24 h antes del ingreso** se devuelve el **100 %**. Con menos de 24 h, "Mi reserva" ya no le deja pedir la cancelación y no hay devolución.
 
 ### Extensión solicitada
 
@@ -326,11 +326,11 @@ Confirmá la reserva y el monto pagado, y según lo que se acuerde: **crédito**
 
 ### "Vuelvo más tarde de lo reservado"
 
-Que avise por WhatsApp al **11 3160 6994** cuando aterrice. Las demoras del vuelo no tienen cargo extra.
+Que avise por WhatsApp al **11 3160 6994** cuando aterrice. La reserva cubre el día de retiro **hasta las 23:59**; si retira después de la medianoche, se cobra **una estadía extra** al retirar.
 
 ### "Quiero reservar para hoy"
 
-La web acepta reservas con **al menos 24 h de anticipación**. Para algo más urgente, coordinalo por WhatsApp.
+La web acepta reservas con **al menos 12 h de anticipación**. Para algo más urgente, coordinalo por WhatsApp.
 
 ### "Pagué y me dice que no está paga"
 
@@ -364,6 +364,13 @@ Si algo de este manual no coincide con lo que ves en pantalla, avisanos para cor
 ---
 
 ## 18. Historial de novedades
+
+### 17 de noviembre de 2026 — Políticas de Border's
+
+- ⏱️ Se puede reservar online con **12 h** de anticipación (antes 24 h).
+- ↩️ **Devolución del 100 %** si el cliente cancela **hasta 24 h antes** del ingreso. Con menos, no hay devolución.
+- 🌙 La reserva cubre el día de retiro **hasta las 23:59**; después de la medianoche se cobra una estadía extra.
+- 🚙 **Tarifa única** para autos, SUV, pick-ups y vans.
 
 ### 16 de noviembre de 2026 — Nace KingPark
 

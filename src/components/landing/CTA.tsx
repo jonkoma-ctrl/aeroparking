@@ -73,7 +73,7 @@ export function CTA() {
             <div className="mt-12 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-xs text-brand-200 sm:text-sm">
               <span className="inline-flex items-center gap-1.5">
                 <ShieldCheck className="h-4 w-4 text-accent-400" />
-                Cancelación gratis antes de dejar el auto
+                Devolución del 100 % hasta 24 h antes
               </span>
               <span className="hidden text-brand-500 sm:inline">·</span>
               <span className="inline-flex items-center gap-1.5">
