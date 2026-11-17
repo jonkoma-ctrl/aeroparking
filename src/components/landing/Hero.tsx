@@ -44,7 +44,7 @@ export async function Hero() {
           <Reveal delay={80}>
             <h1 className="mt-5 font-display text-[clamp(2.75rem,7vw,5.5rem)] font-extrabold leading-[0.98] tracking-[-0.04em] text-white text-balance sm:mt-6">
               Tu auto, en{" "}
-              <span className="bg-gradient-to-r from-accent-300 via-accent-400 to-uniform-500 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-accent-200 via-accent-300 to-accent-400 bg-clip-text text-transparent">
                 buenas manos
               </span>
               .

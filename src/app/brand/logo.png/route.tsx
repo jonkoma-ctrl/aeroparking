@@ -1,12 +1,13 @@
 import { ImageResponse } from "next/og";
 
-// GET /brand/logo.png?tone=dark|light — logo KingPark en PNG para los mails
-// (Gmail no muestra SVG). Mismo dibujo que components/brand/KingParkLogo.tsx.
+// GET /brand/logo.png?tone=dark|light — logo KingPark (versión A, azul/celeste/
+// blanco) en PNG para los mails (Gmail no muestra SVG). Mismo dibujo que
+// components/brand/KingParkLogo.tsx.
 export const revalidate = 86400;
 
 const BLUE = "#1b3fc4";
-const GOLD = "#fbb820";
-const GOLD_ON_LIGHT = "#eb9d08";
+const CELESTE = "#4fb6ec";
+const DARK_BG = "#152766";
 const LETTERS = ["K", "I", "N", "G", "P", "A", "R", "K"];
 
 async function loadFont(): Promise<ArrayBuffer | null> {
@@ -22,51 +23,44 @@ async function loadFont(): Promise<ArrayBuffer | null> {
 
 export async function GET(req: Request) {
   const dark = new URL(req.url).searchParams.get("tone") === "dark";
-  const crown = dark ? GOLD : GOLD_ON_LIGHT;
+  const bg = dark ? DARK_BG : "#ffffff";
   const ink = dark ? "#ffffff" : BLUE;
   const font = await loadFont();
   const S = 2; // escala (retina)
 
   return new ImageResponse(
     (
-      <div style={{ display: "flex", alignItems: "flex-end", width: 330 * S, height: 80 * S, padding: 0, background: dark ? "#152766" : "#ffffff" }}>
+      <div style={{ display: "flex", alignItems: "flex-end", width: 330 * S, height: 80 * S, background: bg }}>
         <div style={{ display: "flex", flexDirection: "column", width: 100 * S, marginBottom: 16 * S, marginRight: 14 * S }}>
           <svg width={100 * S} height={40 * S} viewBox="0 0 100 40">
-            <g fill={crown}>
-              <rect x="0" y="28" width="100" height="12" />
-              <path d="M0 28V0L24 16V28Z" />
-              <path d="M38 28V16L50 0L62 16V28Z" />
-              <path d="M100 28V0L76 16V28Z" />
-            </g>
+            <rect x="0" y="0" width="100" height="40" fill={ink} />
+            <path d="M8 0H34L24 14V26H76V14L66 0H92V0H8Z" fill={bg} />
+            <path d="M38 13H62L54 20V26H46V20Z" fill={ink} />
           </svg>
-          <div style={{ display: "flex", height: 6 * S, background: crown, marginTop: 6 * S }} />
+          <div style={{ display: "flex", height: 6 * S, background: CELESTE, marginTop: 6 * S }} />
         </div>
-        <div
-          style={{
-            display: "flex",
-            border: `${2.4 * S}px solid ${ink}`,
-            marginBottom: 16 * S,
-            height: 51 * S,
-          }}
-        >
-          {LETTERS.map((l, i) => (
-            <div
-              key={i}
-              style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                width: (214 / 8) * S - (i === 0 ? 2.4 * S : 0),
-                borderLeft: i === 0 ? "none" : `${2.4 * S}px solid ${ink}`,
-                color: ink,
-                fontSize: 34 * S,
-                fontFamily: "Archivo",
-                fontWeight: 900,
-              }}
-            >
-              {l}
-            </div>
-          ))}
+        <div style={{ display: "flex", flexDirection: "column", marginBottom: 8 * S }}>
+          <div style={{ display: "flex", border: `${2.4 * S}px solid ${ink}`, height: 51 * S }}>
+            {LETTERS.map((l, i) => (
+              <div
+                key={i}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  width: (214 / 8) * S - (i === 0 ? 2.4 * S : 0),
+                  borderLeft: i === 0 ? "none" : `${2.4 * S}px solid ${ink}`,
+                  color: ink,
+                  fontSize: 34 * S,
+                  fontFamily: "Archivo",
+                  fontWeight: 900,
+                }}
+              >
+                {l}
+              </div>
+            ))}
+          </div>
+          <div style={{ display: "flex", height: 4 * S, background: CELESTE, marginTop: 4 * S }} />
         </div>
       </div>
     ),

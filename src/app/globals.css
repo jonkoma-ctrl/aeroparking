@@ -76,8 +76,8 @@
   .bg-stripes-accent {
     background-image: repeating-linear-gradient(
       135deg,
-      rgba(251, 184, 32, 0.06),
-      rgba(251, 184, 32, 0.06) 1px,
+      rgba(79, 182, 236, 0.06),
+      rgba(79, 182, 236, 0.06) 1px,
       transparent 1px,
       transparent 14px
     );
@@ -93,17 +93,17 @@
   .bg-mesh-hero {
     background:
       radial-gradient(at 20% 30%, rgba(27, 63, 196, 0.35) 0px, transparent 50%),
-      radial-gradient(at 80% 0%, rgba(235, 157, 8, 0.22) 0px, transparent 50%),
+      radial-gradient(at 80% 0%, rgba(79, 182, 236, 0.22) 0px, transparent 50%),
       radial-gradient(at 80% 90%, rgba(23, 45, 128, 0.3) 0px, transparent 50%);
   }
 
   /* Gradient CTA premium — amarillo a naranja sutil */
   .bg-cta-gradient {
-    background: linear-gradient(135deg, #ffcd48 0%, #fbb820 50%, #eb9d08 100%);
+    background: linear-gradient(135deg, #7fcdf4 0%, #4fb6ec 50%, #2a9bd8 100%);
   }
 
   .bg-cta-gradient-hover {
-    background: linear-gradient(135deg, #ffe187 0%, #ffcd48 50%, #fbb820 100%);
+    background: linear-gradient(135deg, #b3e1f9 0%, #7fcdf4 50%, #4fb6ec 100%);
   }
 
   /* Shimmer effect para loading o highlights */
