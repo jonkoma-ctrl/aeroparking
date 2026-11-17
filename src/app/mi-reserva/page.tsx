@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { Loader2, Mail, Car, CalendarPlus, XCircle, QrCode, CreditCard } from "lucide-react";
 import { formatDate, getStatusLabel, getStatusColor, formatPrice } from "@/lib/utils";
-import { CONTACT, CANCEL_REFUND_HOURS } from "@/lib/constants";
+import { CONTACT, CANCEL_REFUND_HOURS, CRUISE_TERMINAL } from "@/lib/constants";
 
 interface ReservationData {
   id: string;
@@ -45,7 +45,7 @@ function maskEmail(e: string | null) {
 }
 
 function destinoLabel(d: string) {
-  return d === "puerto" ? "Terminal de Cruceros" : d === "ezeiza" ? "Ezeiza" : "Aeroparque";
+  return d === "puerto" ? CRUISE_TERMINAL.name : d === "ezeiza" ? "Ezeiza" : "Aeroparque";
 }
 
 function MiReservaContent() {

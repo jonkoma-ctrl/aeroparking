@@ -34,13 +34,13 @@
 KingPark es el estacionamiento de **BA Ferial (ex Costa Salguero)**, con **traslado ida y vuelta** a:
 
 - **Aeroparque Jorge Newbery** (4 km)
-- **Terminal de Cruceros** del Puerto de Buenos Aires
+- **Terminal de Cruceros Quinquela Martín** (Av. Pres. Ramón S. Castillo 13)
 
 El cliente entra a [kingpark.com.ar](https://kingpark.com.ar), ve el precio, reserva y **paga online con Mercado Pago**. Le llega por mail un **código QR** que muestra al llegar a la playa.
 
 - **La plata** entra a la cuenta de Mercado Pago de **Border's Parking SRL**.
 - **Al llegar a BA Ferial no se cobra nada**: la reserva ya está paga.
-- **Dirección:** Av. Costanera Rafael Obligado 1221, CABA.
+- **Dirección de la playa:** Av. Costanera Rafael Obligado 1221, CABA (única entrada).
 
 ---
 

@@ -18,7 +18,7 @@ export default async function AdminTarifasPage() {
 
   const destLabels: Record<string, string> = {
     aeroparque: "Aeroparque",
-    puerto: "Puerto de BA",
+    puerto: "Cruceros (Quinquela Martín)",
   };
   const serviceLabels: Record<string, string> = {
     drop_go: "Drop & Go",

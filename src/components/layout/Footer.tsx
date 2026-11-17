@@ -38,7 +38,7 @@ export function Footer() {
                   href="/reservar?destino=puerto"
                   className="transition-colors hover:text-white"
                 >
-                  Terminal de Cruceros
+                  Terminal de Cruceros Quinquela Martín
                 </Link>
               </li>
               <li>

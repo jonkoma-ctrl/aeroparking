@@ -222,8 +222,8 @@ export function BookingWidget({
 const SERVICE_LABELS: Record<ServiceType, string> = {
   aeroparque_drop_go: "Drop & Go — Aeroparque",
   aeroparque_larga_estadia: "Larga Estadía — Aeroparque",
-  puerto_larga_estadia: "Estacionamiento — Puerto de BA",
-  puerto_cruceros: "Cruceros — Puerto de BA",
+  puerto_larga_estadia: "Estacionamiento + traslado — Terminal Quinquela Martín",
+  puerto_cruceros: "Estacionamiento + traslado — Terminal Quinquela Martín",
   ezeiza_larga_estadia: "Estacionamiento + traslado — Ezeiza",
 };
 

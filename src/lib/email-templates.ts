@@ -1,5 +1,6 @@
 import { formatDate, formatPrice, getServiceTypeLabel } from "./utils";
 import { getSiteUrl } from "./site-url";
+import { CRUISE_TERMINAL } from "./constants";
 
 // ─── Configuración compartida ────────────────────────────────────────────────
 
@@ -71,7 +72,7 @@ function row(label: string, value: string) {
 }
 
 function destinoLabel(destination: string): string {
-  if (destination === "puerto") return "Terminal de Cruceros — Puerto de Buenos Aires";
+  if (destination === "puerto") return `${CRUISE_TERMINAL.name} (${CRUISE_TERMINAL.address})`;
   if (destination === "ezeiza") return "Aeropuerto de Ezeiza";
   return "Aeroparque Jorge Newbery";
 }
@@ -190,19 +191,19 @@ function reservationCodeBlock(data: ReservationEmailData): string {
 }
 
 /// Bloque con el instructivo de "qué hacer al llegar".
-function arrivalInstructions(): string {
+function arrivalInstructions(destination?: string): string {
   return `
     <!-- Dirección destacada -->
     <div style="background:#eff6ff;border:1px solid #bfdbfe;border-radius:12px;padding:20px;margin-top:24px">
       <h3 style="margin:0 0 12px;color:#1d4ed8;font-size:16px">📍 Dónde dejás y retirás el vehículo</h3>
       <p style="margin:0 0 6px;color:#0f172a;font-size:17px;font-weight:700;line-height:1.4">
-        Av. Costanera Rafael Obligado s/n
+        Av. Costanera Rafael Obligado 1221
       </p>
       <p style="margin:0 0 14px;color:#0f172a;font-size:15px;line-height:1.4">
         BA Ferial (ex Costa Salguero) · CABA
       </p>
       <p style="margin:0 0 14px;color:#374151;font-size:14px;line-height:1.6">
-        Al llegar te recibe nuestro personal, registra el vehículo, te cobra y te traslada al destino en nuestras unidades. Al regresar, te buscamos en la terminal y volvés a casa con tu auto.
+        Al llegar te recibe nuestro personal, escanea tu QR, registra el vehículo y te lleva ${destination === "puerto" ? `a la ${CRUISE_TERMINAL.name} (${CRUISE_TERMINAL.address})` : "a Aeroparque"} en nuestras unidades. Tu reserva ya está paga: no abonás nada al llegar. Al regresar, te buscamos en la terminal y volvés a tu auto.
       </p>
       <a href="${MAPS_COSTA_SALGUERO}" style="display:inline-block;background:#1d4ed8;color:#fff;padding:10px 20px;border-radius:8px;text-decoration:none;font-size:14px;font-weight:600">
         📌 Ver ubicación en Google Maps
@@ -264,7 +265,7 @@ export function buildReservationEmail(data: ReservationEmailData): string {
     ${reservationCodeBlock(data)}
     ${reservationTable(data)}
     ${qrBlock(data.qrToken)}
-    ${arrivalInstructions()}
+    ${arrivalInstructions(data.destination)}
     ${manageReservationCta(data)}
   `;
   return wrapInLayout(body);
@@ -296,7 +297,7 @@ export function buildReminderEmail(data: ReservationEmailData): string {
       </ul>
     </div>
 
-    ${arrivalInstructions()}
+    ${arrivalInstructions(data.destination)}
     ${manageReservationCta(data)}
   `;
   return wrapInLayout(body);

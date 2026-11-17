@@ -4,7 +4,7 @@ import { presentialReservationSchema } from "@/lib/validations";
 import { reservationTotalFor } from "@/lib/reservation-total";
 import { generateQrToken } from "@/lib/qr";
 import { createReservationPreference, PAYMENT_WINDOW_MIN } from "@/lib/mp";
-import { BRAND_NAME } from "@/lib/constants";
+import { BRAND_NAME, CRUISE_TERMINAL } from "@/lib/constants";
 
 /**
  * POST /api/reservas/presencial
@@ -130,7 +130,7 @@ export async function POST(req: NextRequest) {
     // Cobro con Mercado Pago. Los mails de confirmación (con el QR) salen
     // recién cuando el pago se aprueba — ver lib/reservation-payment.ts.
     try {
-      const destLabel = data.destination === "puerto" ? "Terminal de Cruceros" : "Aeroparque";
+      const destLabel = data.destination === "puerto" ? CRUISE_TERMINAL.name : "Aeroparque";
       const { preferenceId, initPoint } = await createReservationPreference({
         reservationId: reservation.id,
         code,

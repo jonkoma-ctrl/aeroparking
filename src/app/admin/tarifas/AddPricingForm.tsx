@@ -50,7 +50,7 @@ export function AddPricingForm() {
           onChange={(e) => setDestination(e.target.value)}
           className="rounded-md border border-brand-200 px-3 py-2 text-sm"
         >
-          <option value="puerto">Puerto de BA</option>
+          <option value="puerto">Cruceros (Quinquela Martín)</option>
           <option value="aeroparque">Aeroparque</option>
         </select>
       </div>

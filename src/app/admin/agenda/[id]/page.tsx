@@ -106,7 +106,7 @@ export default async function ReservationDetailPage({
                   : "bg-cyan-100 text-cyan-700"
               }`}
             >
-              {r.destination === "aeroparque" ? "Aeroparque" : r.destination === "ezeiza" ? "Ezeiza" : "Puerto de BA"}
+              {r.destination === "aeroparque" ? "Aeroparque" : r.destination === "ezeiza" ? "Ezeiza" : "Cruceros (Quinquela Martín)"}
             </span>
             <span className="inline-flex rounded-full bg-brand-100 px-2.5 py-0.5 text-xs font-medium text-brand-700">
               {getServiceTypeLabel(r.serviceType)}
