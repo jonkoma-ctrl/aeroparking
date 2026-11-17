@@ -1,3 +1,7 @@
+/** Políticas de Border's Parking SRL (respuesta del 16/17-nov-2026). */
+export const MIN_ADVANCE_HOURS = 12; // anticipación mínima para reservar online
+export const CANCEL_REFUND_HOURS = 24; // devolución del 100 % si cancela hasta 24 h antes del ingreso
+
 export const BRAND_NAME = process.env.NEXT_PUBLIC_BRAND_NAME || "KingPark";
 
 /// Datos de contacto que se muestran al cliente en CTAs y mails.
@@ -17,7 +21,7 @@ export const FAQ_ITEMS = [
   {
     question: "¿Con cuánta anticipación tengo que reservar?",
     answer:
-      "Las reservas online se aceptan con al menos 24 horas de anticipación. Si necesitás algo más urgente, llamanos al 11 3160 6994 y lo coordinamos por teléfono.",
+      "Las reservas online se aceptan con al menos 12 horas de anticipación. Si necesitás algo más urgente, escribinos por WhatsApp al 11 3160 6994 y lo coordinamos.",
   },
   {
     question: "¿El traslado está incluido?",
@@ -37,7 +41,7 @@ export const FAQ_ITEMS = [
   {
     question: "¿Puedo cancelar la reserva?",
     answer:
-      "Sí. Podés pedir la cancelación desde «Mi reserva» (el botón del mail de confirmación) o escribiéndonos por WhatsApp, y te respondemos a la brevedad.",
+      "Sí. Si cancelás hasta 24 horas antes de la fecha de ingreso, te devolvemos el 100 % de lo que pagaste. Pedila desde «Mi reserva» (el botón del mail de confirmación) o por WhatsApp. Con menos de 24 horas ya no hay devolución.",
   },
   {
     question: "¿El estacionamiento es seguro?",
@@ -52,7 +56,7 @@ export const FAQ_ITEMS = [
   {
     question: "¿Qué pasa si mi vuelo de regreso se retrasa?",
     answer:
-      "Avisanos por WhatsApp al 11 3160 6994 cuando aterrices. Tenemos atención las 24 horas y coordinamos el horario real de tu llegada — no tenés que pagar nada extra por demoras del vuelo.",
+      "Avisanos por WhatsApp al 11 3160 6994 cuando aterrices y coordinamos el horario real de tu llegada. Tu reserva cubre el día de retiro hasta las 23:59: si por la demora retirás el auto después de la medianoche, se cobra una estadía extra.",
   },
   {
     question: "¿Atienden camionetas, SUVs o vehículos grandes?",

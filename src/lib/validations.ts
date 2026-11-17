@@ -1,3 +1,4 @@
+import { MIN_ADVANCE_HOURS } from "@/lib/constants";
 import { z } from "zod";
 
 // ─── Schema legacy: reserva de cruceros (/reservar/cruceros) ────────────────
@@ -131,12 +132,12 @@ export const presentialReservationSchema = z
   .refine(
     (data) => {
       const start = new Date(`${data.startDate}T${data.checkInTime || "00:00"}`);
-      const minStart = new Date(Date.now() + 24 * 60 * 60 * 1000);
+      const minStart = new Date(Date.now() + MIN_ADVANCE_HOURS * 60 * 60 * 1000);
       return start >= minStart;
     },
     {
       message:
-        "Las reservas online se aceptan con al menos 24hs de anticipación. Para urgencias, llamanos.",
+        `Las reservas online se aceptan con al menos ${MIN_ADVANCE_HOURS} h de anticipación. Para urgencias, escribinos por WhatsApp.`,
       path: ["startDate"],
     }
   );
