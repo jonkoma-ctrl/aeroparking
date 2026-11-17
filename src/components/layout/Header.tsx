@@ -23,9 +23,9 @@ export function Header() {
 
   return (
     <header className="sticky top-0 z-50 border-b border-brand-100 bg-white/95 backdrop-blur-sm">
-      <div className="container-main flex h-16 items-center justify-between px-4 sm:px-6 lg:px-8">
+      <div className="container-main flex h-20 items-center justify-between px-4 sm:px-6 lg:px-8">
         <Link href="/" className="flex items-center group">
-          <KingParkLogo tone="light" className="h-9 w-auto sm:h-10" />
+          <KingParkLogo tone="light" className="h-12 w-auto sm:h-14" />
         </Link>
 
         {/* Desktop nav */}
