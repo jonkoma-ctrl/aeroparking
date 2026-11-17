@@ -1,5 +1,5 @@
 import { prisma } from "@/lib/db";
-import { calculateDays, calculateStays, priceForDays, type PriceTier } from "@/lib/pricing";
+import { calculateDays, priceForDays, type PriceTier } from "@/lib/pricing";
 
 /**
  * Total de una reserva según la tarifa vigente del destino/servicio.
@@ -7,7 +7,7 @@ import { calculateDays, calculateStays, priceForDays, type PriceTier } from "@/l
  * la reserva y el que muestra el total en el resumen del formulario.
  *
  * - Con grilla de precios: precio del tramo por días calendario.
- * - Sin grilla: estadías (24 h indivisible + medias estadías) × precio.
+ * - Sin grilla: días calendario × precio (el día de retiro cubre hasta las 23:59).
  * Devuelve 0 si no hay tarifa activa.
  */
 export async function reservationTotalFor(
@@ -24,6 +24,5 @@ export async function reservationTotalFor(
   if (Array.isArray(table) && table.length > 0) {
     return priceForDays(calculateDays(start, end), table, tariff.extraDayPrice, tariff.pricePerDay);
   }
-  const stays = calculateStays(start, end);
-  return Math.round(stays.totalEquivalent * tariff.pricePerDay);
+  return Math.round(calculateDays(start, end) * tariff.pricePerDay);
 }
