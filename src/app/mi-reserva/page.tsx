@@ -158,14 +158,14 @@ function MiReservaContent() {
   const editable = data && !data.checkedIn && ["confirmed", "pending_payment", "payment_rejected", "payment_expired", "extension_requested"].includes(data.status);
 
   return (
-    <main className="min-h-[80vh] bg-brand-50 py-10 sm:py-16">
+    <main className="min-h-[80vh] bg-gradient-to-b from-brand-50/70 via-white to-white py-10 sm:py-16">
       <div className="mx-auto max-w-xl px-4">
         <h1 className="font-display text-3xl font-extrabold text-brand-900">Mi reserva</h1>
         <p className="mt-1 text-sm text-brand-600">Mirá tu QR, reenviate el mail o hacé cambios.</p>
 
         {!data && (
           <form
-            className="mt-6 space-y-3 rounded-2xl border border-brand-100 bg-white p-6 shadow-soft"
+            className="mt-6 space-y-3 rounded-3xl bg-white p-6 shadow-soft ring-1 ring-brand-100"
             onSubmit={(e) => {
               e.preventDefault();
               if (order && email) load({ order: order.trim().toUpperCase(), email: email.trim() });
@@ -197,7 +197,7 @@ function MiReservaContent() {
             <button
               type="submit"
               disabled={loading}
-              className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-brand-600 px-6 py-3 font-semibold text-white transition-colors hover:bg-brand-700 disabled:opacity-60"
+              className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-brand-600 px-6 py-3 font-semibold text-white transition-colors hover:bg-brand-700 disabled:opacity-60"
             >
               {loading && <Loader2 className="h-4 w-4 animate-spin" />}
               Buscar mi reserva
@@ -215,7 +215,7 @@ function MiReservaContent() {
         {data && (
           <div className="mt-6 space-y-4">
             {/* Estado + QR */}
-            <div className="rounded-2xl border border-brand-100 bg-white p-6 shadow-soft">
+            <div className="rounded-3xl bg-white p-6 shadow-soft ring-1 ring-brand-100">
               <div className="flex items-center justify-between gap-3">
                 <div>
                   <p className="text-xs font-semibold uppercase tracking-widest text-brand-500">Código</p>
@@ -346,7 +346,7 @@ function ActionBtn({ icon: Icon, label, onClick, disabled, tone }: { icon: typeo
       type="button"
       onClick={onClick}
       disabled={disabled}
-      className={`inline-flex items-center justify-center gap-2 rounded-xl border px-4 py-3 text-sm font-semibold transition-colors disabled:opacity-60 ${
+      className={`inline-flex items-center justify-center gap-2 rounded-full border px-4 py-3 text-sm font-semibold transition-colors disabled:opacity-60 ${
         tone === "danger" ? "border-red-200 bg-white text-red-700 hover:bg-red-50" : "border-brand-200 bg-white text-brand-800 hover:bg-brand-50"
       }`}
     >
@@ -356,7 +356,7 @@ function ActionBtn({ icon: Icon, label, onClick, disabled, tone }: { icon: typeo
 }
 
 function Box({ children }: { children: React.ReactNode }) {
-  return <div className="space-y-3 rounded-2xl border border-brand-100 bg-white p-5 shadow-soft">{children}</div>;
+  return <div className="space-y-3 rounded-3xl bg-white p-5 shadow-soft ring-1 ring-brand-100">{children}</div>;
 }
 
 function SubmitBtn({ busy, onClick, label, disabled, tone }: { busy: boolean; onClick: () => void; label: string; disabled?: boolean; tone?: "danger" }) {

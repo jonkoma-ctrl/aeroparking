@@ -414,7 +414,7 @@ export function PresentialBookingForm({ destino, defaultServiceType, destination
   // ─── Success view ──────────────────────────────────────────────────────────
   if (success) {
     return (
-      <main className="min-h-[80vh] bg-brand-50 py-12 sm:py-20">
+      <main className="min-h-[80vh] bg-gradient-to-b from-brand-50/70 via-white to-white py-12 sm:py-20">
         <div className="container-main px-4 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-xl rounded-3xl bg-white p-8 shadow-lg sm:p-12">
             <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-green-100">
@@ -461,7 +461,7 @@ export function PresentialBookingForm({ destino, defaultServiceType, destination
             <div className="mt-8 grid gap-3 sm:grid-cols-2">
               <Link
                 href={`/mi-reserva?order=${success.code}`}
-                className="inline-flex items-center justify-center gap-2 rounded-xl bg-brand-900 px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-brand-800"
+                className="inline-flex items-center justify-center gap-2 rounded-full bg-brand-600 px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-brand-700"
               >
                 Ver mi reserva
                 <ArrowRight className="h-4 w-4" />
@@ -492,7 +492,7 @@ export function PresentialBookingForm({ destino, defaultServiceType, destination
   const Icon = meta.icon;
 
   return (
-    <main className="min-h-[80vh] bg-brand-50 py-8 sm:py-12">
+    <main className="min-h-[80vh] bg-gradient-to-b from-brand-50/70 via-white to-white py-8 sm:py-12">
       <div className="container-main px-4 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-2xl">
           {headerSlot}
@@ -518,7 +518,7 @@ export function PresentialBookingForm({ destino, defaultServiceType, destination
           </div>
 
           {/* Progress */}
-          <div ref={progressRef} className="mb-6 scroll-mt-24 rounded-2xl border border-brand-200 bg-white p-4 shadow-sm">
+          <div ref={progressRef} className="mb-6 scroll-mt-24 rounded-3xl bg-white p-4 shadow-soft ring-1 ring-brand-100">
             <div className="flex items-center justify-between">
               {STEPS.map((s, idx) => {
                 const StepIcon = s.icon;
@@ -532,7 +532,7 @@ export function PresentialBookingForm({ destino, defaultServiceType, destination
                           isDone
                             ? "bg-green-500 text-white"
                             : isActive
-                            ? "bg-brand-900 text-white scale-110"
+                            ? "bg-brand-600 text-white scale-110 shadow-soft"
                             : "bg-brand-100 text-brand-400"
                         }`}
                       >
@@ -553,7 +553,7 @@ export function PresentialBookingForm({ destino, defaultServiceType, destination
 
           {/* Precio en vivo */}
           {(total || totalError) && !showSummary && (
-            <div className="sticky top-20 z-20 mb-4 flex items-center justify-between gap-3 rounded-2xl border border-brand-200 bg-white/95 px-5 py-3 shadow-soft backdrop-blur">
+            <div className="sticky top-20 z-20 mb-4 flex items-center justify-between gap-3 rounded-3xl bg-white/95 ring-1 ring-brand-100 px-5 py-3 shadow-soft backdrop-blur">
               {total ? (
                 <>
                   <div className="text-xs leading-tight text-brand-600">
@@ -569,7 +569,7 @@ export function PresentialBookingForm({ destino, defaultServiceType, destination
           )}
 
           {/* Card */}
-          <div className="rounded-2xl border border-brand-200 bg-white p-6 shadow-sm sm:p-8">
+          <div className="rounded-3xl bg-white p-6 shadow-soft ring-1 ring-brand-100 sm:p-8">
             {/* Step 1: Fechas */}
             {step === 1 && (
               <div className="space-y-5">
@@ -922,7 +922,7 @@ export function PresentialBookingForm({ destino, defaultServiceType, destination
                 <button
                   type="button"
                   onClick={handleNext}
-                  className="inline-flex items-center justify-center gap-2 rounded-xl bg-brand-900 px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-brand-800"
+                  className="inline-flex items-center justify-center gap-2 rounded-full bg-brand-600 px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-brand-700"
                 >
                   Siguiente
                   <ArrowRight className="h-4 w-4" />
@@ -932,7 +932,7 @@ export function PresentialBookingForm({ destino, defaultServiceType, destination
                   type="button"
                   onClick={handleSubmit}
                   disabled={submitting || !total}
-                  className="inline-flex items-center justify-center gap-2 rounded-xl bg-brand-900 px-8 py-3 text-sm font-semibold text-white transition-colors hover:bg-brand-800 disabled:cursor-not-allowed disabled:opacity-60"
+                  className="inline-flex items-center justify-center gap-2 rounded-full bg-brand-600 px-8 py-3 text-sm font-semibold text-white transition-colors hover:bg-brand-700 disabled:cursor-not-allowed disabled:opacity-60"
                 >
                   {submitting ? (
                     <>

@@ -45,7 +45,7 @@ const features = [
 
 export default function ValetEventosPage() {
   return (
-    <main className="min-h-[80vh] bg-brand-50">
+    <main className="min-h-[80vh] bg-gradient-to-b from-brand-50/70 via-white to-white">
       {/* Hero */}
       <section className="bg-brand-950 py-16 text-white sm:py-24">
         <div className="container-main px-4 sm:px-6 lg:px-8">
@@ -73,9 +73,9 @@ export default function ValetEventosPage() {
             {features.map((f) => (
               <div
                 key={f.title}
-                className="rounded-2xl border border-brand-200 bg-white p-6"
+                className="rounded-3xl bg-white p-6 shadow-soft ring-1 ring-brand-100"
               >
-                <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-lg bg-brand-900 text-accent-400">
+                <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-2xl bg-brand-50 text-brand-600 ring-1 ring-brand-100">
                   <f.icon className="h-5 w-5" />
                 </div>
                 <h3 className="text-base font-bold text-brand-900">{f.title}</h3>
@@ -105,7 +105,7 @@ export default function ValetEventosPage() {
                 href={`tel:+${CONTACT.whatsapp}`}
                 className="flex items-center gap-3 rounded-2xl border border-brand-200 bg-brand-50 p-5 transition-colors hover:border-brand-900 hover:bg-brand-100"
               >
-                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-brand-900 text-white">
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-brand-50 text-brand-600 ring-1 ring-brand-100">
                   <Phone className="h-6 w-6" />
                 </div>
                 <div>
@@ -119,7 +119,7 @@ export default function ValetEventosPage() {
                 href={`mailto:${CONTACT.email}?subject=Cotizaci%C3%B3n%20Valet%20Eventos`}
                 className="flex items-center gap-3 rounded-2xl border border-brand-200 bg-brand-50 p-5 transition-colors hover:border-brand-900 hover:bg-brand-100"
               >
-                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-brand-900 text-white">
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-brand-50 text-brand-600 ring-1 ring-brand-100">
                   <Mail className="h-6 w-6" />
                 </div>
                 <div className="min-w-0">

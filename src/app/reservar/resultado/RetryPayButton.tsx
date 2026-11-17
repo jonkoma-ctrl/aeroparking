@@ -34,7 +34,7 @@ export function RetryPayButton({ reservationId }: { reservationId: string }) {
         type="button"
         onClick={retry}
         disabled={loading}
-        className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-brand-900 px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-brand-800 disabled:opacity-60"
+        className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-brand-600 px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-brand-700 disabled:opacity-60"
       >
         {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <RotateCw className="h-4 w-4" />}
         Volver a intentar el pago

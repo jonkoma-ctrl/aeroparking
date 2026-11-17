@@ -111,13 +111,13 @@ export default async function ResultadoPage({ searchParams }: PageProps) {
         <div className="mt-6 grid gap-3 sm:grid-cols-2">
           <Link
             href={`/mi-reserva?order=${reservation.externalOrderId}`}
-            className="inline-flex items-center justify-center gap-2 rounded-xl bg-brand-900 px-6 py-3 text-sm font-semibold text-white hover:bg-brand-800"
+            className="inline-flex items-center justify-center gap-2 rounded-full bg-brand-600 px-6 py-3 text-sm font-semibold text-white hover:bg-brand-700"
           >
             Ver mi reserva <ArrowRight className="h-4 w-4" />
           </Link>
           <Link
             href="/"
-            className="inline-flex items-center justify-center rounded-xl border border-brand-200 bg-white px-6 py-3 text-sm font-semibold text-brand-700 hover:bg-brand-50"
+            className="inline-flex items-center justify-center rounded-full border border-brand-200 bg-white px-6 py-3 text-sm font-semibold text-brand-700 hover:bg-brand-50"
           >
             Volver al inicio
           </Link>
@@ -130,9 +130,9 @@ export default async function ResultadoPage({ searchParams }: PageProps) {
 
 function Shell({ children }: { children: React.ReactNode }) {
   return (
-    <main className="min-h-[80vh] bg-brand-50 py-12 sm:py-20">
+    <main className="min-h-[80vh] bg-gradient-to-b from-brand-50/70 via-white to-white py-12 sm:py-20">
       <div className="container-main px-4 sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-xl rounded-3xl bg-white p-8 shadow-lg sm:p-12">{children}</div>
+        <div className="mx-auto max-w-xl rounded-3xl bg-white p-8 shadow-elevated ring-1 ring-brand-100 sm:p-12">{children}</div>
       </div>
     </main>
   );
