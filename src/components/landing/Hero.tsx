@@ -1,7 +1,6 @@
 import { ShieldCheck, Camera, BadgePercent, ArrowRight, Sparkles } from "lucide-react";
 import { getSiteSettings } from "@/lib/site-settings";
 import { Reveal } from "@/components/ui/Reveal";
-import { KingParkLogo } from "@/components/brand/KingParkLogo";
 import { BookingWidget } from "@/components/booking-widget/BookingWidget";
 
 export async function Hero() {
@@ -33,11 +32,6 @@ export async function Hero() {
 
       <div className="container-main relative z-10 px-4 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-5xl">
-          {/* Marca grande: la firma de KingPark en la primera pantalla */}
-          <Reveal>
-            <KingParkLogo tone="dark" className="mb-6 h-16 w-auto drop-shadow-[0_4px_24px_rgba(0,0,0,0.35)] sm:mb-8 sm:h-24" />
-          </Reveal>
-
           {/* Badge — alineado izquierda sutil (no centrado) en desktop */}
           <Reveal>
             <div className="inline-flex items-center gap-2 rounded-full border border-accent-300/40 bg-accent-500/15 px-3.5 py-1.5 text-xs font-semibold text-accent-200 backdrop-blur-sm shadow-inner-soft sm:px-4 sm:text-sm">
