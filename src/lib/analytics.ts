@@ -23,7 +23,7 @@ function getFunnelId(): string {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-declare global { interface Window { dataLayer?: any[]; } }
+declare global { interface Window { dataLayer?: any[]; kpTagLoaded?: boolean; } }
 
 export function trackWidgetEvent(event: WidgetEvent): void {
   if (typeof window === "undefined") return;
@@ -41,4 +41,49 @@ export function trackWidgetEvent(event: WidgetEvent): void {
   if (process.env.NODE_ENV === "development") {
     console.debug("[analytics]", payload);
   }
+}
+
+export interface PurchaseData {
+  /** Código de la reserva (KP-…): evita contar dos veces la misma compra. */
+  transactionId: string;
+  value: number;
+  destination: string;
+  serviceType: string;
+}
+
+/** Reserva pagada: la conversión principal. No lleva datos personales. */
+export function trackPurchase(data: PurchaseData): void {
+  if (typeof window === "undefined") return;
+  const sentKey = `kp_purchase_${data.transactionId}`;
+  try {
+    if (localStorage.getItem(sentKey)) return;
+    localStorage.setItem(sentKey, "1");
+  } catch {
+    // Sin almacenamiento, GA4 igual descarta el repetido por transaction_id.
+  }
+
+  window.dataLayer = window.dataLayer || [];
+  window.dataLayer.push({ ecommerce: null });
+  window.dataLayer.push({
+    event: "purchase",
+    ecommerce: {
+      transaction_id: data.transactionId,
+      value: data.value,
+      currency: "ARS",
+      items: [
+        {
+          item_id: `${data.destination}_${data.serviceType}`,
+          item_name: data.destination === "puerto" ? "Estacionamiento Cruceros" : "Estacionamiento Aeroparque",
+          price: data.value,
+          quantity: 1,
+        },
+      ],
+    },
+  });
+}
+
+export function trackWhatsappClick(page: string): void {
+  if (typeof window === "undefined") return;
+  window.dataLayer = window.dataLayer || [];
+  window.dataLayer.push({ event: "whatsapp_click", page });
 }

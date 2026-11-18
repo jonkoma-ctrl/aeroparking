@@ -5,6 +5,7 @@ import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { WhatsAppFloat } from "@/components/layout/WhatsAppFloat";
 import { MobileStickyCTA } from "@/components/layout/MobileStickyCTA";
+import { Analytics } from "@/components/analytics/Analytics";
 import "./globals.css";
 
 const display = Bricolage_Grotesque({
@@ -60,6 +61,7 @@ export default function RootLayout({
         <Footer />
         <WhatsAppFloat />
         <MobileStickyCTA />
+        <Analytics />
       </body>
     </html>
   );

@@ -81,7 +81,10 @@ export function Footer() {
         </div>
 
         <div className="mt-12 border-t border-brand-800 pt-6 text-center text-xs text-brand-500">
-          &copy; 2026 KingPark
+          &copy; 2026 KingPark ·{" "}
+          <Link href="/privacidad" className="underline underline-offset-2 transition-colors hover:text-white">
+            Política de privacidad
+          </Link>
         </div>
       </div>
     </footer>

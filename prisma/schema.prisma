@@ -96,6 +96,9 @@ model AeroparqueReservation {
   paidAt           DateTime?
   paymentExpiresAt DateTime?
 
+  // De dónde vino el cliente: gclid, gbraid, wbraid, fbclid y UTMs
+  attribution      Json?
+
   // Auditoría
   rawEmailSubject  String?  // DEPRECATED — legacy AA2000 webhook, sin uso desde may-2026
   rawEmailBody     String?  @db.Text   // DEPRECATED — legacy AA2000 webhook, sin uso desde may-2026

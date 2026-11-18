@@ -5,6 +5,7 @@ import { reservationTotalFor } from "@/lib/reservation-total";
 import { generateQrToken } from "@/lib/qr";
 import { createReservationPreference, PAYMENT_WINDOW_MIN } from "@/lib/mp";
 import { BRAND_NAME, CRUISE_TERMINAL } from "@/lib/constants";
+import { sanitizeAttribution } from "@/lib/attribution";
 
 /**
  * POST /api/reservas/presencial
@@ -124,6 +125,7 @@ export async function POST(req: NextRequest) {
         notes: data.notes || null,
         qrToken,
         paymentExpiresAt,
+        attribution: sanitizeAttribution(body.attribution) ?? undefined,
       },
     });
 
