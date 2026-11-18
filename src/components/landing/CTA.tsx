@@ -32,7 +32,7 @@ export function CTA() {
 
             <Reveal delay={160}>
               <p className="mx-auto mt-5 max-w-xl text-base text-white/85 text-pretty sm:text-lg">
-                Reservá y pagá en 2 minutos. Te llevamos, te traemos y volvés a casa sin esperas.
+                Reservá y pagá en 2 minutos. Te llevamos, te traemos y tu auto te espera en BA Ferial.
               </p>
             </Reveal>
 
@@ -59,7 +59,7 @@ export function CTA() {
 
             <Reveal delay={280}>
               <div className="mt-10 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-xs text-white/80 sm:text-sm">
-                {["Devolución del 100 % hasta 24 h antes", "Sin cargos ocultos", "Seguro incluido"].map((t) => (
+                {["Devolución del 100 % hasta 24 h antes", "Sin cargos ocultos", "Traslado ida y vuelta incluido"].map((t) => (
                   <span key={t} className="inline-flex items-center gap-1.5">
                     <ShieldCheck className="h-4 w-4 text-accent-300" />
                     {t}

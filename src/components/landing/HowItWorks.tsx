@@ -27,7 +27,7 @@ const steps = [
     n: "04",
     icon: Smile,
     title: "Volvés y tu auto te espera",
-    description: "Avisanos por WhatsApp al aterrizar. Te buscamos en la terminal y volvés a casa sin esperas.",
+    description: "Avisanos por WhatsApp al aterrizar. Te buscamos en la terminal y te llevamos hasta tu auto.",
     time: "Al regresar",
   },
 ];

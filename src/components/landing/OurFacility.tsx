@@ -26,7 +26,7 @@ const sidePhotos = [
     alt: "Furgoneta de traslado al aeropuerto cargando equipaje",
     icon: Truck,
     label: "Traslado en vehículos propios",
-    sub: "Sin esperas, sin sorpresas",
+    sub: "Muchas frecuencias, ida y vuelta",
   },
 ];
 
