@@ -2,10 +2,10 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 import { getServiceTypeLabel } from "@/lib/utils";
 import { UNPAID_STATUSES } from "@/lib/mp";
-import { ADMIN_COOKIE, sessionRole } from "@/lib/admin-auth";
+import { ADMIN_COOKIE, isValidAdminToken } from "@/lib/admin-auth";
 
 // POST /api/scan — Registra ingreso/egreso de un vehículo por su QR/código.
-// Protegido: requiere la cookie admin_token (panel completo o sólo escáner).
+// Protegido: requiere la cookie admin_token (personal logueado).
 //
 // Body: { token: string, action?: "in" | "out" | "auto" }
 //   - "in":  marca ingreso a la sede (check-in)
@@ -13,7 +13,7 @@ import { ADMIN_COOKIE, sessionRole } from "@/lib/admin-auth";
 //   - "auto" (default): si no ingresó → check-in; si ingresó y no salió → check-out
 export async function POST(req: NextRequest) {
   // Auth: cookie del admin/personal
-  if (!(await sessionRole(req.cookies.get(ADMIN_COOKIE)?.value))) {
+  if (!(await isValidAdminToken(req.cookies.get(ADMIN_COOKIE)?.value))) {
     return NextResponse.json({ ok: false, error: "No autorizado" }, { status: 401 });
   }
 
