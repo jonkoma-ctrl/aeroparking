@@ -56,11 +56,6 @@ export const FAQ_ITEMS = [
       "Sí. Sector propio cubierto en BA Ferial (ex Costa Salguero), vigilancia 24h con cámaras, personal uniformado en sede y registro firmado de ingreso y egreso de cada vehículo. Las llaves quedan bajo resguardo del personal a cargo.",
   },
   {
-    question: "¿Está cubierto por seguro?",
-    answer:
-      "Sí. Tu auto cuenta con seguro de responsabilidad civil mientras está bajo nuestra custodia. Para cualquier reclamo, el comprobante de ingreso firmado funciona como respaldo.",
-  },
-  {
     question: "¿Qué pasa si mi vuelo de regreso se retrasa?",
     answer:
       "Avisanos por WhatsApp al 11 3160 6994 cuando aterrices y coordinamos el horario real de tu llegada. Tu reserva cubre el día de retiro hasta las 23:59: si por la demora retirás el auto después de la medianoche, se cobra una estadía extra.",

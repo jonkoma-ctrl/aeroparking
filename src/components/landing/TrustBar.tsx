@@ -1,4 +1,4 @@
-import { ShieldCheck, Camera, UserCheck, Truck, Star } from "lucide-react";
+import { Camera, UserCheck, Truck, Star } from "lucide-react";
 import { Reveal } from "@/components/ui/Reveal";
 
 /**
@@ -7,7 +7,6 @@ import { Reveal } from "@/components/ui/Reveal";
  */
 export function TrustBar() {
   const items = [
-    { icon: ShieldCheck, label: "Seguro incluido", sub: "Tu auto cubierto" },
     { icon: Camera, label: "Cámaras 24h", sub: "Sector privado" },
     { icon: UserCheck, label: "Personal propio", sub: "Empleados uniformados" },
     { icon: Truck, label: "Traslado garantizado", sub: "Vehículos propios" },

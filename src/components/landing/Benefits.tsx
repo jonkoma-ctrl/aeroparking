@@ -11,9 +11,9 @@ import { Reveal } from "@/components/ui/Reveal";
 const benefits = [
   {
     icon: ShieldCheck,
-    title: "Tu auto, totalmente cubierto",
+    title: "Tu auto, bajo techo",
     description:
-      "Sector privado, bajo techo, con seguro de responsabilidad civil incluido desde el momento que dejás las llaves.",
+      "Sector privado y cubierto, con personal en sede desde el momento en que dejás las llaves.",
   },
   {
     icon: Camera,
@@ -23,9 +23,9 @@ const benefits = [
   },
   {
     icon: Truck,
-    title: "Traslado sin esperas",
+    title: "Muchas frecuencias de traslado",
     description:
-      "Vehículos propios listos. Coordinamos el horario para que llegues con tiempo y sin estrés.",
+      "Vehículos propios, ida y vuelta. Coordinamos el horario para que llegues con tiempo y sin estrés.",
   },
   {
     icon: KeyRound,
