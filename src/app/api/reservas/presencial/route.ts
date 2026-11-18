@@ -6,6 +6,7 @@ import { generateQrToken } from "@/lib/qr";
 import { createReservationPreference, PAYMENT_WINDOW_MIN } from "@/lib/mp";
 import { BRAND_NAME, CRUISE_TERMINAL } from "@/lib/constants";
 import { sanitizeAttribution } from "@/lib/attribution";
+import { withInvoiceANote } from "@/lib/invoice";
 
 /**
  * POST /api/reservas/presencial
@@ -122,7 +123,12 @@ export async function POST(req: NextRequest) {
         arrivalFlight: data.arrivalFlight || null,
         cruiseLine: data.cruiseLine || null,
         terminal: data.terminal || null,
-        notes: data.notes || null,
+        notes: withInvoiceANote(
+          data.notes,
+          data.wantsInvoiceA
+            ? { cuit: data.invoiceCuit ?? "", businessName: data.invoiceBusinessName ?? "" }
+            : null,
+        ),
         qrToken,
         paymentExpiresAt,
         attribution: sanitizeAttribution(body.attribution) ?? undefined,

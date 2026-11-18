@@ -23,6 +23,7 @@ const SECTIONS: { title: string; body: React.ReactNode }[] = [
       <ul>
         <li>Nombre, apellido, mail y teléfono.</li>
         <li>Patente, marca y modelo del vehículo.</li>
+        <li>CUIT y razón social, si pedís factura A.</li>
         <li>Fechas y horarios de la reserva, cantidad de pasajeros y datos del vuelo o del crucero.</li>
         <li>
           El estado y el importe del pago. Los datos de tu tarjeta los carga y los guarda Mercado Pago: nosotros no los

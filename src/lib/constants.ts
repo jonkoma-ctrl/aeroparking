@@ -68,7 +68,7 @@ export const FAQ_ITEMS = [
   {
     question: "¿Qué tipo de factura emiten?",
     answer:
-      "Emitimos factura A o B según lo necesite el cliente. Para factura A te pedimos CUIT y razón social al momento de cobrar.",
+      "Emitimos factura A o B según lo necesite el cliente. Si necesitás factura A, marcá la opción al reservar y cargá el CUIT y la razón social.",
   },
   {
     question: "¿Hacen Valet Parking para eventos?",

@@ -30,6 +30,7 @@ import { decodePrefill } from "@/lib/booking-prefill";
 import type { Destino } from "@/lib/pricing";
 import type { DestinationMeta } from "@/lib/destinos";
 import { readAttribution } from "@/lib/attribution";
+import { cleanBusinessName, formatCuit, isValidBusinessName, isValidCuit } from "@/lib/invoice";
 
 // Mapeo iconKey (DB) → componente Lucide
 const ICON_BY_KEY: Record<string, typeof Plane> = {
@@ -92,6 +93,9 @@ interface FormState {
   email: string;
   phone: string;
   notes: string;
+  wantsInvoiceA: boolean;
+  invoiceCuit: string;
+  invoiceBusinessName: string;
 }
 
 const initialState: FormState = {
@@ -114,6 +118,9 @@ const initialState: FormState = {
   email: "",
   phone: "",
   notes: "",
+  wantsInvoiceA: false,
+  invoiceCuit: "",
+  invoiceBusinessName: "",
 };
 
 const destinoMeta: Record<Destino, { label: string; icon: typeof Plane; accentColor: string; tripLabel: string }> = {
@@ -317,6 +324,10 @@ export function PresentialBookingForm({ destino, defaultServiceType, destination
         stepErrors.email = "Email inválido";
       if (!form.phone || form.phone.length < 8)
         stepErrors.phone = "Ingresá tu teléfono / WhatsApp";
+      if (form.wantsInvoiceA && !isValidCuit(form.invoiceCuit))
+        stepErrors.invoiceCuit = "Revisá el CUIT: tiene 11 números";
+      if (form.wantsInvoiceA && !isValidBusinessName(form.invoiceBusinessName))
+        stepErrors.invoiceBusinessName = "Ingresá la razón social";
     }
 
     setErrors(stepErrors);
@@ -368,6 +379,9 @@ export function PresentialBookingForm({ destino, defaultServiceType, destination
       cruiseLine: form.cruiseLine.trim() || "",
       terminal: form.terminal.trim() || "",
       notes: form.notes.trim() || "",
+      wantsInvoiceA: form.wantsInvoiceA,
+      invoiceCuit: form.wantsInvoiceA ? form.invoiceCuit.trim() : "",
+      invoiceBusinessName: form.wantsInvoiceA ? cleanBusinessName(form.invoiceBusinessName) : "",
     };
 
     // Validate one more time before sending
@@ -788,6 +802,47 @@ export function PresentialBookingForm({ destino, defaultServiceType, destination
                     className={inputClass(!!errors.phone)}
                   />
                 </Field>
+                <div className="rounded-xl border border-brand-100 bg-brand-50/50 p-4">
+                  <label className="flex cursor-pointer items-center gap-3 text-sm font-medium text-brand-800">
+                    <input
+                      type="checkbox"
+                      checked={form.wantsInvoiceA}
+                      onChange={(e) => {
+                        update("wantsInvoiceA", e.target.checked);
+                        setErrors(({ invoiceCuit: _cuit, invoiceBusinessName: _name, ...rest }) => rest);
+                      }}
+                      className="h-5 w-5 shrink-0 rounded border-brand-300 accent-brand-600"
+                    />
+                    Necesito factura A
+                  </label>
+                  {form.wantsInvoiceA && (
+                    <div className="mt-4 grid gap-4 sm:grid-cols-2">
+                      <Field label="CUIT" error={errors.invoiceCuit} helpText="Con o sin guiones">
+                        <input
+                          type="text"
+                          inputMode="numeric"
+                          autoComplete="off"
+                          maxLength={13}
+                          value={form.invoiceCuit}
+                          onChange={(e) => update("invoiceCuit", e.target.value)}
+                          placeholder="30-12345678-9"
+                          className={inputClass(!!errors.invoiceCuit)}
+                        />
+                      </Field>
+                      <Field label="Razón social" error={errors.invoiceBusinessName}>
+                        <input
+                          type="text"
+                          autoComplete="organization"
+                          maxLength={120}
+                          value={form.invoiceBusinessName}
+                          onChange={(e) => update("invoiceBusinessName", e.target.value)}
+                          placeholder="Empresa S.A."
+                          className={inputClass(!!errors.invoiceBusinessName)}
+                        />
+                      </Field>
+                    </div>
+                  )}
+                </div>
                 <Field label="Observaciones" helpText="Opcional — algo que tengamos que saber">
                   <textarea
                     value={form.notes}
@@ -866,6 +921,12 @@ export function PresentialBookingForm({ destino, defaultServiceType, destination
                   <Row label="Nombre" value={`${form.firstName} ${form.lastName}`} />
                   <Row label="Email" value={form.email} />
                   <Row label="Teléfono" value={form.phone} />
+                  {form.wantsInvoiceA && (
+                    <Row
+                      label="Factura A"
+                      value={`${cleanBusinessName(form.invoiceBusinessName)} · CUIT ${formatCuit(form.invoiceCuit)}`}
+                    />
+                  )}
                   {form.notes && <Row label="Observaciones" value={form.notes} />}
                 </SummarySection>
 

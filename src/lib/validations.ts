@@ -1,5 +1,6 @@
 import { MIN_ADVANCE_HOURS } from "@/lib/constants";
 import { z } from "zod";
+import { isValidBusinessName, isValidCuit } from "@/lib/invoice";
 
 // ─── Schema legacy: reserva de cruceros (/reservar/cruceros) ────────────────
 
@@ -117,6 +118,19 @@ export const presentialReservationSchema = z
 
     // Observaciones
     notes: z.string().max(500).optional().or(z.literal("")),
+
+    // Factura A (opcional)
+    wantsInvoiceA: z.boolean().optional(),
+    invoiceCuit: z.string().max(20).optional().or(z.literal("")),
+    invoiceBusinessName: z.string().max(200).optional().or(z.literal("")),
+  })
+  .refine((data) => !data.wantsInvoiceA || isValidCuit(data.invoiceCuit ?? ""), {
+    message: "Revisá el CUIT: tiene 11 números",
+    path: ["invoiceCuit"],
+  })
+  .refine((data) => !data.wantsInvoiceA || isValidBusinessName(data.invoiceBusinessName ?? ""), {
+    message: "Ingresá la razón social",
+    path: ["invoiceBusinessName"],
   })
   .refine(
     (data) => {
