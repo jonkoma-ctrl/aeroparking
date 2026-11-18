@@ -35,7 +35,8 @@ function LoginForm() {
       // Navegación completa (no router.push): el menú lateral precarga las
       // pantallas del panel antes del login y Next guarda esa redirección al
       // login; con router.push se quedaba colgado en "...".
-      window.location.assign(from);
+      const data = await res.json().catch(() => ({}));
+      window.location.assign(data.role === "scanner" ? "/admin/scan" : from);
     } else {
       const data = await res.json().catch(() => ({}));
       setError(data.error || "Clave incorrecta");
