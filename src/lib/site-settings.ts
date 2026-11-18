@@ -10,9 +10,13 @@ export interface SiteSettingsData {
   reviewUrl: string | null;
 }
 
+// Foto vieja de la portada, con logos de terceros. Si quedó guardada en la base,
+// se reemplaza por la actual; cualquier otra foto cargada desde el panel se respeta.
+const OLD_HERO_URL =
+  "https://sdpvjoczsukegmpi.public.blob.vercel-storage.com/hero/costa-salguero-valet.png";
+
 const DEFAULTS: SiteSettingsData = {
-  heroImageUrl:
-    "https://sdpvjoczsukegmpi.public.blob.vercel-storage.com/hero/costa-salguero-valet.png",
+  heroImageUrl: "/fotos/portada-kingpark.jpg",
   heroImageAlt: "Estacionamiento KingPark en BA Ferial (ex Costa Salguero) — valet uniformado, sector bajo techo",
   heroTitle: null,
   heroSubtitle: null,
@@ -26,7 +30,8 @@ export async function getSiteSettings(): Promise<SiteSettingsData> {
     const row = await prisma.siteSettings.findUnique({ where: { id: "singleton" } });
     if (!row) return DEFAULTS;
     return {
-      heroImageUrl: row.heroImageUrl ?? DEFAULTS.heroImageUrl,
+      heroImageUrl:
+        row.heroImageUrl && row.heroImageUrl !== OLD_HERO_URL ? row.heroImageUrl : DEFAULTS.heroImageUrl,
       heroImageAlt: row.heroImageAlt ?? DEFAULTS.heroImageAlt,
       heroTitle: row.heroTitle ?? DEFAULTS.heroTitle,
       heroSubtitle: row.heroSubtitle ?? DEFAULTS.heroSubtitle,
