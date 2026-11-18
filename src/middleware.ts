@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { ADMIN_COOKIE, SCANNER_HOME, scannerMayOpen, sessionRole } from "@/lib/admin-auth";
+import { ADMIN_COOKIE, isValidAdminToken } from "@/lib/admin-auth";
 import { RESULT_COOKIE, RESULT_PATH, serializeResultCookie } from "@/lib/result-cookie";
 
 // Todo lo del panel exige sesión: las pantallas /admin/* (redirigen al login)
@@ -30,17 +30,8 @@ export async function middleware(req: NextRequest) {
 
   if (pathname === "/admin/login" || pathname === "/api/admin/login") return NextResponse.next();
 
-  const role = await sessionRole(req.cookies.get(ADMIN_COOKIE)?.value);
-  if (role === "admin") return NextResponse.next();
-
-  // La clave del escáner abre sólo el escáner, aunque se escriba otra dirección.
-  if (role === "scanner") {
-    if (scannerMayOpen(pathname)) return NextResponse.next();
-    if (pathname.startsWith("/api/")) {
-      return NextResponse.json({ error: "Este acceso sólo permite usar el escáner" }, { status: 403 });
-    }
-    return NextResponse.redirect(new URL(SCANNER_HOME, req.url));
-  }
+  const ok = await isValidAdminToken(req.cookies.get(ADMIN_COOKIE)?.value);
+  if (ok) return NextResponse.next();
 
   if (pathname.startsWith("/api/")) {
     return NextResponse.json({ error: "No autorizado" }, { status: 401 });

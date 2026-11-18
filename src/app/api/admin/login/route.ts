@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { ADMIN_COOKIE, SESSION_DAYS, createSessionToken, roleForPassword } from "@/lib/admin-auth";
+import { ADMIN_COOKIE, SESSION_DAYS, createAdminToken, passwordMatches } from "@/lib/admin-auth";
 
 // Límite de intentos fallidos por IP (por instancia del servidor) + demora en
 // cada fallo. Con una clave larga y aleatoria, probar claves deja de ser viable.
@@ -20,8 +20,7 @@ export async function POST(req: NextRequest) {
   }
 
   const body = await req.json().catch(() => ({}));
-  const role = roleForPassword(body?.password);
-  if (!role) {
+  if (!passwordMatches(body?.password)) {
     const cur = f && now - f.since < WINDOW_MS ? f : { n: 0, since: now };
     cur.n += 1;
     fails.set(ip, cur);
@@ -30,10 +29,10 @@ export async function POST(req: NextRequest) {
   }
 
   fails.delete(ip);
-  const token = await createSessionToken(role);
+  const token = await createAdminToken();
   if (!token) return NextResponse.json({ error: "Panel sin configurar" }, { status: 500 });
 
-  const res = NextResponse.json({ ok: true, role });
+  const res = NextResponse.json({ ok: true });
   res.cookies.set(ADMIN_COOKIE, token, {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
