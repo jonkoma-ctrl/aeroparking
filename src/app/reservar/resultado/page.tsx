@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { cookies } from "next/headers";
 import { Payment } from "mercadopago";
 import { CheckCircle2, Clock, XCircle, ArrowRight } from "lucide-react";
 import { prisma } from "@/lib/db";
@@ -8,6 +9,8 @@ import { applyReservationPayment } from "@/lib/reservation-payment";
 import { BRAND_NAME, CONTACT } from "@/lib/constants";
 import { formatPrice } from "@/lib/utils";
 import { RetryPayButton } from "./RetryPayButton";
+import { PurchaseEvent } from "@/components/analytics/PurchaseEvent";
+import { RESULT_COOKIE, parseResultCookie } from "@/lib/result-cookie";
 
 export const metadata: Metadata = {
   title: `Tu reserva — ${BRAND_NAME}`,
@@ -22,8 +25,11 @@ interface PageProps {
 
 export default async function ResultadoPage({ searchParams }: PageProps) {
   const sp = await searchParams;
-  const id = sp.r || "";
-  const paymentId = sp.payment_id || sp.collection_id || "";
+  // El middleware pasa los datos de la URL a una cookie: así el id de la reserva
+  // no queda en la dirección que leen las etiquetas de medición.
+  const saved = parseResultCookie((await cookies()).get(RESULT_COOKIE)?.value);
+  const id = sp.r || saved?.id || "";
+  const paymentId = sp.payment_id || sp.collection_id || saved?.paymentId || "";
 
   let reservation = id
     ? await prisma.aeroparqueReservation.findUnique({ where: { id } })
@@ -64,6 +70,12 @@ export default async function ResultadoPage({ searchParams }: PageProps) {
     <Shell>
       {paid && (
         <>
+          <PurchaseEvent
+            transactionId={reservation.externalOrderId}
+            value={reservation.paidAmount ?? reservation.price}
+            destination={reservation.destination}
+            serviceType={reservation.serviceType}
+          />
           <Icon tone="green"><CheckCircle2 className="h-9 w-9 text-green-600" /></Icon>
           <h1 className="text-center text-3xl font-extrabold text-brand-900">¡Reserva confirmada!</h1>
           <p className="mt-3 text-center text-brand-600">
