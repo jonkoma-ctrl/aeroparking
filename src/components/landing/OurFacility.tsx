@@ -15,14 +15,14 @@ const heroPhoto = {
 
 const sidePhotos = [
   {
-    url: "https://sdpvjoczsukegmpi.public.blob.vercel-storage.com/facility/recepcion-valet.png",
+    url: "/fotos/recepcion-kingpark.jpg",
     alt: "Personal recibiendo al cliente al llegar",
     icon: UserCheck,
     label: "Recepción personalizada",
     sub: "Personal propio uniformado",
   },
   {
-    url: "https://sdpvjoczsukegmpi.public.blob.vercel-storage.com/facility/furgoneta-traslado.png",
+    url: "/fotos/combi-kingpark.jpg",
     alt: "Furgoneta de traslado al aeropuerto cargando equipaje",
     icon: Truck,
     label: "Traslado en vehículos propios",
