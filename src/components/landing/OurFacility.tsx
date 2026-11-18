@@ -22,7 +22,7 @@ const sidePhotos = [
     sub: "Personal propio uniformado",
   },
   {
-    url: "/fotos/combi-kingpark.jpg",
+    url: "/fotos/combi-kingpark-v2.jpg",
     alt: "Furgoneta de traslado al aeropuerto cargando equipaje",
     icon: Truck,
     label: "Traslado en vehículos propios",
