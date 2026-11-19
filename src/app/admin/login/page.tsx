@@ -35,7 +35,8 @@ function LoginForm() {
       // Navegación completa (no router.push): el menú lateral precarga las
       // pantallas del panel antes del login y Next guarda esa redirección al
       // login; con router.push se quedaba colgado en "...".
-      window.location.assign(from);
+      const data = await res.json().catch(() => ({}));
+      window.location.assign(data.role === "scanner" ? "/admin/scan" : from);
     } else {
       const data = await res.json().catch(() => ({}));
       setError(data.error || "Clave incorrecta");
@@ -49,9 +50,12 @@ function LoginForm() {
         onSubmit={handleSubmit}
         className="w-full max-w-sm rounded-2xl border border-brand-200 bg-white p-8 shadow-sm"
       >
-        <h1 className="mb-6 text-center text-xl font-bold text-brand-900">
-          Admin
+        <h1 className="text-center text-xl font-bold text-brand-900">
+          Ingresar
         </h1>
+        <p className="mb-6 mt-2 text-center text-sm text-brand-700">
+          Personal de playa: escribí la clave del escáner y entrás directo a leer el QR.
+        </p>
         <input
           type="password"
           value={password}
