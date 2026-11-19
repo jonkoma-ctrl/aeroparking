@@ -28,8 +28,10 @@ import { formatPrice } from "@/lib/utils";
 import { CarPicker } from "./CarPicker";
 import { decodePrefill } from "@/lib/booking-prefill";
 import type { Destino } from "@/lib/pricing";
-import type { DestinationMeta } from "@/lib/destinos";
+import type { DestinationMeta } from "@/lib/destinos";
+
 import { readAttribution } from "@/lib/attribution";
+import { readGaIds } from "@/lib/ga-cookies";
 import { cleanBusinessName, formatCuit, isValidBusinessName, isValidCuit } from "@/lib/invoice";
 
 // Mapeo iconKey (DB) → componente Lucide
@@ -398,7 +400,7 @@ export function PresentialBookingForm({ destino, defaultServiceType, destination
       const res = await fetch("/api/reservas/presencial", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...payload, attribution: readAttribution() }),
+        body: JSON.stringify({ ...payload, attribution: readAttribution(), ga: readGaIds() }),
       });
       const data = await res.json();
 
