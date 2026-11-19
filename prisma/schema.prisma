@@ -99,6 +99,12 @@ model AeroparqueReservation {
   // De dónde vino el cliente: gclid, gbraid, wbraid, fbclid y UTMs
   attribution      Json?
 
+  // Google Analytics del navegador que reservó (sólo si no rechazó cookies):
+  // con esto la compra que manda el servidor se une a la visita y al anuncio.
+  gaClientId       String?            // de la cookie _ga ("X.Y")
+  gaSessionId      String?            // de la cookie _ga_<id de la propiedad>
+  purchaseSentAt   DateTime?          // cuándo el servidor mandó el "purchase" a GA4
+
   // Auditoría
   rawEmailSubject  String?  // DEPRECATED — legacy AA2000 webhook, sin uso desde may-2026
   rawEmailBody     String?  @db.Text   // DEPRECATED — legacy AA2000 webhook, sin uso desde may-2026

@@ -6,6 +6,7 @@ import { generateQrToken } from "@/lib/qr";
 import { createReservationPreference, PAYMENT_WINDOW_MIN } from "@/lib/mp";
 import { BRAND_NAME, CRUISE_TERMINAL } from "@/lib/constants";
 import { sanitizeAttribution } from "@/lib/attribution";
+import { sanitizeGaIds } from "@/lib/ga-cookies";
 import { withInvoiceANote } from "@/lib/invoice";
 
 /**
@@ -61,6 +62,7 @@ export async function POST(req: NextRequest) {
     }
 
     const data = parsed.data;
+    const ga = sanitizeGaIds(body.ga);
     const code = await generateUniqueCode();
     const customerName = `${data.firstName} ${data.lastName}`;
 
@@ -132,6 +134,8 @@ export async function POST(req: NextRequest) {
         qrToken,
         paymentExpiresAt,
         attribution: sanitizeAttribution(body.attribution) ?? undefined,
+        gaClientId: ga?.clientId ?? null,
+        gaSessionId: ga?.sessionId ?? null,
       },
     });
 

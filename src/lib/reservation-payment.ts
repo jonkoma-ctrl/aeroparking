@@ -9,6 +9,7 @@ import {
 } from "@/lib/email-templates";
 import { KP_REF_PREFIX } from "@/lib/mp";
 import { manageReservationPath } from "@/lib/reservation-access";
+import { sendServerPurchase } from "@/lib/ga4-server";
 
 export const ADMIN_NOTIFY_EMAIL = "reservas@nrauditores.com.ar";
 
@@ -158,7 +159,11 @@ export async function applyReservationPayment(p: MpPayment): Promise<string> {
     if (res.count === 0) return "ya aplicado";
 
     const confirmed = await prisma.aeroparqueReservation.findUnique({ where: { id: r.id } });
-    if (confirmed) await sendConfirmationEmails(confirmed);
+    if (confirmed) {
+      await sendConfirmationEmails(confirmed);
+      // Conversión a GA4 desde el servidor (no depende de que vuelva al sitio).
+      await sendServerPurchase(confirmed);
+    }
     return "confirmada";
   }
 
