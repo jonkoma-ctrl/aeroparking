@@ -1,4 +1,6 @@
 import Link from "next/link";
+import { cookies } from "next/headers";
+import { ADMIN_COOKIE, sessionRole } from "@/lib/admin-auth";
 
 const NAV_ITEMS = [
   { href: "/admin/dashboard", label: "Dashboard", icon: "📊" },
@@ -11,11 +13,15 @@ const NAV_ITEMS = [
   { href: "/admin/settings", label: "Ajustes", icon: "⚙️" },
 ];
 
-export default function AdminLayout({
+export default async function AdminLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  // Con la clave del escáner no se muestra el menú del panel.
+  const role = await sessionRole((await cookies()).get(ADMIN_COOKIE)?.value);
+  if (role === "scanner") return <main className="min-w-0">{children}</main>;
+
   return (
     <div className="flex min-h-[calc(100vh-5rem)] flex-col md:flex-row">
       {/* Celular: menú horizontal deslizable arriba. Oculto al imprimir. */}
