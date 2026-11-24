@@ -7,6 +7,8 @@ import { createReservationPreference, PAYMENT_WINDOW_MIN } from "@/lib/mp";
 import { BRAND_NAME, CRUISE_TERMINAL } from "@/lib/constants";
 import { sanitizeAttribution } from "@/lib/attribution";
 import { sanitizeGaIds } from "@/lib/ga-cookies";
+import { sanitizeMetaIds } from "@/lib/meta-cookies";
+import { clientIpFrom, cleanUserAgent } from "@/lib/meta-capi";
 import { withInvoiceANote } from "@/lib/invoice";
 
 /**
@@ -63,6 +65,10 @@ export async function POST(req: NextRequest) {
 
     const data = parsed.data;
     const ga = sanitizeGaIds(body.ga);
+    // null = rechazó cookies (o el navegador no mandó nada): ni fbp/fbc ni IP.
+    const meta = sanitizeMetaIds(body.meta);
+    const clientIp = meta ? clientIpFrom(req.headers.get("x-forwarded-for")) : null;
+    const clientUserAgent = cleanUserAgent(req.headers.get("user-agent"));
     const code = await generateUniqueCode();
     const customerName = `${data.firstName} ${data.lastName}`;
 
@@ -136,6 +142,10 @@ export async function POST(req: NextRequest) {
         attribution: sanitizeAttribution(body.attribution) ?? undefined,
         gaClientId: ga?.clientId ?? null,
         gaSessionId: ga?.sessionId ?? null,
+        metaFbp: meta?.fbp ?? null,
+        metaFbc: meta?.fbc ?? null,
+        clientIp,
+        clientUserAgent,
       },
     });
 

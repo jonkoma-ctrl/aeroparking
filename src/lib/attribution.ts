@@ -46,7 +46,8 @@ export function captureAttribution(search: string): void {
   }
 }
 
-export function readAttribution(): Attribution | null {
+/** La atribución guardada y cuándo se capturó (ms), o null si no hay o venció. */
+export function readAttributionEntry(): { at: number; data: Attribution } | null {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (!raw) return null;
@@ -55,10 +56,15 @@ export function readAttribution(): Attribution | null {
       localStorage.removeItem(STORAGE_KEY);
       return null;
     }
-    return sanitizeAttribution(parsed.data);
+    const data = sanitizeAttribution(parsed.data);
+    return data ? { at: parsed.at, data } : null;
   } catch {
     return null;
   }
+}
+
+export function readAttribution(): Attribution | null {
+  return readAttributionEntry()?.data ?? null;
 }
 
 export function clearAttribution(): void {
