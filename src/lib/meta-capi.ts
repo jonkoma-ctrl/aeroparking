@@ -168,6 +168,10 @@ export async function sendMetaPurchase(r: MetaPurchaseSource): Promise<void> {
     return;
   }
 
+  // Decisión de Jon (24-nov): si el cliente rechazó cookies no se le manda nada
+  // a Meta. metaFbp sólo se guarda cuando no las rechazó y el píxel cargó.
+  if (!r.metaFbp) return;
+
   try {
     // Reservar el envío: si dos llamadas llegan juntas, sólo una lo manda.
     const claim = await prisma.aeroparqueReservation.updateMany({
