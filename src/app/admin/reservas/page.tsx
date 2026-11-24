@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { BRAND_NAME } from "@/lib/constants";
 import { prisma } from "@/lib/db";
-import { formatDate, getStatusLabel, getStatusColor } from "@/lib/utils";
+import { formatDate, formatMomentDate, getStatusLabel, getStatusColor } from "@/lib/utils";
 import { AdminStatusButton } from "./AdminStatusButton";
 
 export const metadata: Metadata = {
@@ -54,7 +54,7 @@ export default async function AdminReservasPage() {
                 {reservations.map((r) => (
                   <tr key={r.id} className="hover:bg-brand-50">
                     <td className="whitespace-nowrap px-4 py-3 text-brand-500">
-                      {formatDate(r.createdAt)}
+                      {formatMomentDate(r.createdAt)}
                     </td>
                     <td className="px-4 py-3 font-medium text-brand-900">
                       {r.firstName} {r.lastName}

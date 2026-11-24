@@ -136,7 +136,7 @@ export default function CreditosPage() {
                   }`}>{c.status}</span>
                 </td>
                 <td className="px-4 py-3 text-xs text-brand-500 max-w-xs truncate">{c.reason || "—"}</td>
-                <td className="px-4 py-3 text-xs text-brand-400">{new Date(c.createdAt).toLocaleDateString("es-AR")}</td>
+                <td className="px-4 py-3 text-xs text-brand-400">{new Date(c.createdAt).toLocaleDateString("es-AR", { timeZone: "America/Argentina/Buenos_Aires" })}</td>
                 <td className="px-4 py-3">
                   {c.status === "available" && (
                     <div className="flex gap-1">
