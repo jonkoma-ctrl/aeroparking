@@ -10,6 +10,7 @@ import {
 import { KP_REF_PREFIX } from "@/lib/mp";
 import { manageReservationPath } from "@/lib/reservation-access";
 import { sendServerPurchase } from "@/lib/ga4-server";
+import { sendMetaPurchase } from "@/lib/meta-capi";
 
 export const ADMIN_NOTIFY_EMAIL = "reservas@nrauditores.com.ar";
 
@@ -161,8 +162,10 @@ export async function applyReservationPayment(p: MpPayment): Promise<string> {
     const confirmed = await prisma.aeroparqueReservation.findUnique({ where: { id: r.id } });
     if (confirmed) {
       await sendConfirmationEmails(confirmed);
-      // Conversión a GA4 desde el servidor (no depende de que vuelva al sitio).
-      await sendServerPurchase(confirmed);
+      // Conversión a GA4 y a Meta desde el servidor (no depende de que vuelva
+      // al sitio). En paralelo y cada una por su lado: ninguna frena a la otra
+      // ni al webhook (las dos atrapan sus errores y cortan a los 3 s).
+      await Promise.allSettled([sendServerPurchase(confirmed), sendMetaPurchase(confirmed)]);
     }
     return "confirmada";
   }

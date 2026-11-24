@@ -32,6 +32,7 @@ import type { DestinationMeta } from "@/lib/destinos";
 
 import { readAttribution } from "@/lib/attribution";
 import { readGaIds } from "@/lib/ga-cookies";
+import { readMetaIds } from "@/lib/meta-cookies";
 import { cleanBusinessName, formatCuit, isValidBusinessName, isValidCuit } from "@/lib/invoice";
 
 // Mapeo iconKey (DB) → componente Lucide
@@ -400,7 +401,7 @@ export function PresentialBookingForm({ destino, defaultServiceType, destination
       const res = await fetch("/api/reservas/presencial", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...payload, attribution: readAttribution(), ga: readGaIds() }),
+        body: JSON.stringify({ ...payload, attribution: readAttribution(), ga: readGaIds(), meta: readMetaIds() }),
       });
       const data = await res.json();
 

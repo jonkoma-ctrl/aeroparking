@@ -105,6 +105,14 @@ model AeroparqueReservation {
   gaSessionId      String?            // de la cookie _ga_<id de la propiedad>
   purchaseSentAt   DateTime?          // cuándo el servidor mandó el "purchase" a GA4
 
+  // Meta (Conversions API). fbp/fbc e IP sólo si el visitante no rechazó
+  // cookies; el user agent va siempre porque Meta lo exige en eventos web.
+  metaFbp          String?            // cookie _fbp ("fb.1.<ms>.<n>")
+  metaFbc          String?            // cookie _fbc, o armada desde el fbclid
+  clientIp         String?            // IP de quien creó la reserva (x-forwarded-for)
+  clientUserAgent  String?            // navegador de quien creó la reserva
+  metaCapiSentAt   DateTime?          // cuándo el servidor mandó el "Purchase" a Meta
+
   // Auditoría
   rawEmailSubject  String?  // DEPRECATED — legacy AA2000 webhook, sin uso desde may-2026
   rawEmailBody     String?  @db.Text   // DEPRECATED — legacy AA2000 webhook, sin uso desde may-2026
