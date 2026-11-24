@@ -28,6 +28,7 @@ interface Props {
   to: string;
   destFilter: string;
   statusFilter: string;
+  recent: RecentReservation[];
 }
 
 const DESTINATION_COLORS = ["#3b82f6", "#0ea5e9", "#8b5cf6", "#f59e0b", "#10b981", "#f43f5e"];
@@ -51,6 +52,7 @@ export function DashboardView({
   to,
   destFilter,
   statusFilter,
+  recent,
 }: Props) {
   const router = useRouter();
   const [pendingFrom, setPendingFrom] = useState(from);
@@ -309,8 +311,60 @@ export function DashboardView({
           </table>
         </div>
       )}
+
+      {/* Reservas del período: cuándo se hizo cada una y para dónde */}
+      <div className="mt-6 overflow-x-auto rounded-xl border border-brand-200 bg-white">
+        <div className="px-4 pt-4 text-sm font-semibold text-brand-900">
+          Reservas del período ({recent.length})
+        </div>
+        {recent.length === 0 ? (
+          <p className="px-4 py-6 text-sm text-brand-400">No hay reservas en este período.</p>
+        ) : (
+          <table className="mt-2 min-w-full text-sm">
+            <thead className="bg-brand-50 text-left text-xs uppercase text-brand-500">
+              <tr>
+                <th className="px-4 py-3">Hecha el</th>
+                <th className="px-4 py-3">Destino</th>
+                <th className="px-4 py-3">Servicio</th>
+                <th className="px-4 py-3">Ingreso</th>
+                <th className="px-4 py-3">Código</th>
+                <th className="px-4 py-3 text-right">Precio</th>
+                <th className="px-4 py-3">Estado</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-brand-100">
+              {recent.map((r) => (
+                <tr key={r.id} className="hover:bg-brand-50/60">
+                  <td className="whitespace-nowrap px-4 py-3 text-brand-900">{r.createdLabel} hs</td>
+                  <td className="px-4 py-3 font-medium text-brand-900">{r.destinationLabel}</td>
+                  <td className="px-4 py-3 text-brand-700">{r.serviceLabel}</td>
+                  <td className="whitespace-nowrap px-4 py-3 text-brand-700">{r.startLabel}</td>
+                  <td className="px-4 py-3 font-mono">
+                    <a href={`/admin/agenda/${r.id}`} className="text-brand-700 hover:underline">
+                      {r.code}
+                    </a>
+                  </td>
+                  <td className="px-4 py-3 text-right font-mono">{r.price != null ? formatPrice(r.price) : "—"}</td>
+                  <td className="px-4 py-3 text-brand-700">{r.statusLabel}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
+      </div>
     </div>
   );
+}
+
+export interface RecentReservation {
+  id: string;
+  code: string;
+  createdLabel: string;
+  destinationLabel: string;
+  serviceLabel: string;
+  startLabel: string;
+  price: number | null;
+  statusLabel: string;
 }
 
 interface KpiCardProps {

@@ -13,6 +13,12 @@ export function formatDate(date: Date | string): string {
   }).format(new Date(date));
 }
 
+// Momentos reales (creación, pago, ingreso): siempre en hora argentina.
+// El servidor de Vercel corre en UTC; sin timeZone mostraba 3 h de más.
+// formatDate NO lleva timeZone: las fechas de ingreso/retiro se guardan como
+// medianoche UTC y en hora argentina se verían un día antes.
+export const AR_TZ = "America/Argentina/Buenos_Aires";
+
 export function formatDateTime(date: Date | string): string {
   return new Intl.DateTimeFormat("es-AR", {
     day: "2-digit",
@@ -20,6 +26,18 @@ export function formatDateTime(date: Date | string): string {
     year: "numeric",
     hour: "2-digit",
     minute: "2-digit",
+    hour12: false,
+    timeZone: AR_TZ,
+  }).format(new Date(date));
+}
+
+/** Día de un momento real (p. ej. createdAt) en hora argentina. */
+export function formatMomentDate(date: Date | string): string {
+  return new Intl.DateTimeFormat("es-AR", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+    timeZone: AR_TZ,
   }).format(new Date(date));
 }
 

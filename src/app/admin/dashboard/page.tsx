@@ -10,7 +10,8 @@ import {
   previousRange,
   type ReservationRow,
 } from "@/lib/dashboard-stats";
-import { DashboardView } from "@/components/admin/DashboardView";
+import { DashboardView, type RecentReservation } from "@/components/admin/DashboardView";
+import { formatDate, formatDateTime, getServiceTypeLabel, getStatusLabel } from "@/lib/utils";
 import { UNPAID_STATUSES } from "@/lib/mp";
 
 export const metadata: Metadata = {
@@ -106,6 +107,18 @@ export default async function DashboardPage({ searchParams }: PageProps) {
   const byDay = groupByDay(reservations);
   const byDest = groupByDestination(reservations, labels);
 
+  // Lista de reservas del período: fecha/hora de creación en hora argentina.
+  const recent: RecentReservation[] = aeroRows.map((r) => ({
+    id: r.id,
+    code: r.externalOrderId,
+    createdLabel: formatDateTime(r.createdAt),
+    destinationLabel: labels[r.destination ?? ""] ?? r.destination ?? "—",
+    serviceLabel: getServiceTypeLabel(r.serviceType),
+    startLabel: `${formatDate(r.startDate)}${r.checkInTime ? ` ${r.checkInTime} hs` : ""}`,
+    price: r.paidAmount ?? r.price,
+    statusLabel: getStatusLabel(r.status),
+  }));
+
   return (
     <DashboardView
       kpis={kpis}
@@ -116,6 +129,7 @@ export default async function DashboardPage({ searchParams }: PageProps) {
       to={to.toISOString().slice(0, 10)}
       destFilter={sp.dest || "todos"}
       statusFilter={sp.status || "todos"}
+      recent={recent}
     />
   );
 }
