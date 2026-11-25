@@ -223,26 +223,31 @@ Botón **"Descargar CSV"** en el Dashboard o en la Agenda: baja las reservas con
 
 **Dirección:** [kingpark.com.ar/admin/tarifas](https://kingpark.com.ar/admin/tarifas)
 
-Cada fila es un destino (Aeroparque o Cruceros). Los cambios **se aplican al instante** en la web. Las reservas ya hechas mantienen el precio que pagaron.
+Hay **una tarjeta por destino** con **su única tarifa**: la que cobra la web. No hay que elegir servicio ni fila. Los cambios **se aplican al instante**; las reservas ya hechas mantienen el precio que pagaron.
+
+- **Cambiar precios:** en la tarjeta del destino, **"Editar precios"** → grilla o precio por día → **Guardar cambios**.
+- **Destino sin tarifa:** la tarjeta dice **"Sin precio"** y ofrece **"Crear tarifa"**: poné el precio por día y después cargale la grilla.
+- **Dejar de vender un destino:** no se apaga la tarifa (el panel no te deja si el destino está activo): se apaga el destino en [Destinos](#12-destinos).
+- Abajo, plegadas, quedan las **"Tarifas viejas que la web no usa"**: no cambian lo que paga el cliente, no se pueden editar y sólo se pueden apagar.
 
 ### Grilla de precios por día (recomendado)
 
 Así se cobra en los estacionamientos de aeropuerto: el que deja 4 días no paga 4 veces el precio de 1 día, sino un precio establecido.
 
-1. En la fila del destino, tocá **⚙ Avanzado**.
+1. En la tarjeta del destino, tocá **"Editar precios"**.
 2. En **"Grilla de precios por día"**, cargá el **precio total** de cada cantidad de días (ej. 1 día $38.000 · 2 días $74.000 · 3 días $110.000…) con **"+ Agregar tramo"**.
 3. Cargá **"Cada día adicional"**: lo que se suma por cada día después del último tramo.
 4. **Guardar cambios.**
 
-Si un destino tiene grilla, la grilla **manda** sobre el precio simple de la fila. Las tarifas con grilla muestran el cartelito verde **"Grilla · N tramos"**.
+Si un destino tiene grilla, la grilla **manda** sobre el precio por día. La tarjeta muestra **"Grilla · N tramos"** con los primeros precios.
 
 ### Precio simple
 
-Si un destino no tiene grilla, se cobra **precio por estadía**: tocá el precio en la fila, escribí el nuevo valor y **OK**.
+Si un destino no tiene grilla, se cobra **precio por estadía**: "Editar precios" → **"Precio por día"** → Guardar cambios.
 
 ### Activar o desactivar una tarifa
 
-Tocá **"Activa"** para pasarla a **"Inactiva"**. Sin tarifa activa, ese destino no se puede reservar.
+Sólo se puede apagar la tarifa de un destino **apagado**. Si el destino está activo, el panel no te deja (sin tarifa nadie podría reservar): apagá primero el destino en [Destinos](#12-destinos).
 
 ---
 
@@ -274,8 +279,9 @@ Los lugares a los que llevamos clientes. Hoy están **activos Aeroparque y Cruce
 Cada destino tiene: nombre completo, nombre corto, ícono, color, **descripción** (la ve el cliente al elegirlo), **foto** y si está **activo**.
 
 - **Cambiar la foto:** "Editar" → "Cambiar" / "Subir imagen" → Guardar. Mejor horizontal, hasta 5 MB.
-- **Apagar o prender un destino:** tocá **"Activo"** ↔ **"Inactivo"**. Inactivo = desaparece de la web.
-- **Destino nuevo:** "+ Nuevo destino" → identificador corto en minúsculas (ej. `cordoba`), nombres, ícono, color y foto → Guardar. **Después creale la tarifa** en [Tarifas](#10-tarifas-cambiar-precios): sin tarifa no se puede reservar.
+- **Apagar o prender un destino:** tocá **"Activo"** ↔ **"Inactivo"**. Inactivo = desaparece de la web. **Para activarlo tiene que tener la tarifa cargada:** si no, el panel te frena con "Antes de activar…, cargale la tarifa en Tarifas". La columna **Tarifa** dice "Con precio" o "Falta cargarla".
+- **Destino nuevo:** "+ Nuevo destino" → identificador corto en minúsculas (ej. `cordoba`), nombres, ícono, color y foto → Guardar. **Nace apagado.** Andá a [Tarifas](#10-tarifas-cambiar-precios), en su tarjeta tocá **"Crear tarifa"**, cargá precios y volvé acá a activarlo.
+- **El ícono decide la tarifa** (barco = la de cruceros). Con el destino activo no se puede cambiar a un ícono cuya tarifa no tenga precio.
 
 ---
 
@@ -346,7 +352,7 @@ Puede tardar unos minutos en confirmarse. Si sigue igual, pedile el **comprobant
 | Registrar que un auto entró o salió | [Escáner](#5-escaner-de-ingreso-y-retiro-qr) |
 | Buscar una reserva | [Agenda](#6-agenda-todas-las-reservas) |
 | Atender un pedido de cancelación o extensión | [Sección 8](#8-pedidos-del-cliente-cancelacion-y-extension) |
-| Cambiar un precio | [Tarifas](#10-tarifas-cambiar-precios) → Avanzado → Grilla |
+| Cambiar un precio | [Tarifas](#10-tarifas-cambiar-precios) → tarjeta del destino → Editar precios |
 | Apagar un destino | [Destinos](#12-destinos) → Activo/Inactivo |
 | Dar saldo a favor | [Créditos](#13-creditos-a-clientes) → "+ Nuevo crédito" |
 | Bajar las reservas a Excel | [Dashboard](#9-dashboard-y-descargas-a-excel) → Descargar CSV |

@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
-import { webTariffChangeError } from "@/lib/web-tariff-guard";
+import { nonWebTariffEditError, webTariffChangeError, webTariffTarget } from "@/lib/web-tariff-guard";
 
 // GET /api/admin/pricing — List all pricing
 export async function GET() {
@@ -15,18 +15,24 @@ export async function GET() {
   }
 }
 
-// POST /api/admin/pricing — Create or update pricing
+// POST /api/admin/pricing — Crea (o actualiza) la tarifa web de un destino.
+// La fila (serviceType) la decide el destino, no el que llama: ver webTariffTarget.
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
     const {
-      destination, serviceType, pricePerDay, description,
+      destination, pricePerDay, description,
       minDays, maxDays, durationDiscounts,
     } = body;
 
-    if (!destination || !serviceType || pricePerDay == null) {
+    if (!destination || pricePerDay == null) {
       return NextResponse.json({ error: "Faltan datos" }, { status: 400 });
     }
+    const target = await webTariffTarget(destination, body.serviceType);
+    if ("error" in target) {
+      return NextResponse.json({ error: target.error }, { status: target.status });
+    }
+    const serviceType = target.serviceType;
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const baseData: any = { pricePerDay, description, active: true };
@@ -90,6 +96,11 @@ export async function PATCH(req: NextRequest) {
     const current = await prisma.servicePricing.findUnique({ where: { id } });
     if (!current) {
       return NextResponse.json({ error: "Tarifa no encontrada" }, { status: 404 });
+    }
+    // Una tarifa por destino: a las filas que la web no usa sólo se las puede apagar.
+    const nonWeb = await nonWebTariffEditError(current, body);
+    if (nonWeb) {
+      return NextResponse.json({ error: nonWeb }, { status: 409 });
     }
     const blocked = await webTariffChangeError(current.destination, current.serviceType, current, {
       active: data.active ?? current.active,
