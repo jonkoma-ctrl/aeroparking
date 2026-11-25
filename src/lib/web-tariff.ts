@@ -28,7 +28,21 @@ export function tariffQuotesOneDay(t: TariffPriceFields | null | undefined): boo
   return priceForDays(1, table, t.extraDayPrice, t.pricePerDay) > 0;
 }
 
+/** true si `serviceType` es la fila que cobra la web para un destino con ese ícono. */
+export function isWebTariffRow(iconKey: string, serviceType: string): boolean {
+  return webServiceTypeFor(iconKey) === serviceType;
+}
+
 /** Mensaje del freno del panel de tarifas. */
 export function webTariffBlockedMessage(destinationLabel: string): string {
-  return `Esta es la tarifa que cobra la web para ${destinationLabel}. Si la apagás o la dejás sin precios, nadie puede reservar ese destino.`;
+  return `Esta es la tarifa que cobra la web para ${destinationLabel}. Si la apagás o la dejás sin precios, nadie puede reservar ese destino. Si querés dejar de vender ese destino, apagalo en Destinos.`;
 }
+
+/** Mensaje cuando se intenta activar un destino cuya tarifa web no cotiza. */
+export function destinationNeedsTariffMessage(destinationLabel: string): string {
+  return `Antes de activar ${destinationLabel}, cargale la tarifa en Tarifas.`;
+}
+
+/** Mensaje cuando se intenta cargar precios en una fila que la web no usa. */
+export const NON_WEB_TARIFF_MESSAGE =
+  "Esta tarifa no la usa la web: lo que cargues acá no cambia lo que paga el cliente. Cargá los precios en la tarjeta del destino en Tarifas. A esta fila sólo se la puede apagar.";

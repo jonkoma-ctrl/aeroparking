@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
+import { destinationChangeError, destinationHasWebTariff } from "@/lib/web-tariff-guard";
 
 // GET /api/admin/destinations — Lista todos (incluye inactivos)
 export async function GET() {
@@ -7,7 +8,11 @@ export async function GET() {
     const destinations = await prisma.destination.findMany({
       orderBy: [{ active: "desc" }, { sortOrder: "asc" }, { label: "asc" }],
     });
-    return NextResponse.json(destinations);
+    // tariffReady: la tarifa que cobra la web para ese destino está activa y cotiza.
+    const withTariff = await Promise.all(
+      destinations.map(async (d) => ({ ...d, tariffReady: await destinationHasWebTariff(d.slug, d.iconKey) }))
+    );
+    return NextResponse.json(withTariff);
   } catch (error) {
     console.error("Error fetching destinations:", error);
     return NextResponse.json({ error: "Error interno" }, { status: 500 });
@@ -40,7 +45,8 @@ export async function POST(req: NextRequest) {
         imageUrl: imageUrl || null,
         imageAlt: imageAlt || null,
         sortOrder: sortOrder ?? 100,
-        active: true,
+        // Nace apagado: se activa desde /admin/destinos cuando ya tiene tarifa.
+        active: false,
       },
     });
     return NextResponse.json(dest);
@@ -75,6 +81,19 @@ export async function PATCH(req: NextRequest) {
     if (active !== undefined) data.active = active;
     if (imageUrl !== undefined) data.imageUrl = imageUrl || null;
     if (imageAlt !== undefined) data.imageAlt = imageAlt || null;
+
+    // Freno: un destino sólo queda activo si su tarifa web cotiza.
+    const current = await prisma.destination.findUnique({
+      where: { id },
+      select: { slug: true, label: true, iconKey: true, active: true },
+    });
+    if (!current) return NextResponse.json({ error: "Destino no encontrado" }, { status: 404 });
+    const blocked = await destinationChangeError(current, {
+      active: data.active,
+      iconKey: data.iconKey,
+      label: data.label,
+    });
+    if (blocked) return NextResponse.json({ error: blocked }, { status: 409 });
 
     const dest = await prisma.destination.update({ where: { id }, data });
     return NextResponse.json(dest);

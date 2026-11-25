@@ -16,6 +16,8 @@ interface Destination {
   imageAlt: string | null;
   active: boolean;
   sortOrder: number;
+  /** La tarifa que cobra la web para este destino está activa y cotiza. */
+  tariffReady?: boolean;
 }
 
 const ICONS = ["plane", "ship", "bus", "car", "train"];
@@ -39,6 +41,8 @@ export default function DestinosPage() {
     imageAlt: "",
   });
   const [error, setError] = useState("");
+  const [listError, setListError] = useState("");
+  const [notice, setNotice] = useState("");
 
   async function load() {
     setLoading(true);
@@ -111,17 +115,27 @@ export default function DestinosPage() {
       setError(data.error || "Error al guardar");
       return;
     }
+    if (!editing) {
+      setNotice(`${form.label} se creó apagado. Cargale la tarifa en Tarifas y después activalo acá.`);
+    }
     setShowForm(false);
     setEditing(null);
     load();
   }
 
   async function toggleActive(d: Destination) {
-    await fetch("/api/admin/destinations", {
+    setListError("");
+    setNotice("");
+    const res = await fetch("/api/admin/destinations", {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ id: d.id, active: !d.active }),
     });
+    if (!res.ok) {
+      const data = await res.json().catch(() => ({}));
+      setListError(data.error || "No se pudo guardar");
+      return;
+    }
     load();
   }
 
@@ -131,7 +145,8 @@ export default function DestinosPage() {
         <div>
           <h1 className="text-2xl font-bold text-brand-900">Destinos</h1>
           <p className="text-sm text-brand-500">
-            Configurá los destinos disponibles en el formulario de reserva.
+            Configurá los destinos disponibles en el formulario de reserva. Un destino sólo se puede
+            activar si ya tiene su tarifa cargada en Tarifas.
           </p>
         </div>
         <button
@@ -272,6 +287,25 @@ export default function DestinosPage() {
         </form>
       )}
 
+      {notice && (
+        <div className="mb-4 flex items-start justify-between gap-3 rounded-lg border border-blue-200 bg-blue-50 px-3 py-2 text-sm text-blue-900">
+          <span>
+            {notice}{" "}
+            <a href="/admin/tarifas" className="font-semibold underline">Ir a Tarifas</a>
+          </span>
+          <button onClick={() => setNotice("")} className="text-xs text-blue-500 hover:text-blue-700">✕</button>
+        </div>
+      )}
+      {listError && (
+        <div className="mb-4 flex items-start justify-between gap-3 rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-800">
+          <span>
+            {listError}{" "}
+            <a href="/admin/tarifas" className="font-semibold underline">Ir a Tarifas</a>
+          </span>
+          <button onClick={() => setListError("")} className="text-xs text-red-500 hover:text-red-700">✕</button>
+        </div>
+      )}
+
       <div className="overflow-x-auto rounded-xl border border-brand-200 bg-white">
         <table className="min-w-full text-sm">
           <thead className="bg-brand-50 text-left text-xs uppercase text-brand-500">
@@ -280,15 +314,16 @@ export default function DestinosPage() {
               <th className="px-4 py-3">Nombre</th>
               <th className="px-4 py-3">Ícono / Color</th>
               <th className="px-4 py-3">Orden</th>
+              <th className="px-4 py-3">Tarifa</th>
               <th className="px-4 py-3">Estado</th>
               <th className="px-4 py-3">Acciones</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-brand-100">
             {loading ? (
-              <tr><td colSpan={6} className="px-4 py-8 text-center text-brand-400">Cargando...</td></tr>
+              <tr><td colSpan={7} className="px-4 py-8 text-center text-brand-400">Cargando...</td></tr>
             ) : destinations.length === 0 ? (
-              <tr><td colSpan={6} className="px-4 py-8 text-center text-brand-400">Sin destinos</td></tr>
+              <tr><td colSpan={7} className="px-4 py-8 text-center text-brand-400">Sin destinos</td></tr>
             ) : destinations.map((d) => (
               <tr key={d.id} className={`hover:bg-brand-50 ${!d.active && "opacity-50"}`}>
                 <td className="px-4 py-3 font-mono text-xs text-brand-600">{d.slug}</td>
@@ -314,6 +349,17 @@ export default function DestinosPage() {
                   {d.iconKey} · <span style={{ color: `var(--color, currentColor)` }}>{d.accentColor}</span>
                 </td>
                 <td className="px-4 py-3 font-mono text-xs">{d.sortOrder}</td>
+                <td className="px-4 py-3">
+                  {d.tariffReady ? (
+                    <span className="inline-flex rounded-full bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-800">
+                      Con precio
+                    </span>
+                  ) : (
+                    <a href="/admin/tarifas" className="inline-flex rounded-full bg-amber-100 px-2.5 py-0.5 text-xs font-medium text-amber-800 hover:underline">
+                      Falta cargarla
+                    </a>
+                  )}
+                </td>
                 <td className="px-4 py-3">
                   <button
                     onClick={() => toggleActive(d)}
