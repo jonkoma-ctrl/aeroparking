@@ -11,6 +11,8 @@ interface PricingRowProps {
   id: string;
   destination: string;
   serviceType: string;
+  /** true si es la fila que cobra la reserva online de su destino. */
+  usedByWeb: boolean;
   pricePerDay: number;
   description: string | null;
   active: boolean;
@@ -29,6 +31,27 @@ export function PricingRow(props: PricingRowProps) {
   const [editing, setEditing] = useState(false);
   const [showAdvanced, setShowAdvanced] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  async function patch(body: Record<string, unknown>): Promise<boolean> {
+    setError(null);
+    try {
+      const res = await fetch("/api/admin/pricing", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id: props.id, ...body }),
+      });
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        setError(data.error || "No se pudo guardar");
+        return false;
+      }
+      return true;
+    } catch {
+      setError("No se pudo guardar");
+      return false;
+    }
+  }
 
   // Advanced fields state
   const [price, setPrice] = useState(String(props.pricePerDay));
@@ -45,39 +68,31 @@ export function PricingRow(props: PricingRowProps) {
     const cleanTiers = tiers
       .filter((t) => t.days > 0 && t.price >= 0)
       .sort((a, b) => a.days - b.days);
-    await fetch("/api/admin/pricing", {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        id: props.id,
-        pricePerDay: parseInt(price, 10),
-        // minDays/maxDays quedan deprecados — limpiamos cualquier valor viejo
-        // que confundía y rompía las cotizaciones. El rango de precios lo
-        // define la grilla, no estos campos.
-        minDays: null,
-        maxDays: null,
-        durationDiscounts: discounts.length > 0 ? discounts : null,
-        transferIncluded,
-        transferCostPerLeg: transferCostPerLeg ? parseInt(transferCostPerLeg, 10) : null,
-        priceTable: cleanTiers.length > 0 ? cleanTiers : null,
-        extraDayPrice: extraDayPrice ? parseInt(extraDayPrice, 10) : null,
-      }),
+    const ok = await patch({
+      pricePerDay: parseInt(price, 10),
+      // minDays/maxDays quedan deprecados — limpiamos cualquier valor viejo
+      // que confundía y rompía las cotizaciones. El rango de precios lo
+      // define la grilla, no estos campos.
+      minDays: null,
+      maxDays: null,
+      durationDiscounts: discounts.length > 0 ? discounts : null,
+      transferIncluded,
+      transferCostPerLeg: transferCostPerLeg ? parseInt(transferCostPerLeg, 10) : null,
+      priceTable: cleanTiers.length > 0 ? cleanTiers : null,
+      extraDayPrice: extraDayPrice ? parseInt(extraDayPrice, 10) : null,
     });
+    setLoading(false);
+    if (!ok) return;
     setShowAdvanced(false);
     setEditing(false);
-    setLoading(false);
     router.refresh();
   }
 
   async function toggleActive() {
     setLoading(true);
-    await fetch("/api/admin/pricing", {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ id: props.id, active: !props.active }),
-    });
+    const ok = await patch({ active: !props.active });
     setLoading(false);
-    router.refresh();
+    if (ok) router.refresh();
   }
 
   function addDiscount() {
@@ -112,7 +127,18 @@ export function PricingRow(props: PricingRowProps) {
     <>
       <tr className="hover:bg-brand-50">
         <td className="px-4 py-3 font-medium text-brand-900">{props.destination}</td>
-        <td className="px-4 py-3 text-brand-700">{props.serviceType}</td>
+        <td className="px-4 py-3 text-brand-700">
+          {props.serviceType}
+          {props.usedByWeb ? (
+            <span className="ml-2 inline-flex rounded-full bg-blue-100 px-2 py-0.5 text-xs font-semibold text-blue-800">
+              La usa la web
+            </span>
+          ) : (
+            <span className="ml-2 inline-flex rounded-full bg-gray-100 px-2 py-0.5 text-xs font-medium text-gray-500">
+              No la usa la web
+            </span>
+          )}
+        </td>
         <td className="px-4 py-3">
           {editing ? (
             <div className="flex items-center gap-1">
@@ -162,6 +188,17 @@ export function PricingRow(props: PricingRowProps) {
           </button>
         </td>
       </tr>
+
+      {error && (
+        <tr>
+          <td colSpan={7} className="px-4 pb-3">
+            <div className="flex items-start justify-between gap-3 rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-800">
+              <span>{error}</span>
+              <button onClick={() => setError(null)} className="text-xs text-red-500 hover:text-red-700">✕</button>
+            </div>
+          </td>
+        </tr>
+      )}
 
       {showAdvanced && (
         <tr>

@@ -29,6 +29,7 @@ import { CarPicker } from "./CarPicker";
 import { decodePrefill } from "@/lib/booking-prefill";
 import type { Destino } from "@/lib/pricing";
 import type { DestinationMeta } from "@/lib/destinos";
+import { webServiceTypeFor } from "@/lib/web-tariff";
 
 import { readAttribution } from "@/lib/attribution";
 import { readGaIds } from "@/lib/ga-cookies";
@@ -167,8 +168,9 @@ export function PresentialBookingForm({ destino, defaultServiceType, destination
   const isCruceros = destinationMeta
     ? destinationMeta.iconKey === "ship"
     : destino === "puerto";
+  // Misma regla que el freno del panel de tarifas y la alarma (lib/web-tariff).
   const serviceType: DbServiceType =
-    defaultServiceType ?? (isCruceros ? "cruceros" : "larga_estadia");
+    defaultServiceType ?? webServiceTypeFor(isCruceros ? "ship" : "plane");
 
   const [step, setStep] = useState(1);
   const [form, setForm] = useState<FormState>(initialState);
