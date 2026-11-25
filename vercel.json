@@ -4,6 +4,10 @@
     {
       "path": "/api/cron/daily-emails",
       "schedule": "0 12 * * *"
+    },
+    {
+      "path": "/api/cron/tariff-check",
+      "schedule": "0 */6 * * *"
     }
   ]
 }

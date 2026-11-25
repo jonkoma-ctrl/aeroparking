@@ -4,6 +4,7 @@ import { prisma } from "@/lib/db";
 import { formatDateTime } from "@/lib/utils";
 import { PricingRow } from "./PricingRow";
 import { AddPricingForm } from "./AddPricingForm";
+import { webServiceTypeFor } from "@/lib/web-tariff";
 
 export const metadata: Metadata = {
   title: `Admin — Tarifas — ${BRAND_NAME}`,
@@ -12,9 +13,17 @@ export const metadata: Metadata = {
 export const dynamic = "force-dynamic";
 
 export default async function AdminTarifasPage() {
-  const pricing = await prisma.servicePricing.findMany({
-    orderBy: [{ destination: "asc" }, { serviceType: "asc" }],
-  });
+  const [pricing, activeDestinations] = await Promise.all([
+    prisma.servicePricing.findMany({
+      orderBy: [{ destination: "asc" }, { serviceType: "asc" }],
+    }),
+    prisma.destination.findMany({
+      where: { active: true },
+      select: { slug: true, iconKey: true },
+    }),
+  ]);
+  // Fila que cobra la reserva online de cada destino activo (misma regla que el formulario).
+  const webTypeBySlug = new Map(activeDestinations.map((d) => [d.slug, webServiceTypeFor(d.iconKey)]));
 
   const destLabels: Record<string, string> = {
     aeroparque: "Aeroparque",
@@ -34,6 +43,10 @@ export default async function AdminTarifasPage() {
             <h1 className="text-2xl font-bold text-brand-900">Tarifas</h1>
             <p className="mt-1 text-sm text-brand-500">
               Configurá el precio por día de cada servicio
+            </p>
+            <p className="mt-1 text-xs text-brand-500">
+              Cargá los precios en la fila que dice <strong>«La usa la web»</strong>: es la que cobra la
+              reserva online de ese destino. Las que dicen «No la usa la web» no cambian lo que paga el cliente.
             </p>
           </div>
         </div>
@@ -72,6 +85,7 @@ export default async function AdminTarifasPage() {
                     id={p.id}
                     destination={destLabels[p.destination] || p.destination}
                     serviceType={serviceLabels[p.serviceType] || p.serviceType}
+                    usedByWeb={webTypeBySlug.get(p.destination) === p.serviceType}
                     pricePerDay={p.pricePerDay}
                     description={p.description}
                     active={p.active}

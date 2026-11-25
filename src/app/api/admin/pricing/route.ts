@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
+import { webTariffChangeError } from "@/lib/web-tariff-guard";
 
 // GET /api/admin/pricing — List all pricing
 export async function GET() {
@@ -32,6 +33,20 @@ export async function POST(req: NextRequest) {
     if (minDays !== undefined) baseData.minDays = minDays;
     if (maxDays !== undefined) baseData.maxDays = maxDays;
     if (durationDiscounts !== undefined) baseData.durationDiscounts = durationDiscounts;
+
+    // Freno: no dejar sin precio la tarifa que cobra la web (ver web-tariff-guard).
+    const current = await prisma.servicePricing.findUnique({
+      where: { destination_serviceType: { destination, serviceType } },
+    });
+    const blocked = await webTariffChangeError(destination, serviceType, current, {
+      active: true,
+      pricePerDay: Number(pricePerDay) || 0,
+      priceTable: current?.priceTable ?? null,
+      extraDayPrice: current?.extraDayPrice ?? null,
+    });
+    if (blocked) {
+      return NextResponse.json({ error: blocked }, { status: 409 });
+    }
 
     const pricing = await prisma.servicePricing.upsert({
       where: {
@@ -70,6 +85,21 @@ export async function PATCH(req: NextRequest) {
     if (transferCostPerLeg !== undefined) data.transferCostPerLeg = transferCostPerLeg;
     if (priceTable !== undefined) data.priceTable = priceTable;
     if (extraDayPrice !== undefined) data.extraDayPrice = extraDayPrice;
+
+    // Freno: no dejar sin precio la tarifa que cobra la web (ver web-tariff-guard).
+    const current = await prisma.servicePricing.findUnique({ where: { id } });
+    if (!current) {
+      return NextResponse.json({ error: "Tarifa no encontrada" }, { status: 404 });
+    }
+    const blocked = await webTariffChangeError(current.destination, current.serviceType, current, {
+      active: data.active ?? current.active,
+      pricePerDay: data.pricePerDay ?? current.pricePerDay,
+      priceTable: data.priceTable !== undefined ? data.priceTable : current.priceTable,
+      extraDayPrice: data.extraDayPrice !== undefined ? data.extraDayPrice : current.extraDayPrice,
+    });
+    if (blocked) {
+      return NextResponse.json({ error: blocked }, { status: 409 });
+    }
 
     const pricing = await prisma.servicePricing.update({
       where: { id },
