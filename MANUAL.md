@@ -78,6 +78,7 @@ El cliente entra a [kingpark.com.ar](https://kingpark.com.ar), ve el precio, res
    - Al equipo le llega un **aviso a reservas@nrauditores.com.ar**.
    - La reserva aparece en la **Agenda** y en la **Vista del día**.
 5. **Si no paga**, la reserva no aparece en ningún listado y el QR no sirve para entrar.
+   - Entre 1 y 24 horas después le llega **un solo mail** ("Tu lugar en KingPark todavía no está reservado") con el botón **"Terminar mi reserva"**, que lo lleva a pagar esa misma reserva. Si el link de pago ya había vencido, se cobra con la tarifa de ese momento. No le llega si ya pagó otra reserva o si la fecha de ingreso ya pasó.
 
 ### Lo que el cliente puede hacer solo ("Mi reserva")
 
@@ -371,6 +372,10 @@ Si algo de este manual no coincide con lo que ves en pantalla, avisanos para cor
 ---
 
 ## 18. Historial de novedades
+
+### 26 de noviembre de 2026 — Aviso a quien no terminó de pagar
+
+- ✉️ Al cliente que empezó una reserva y no la pagó le llega **un mail** con el botón **"Terminar mi reserva"** (ver [sección 3](#3-como-reserva-y-paga-el-cliente)).
 
 ### 26 de noviembre de 2026 — Reserva más corta en el celular
 

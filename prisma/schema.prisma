@@ -113,6 +113,10 @@ model AeroparqueReservation {
   clientUserAgent  String?            // navegador de quien creó la reserva
   metaCapiSentAt   DateTime?          // cuándo el servidor mandó el "Purchase" a Meta
 
+  // Mail "tu lugar todavía no está reservado" a quien empezó y no pagó.
+  // Se marca ANTES de mandarlo (una sola vez por reserva).
+  abandonEmailSentAt DateTime?
+
   // Auditoría
   rawEmailSubject  String?  // DEPRECATED — legacy AA2000 webhook, sin uso desde may-2026
   rawEmailBody     String?  @db.Text   // DEPRECATED — legacy AA2000 webhook, sin uso desde may-2026
