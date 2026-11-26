@@ -441,3 +441,55 @@ export function getAdminNotificationSubject(data: { customerName: string; destin
   const code = data.externalOrderId || data.reservationId?.slice(0, 8) || "";
   return `[Reserva nueva] ${destinoShort(data.destination)} — ${data.customerName} (${code})`;
 }
+
+// ─── Template 6: Reserva empezada y sin pagar ───────────────────────────────
+// Texto aprobado por Jon (26-nov-2026): no cambiarlo sin su OK.
+
+function escapeHtml(s: string): string {
+  return s
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
+export interface AbandonedReservationEmailData {
+  firstName: string;
+  startDate: Date;
+  /** Link absoluto para terminar de pagar esa misma reserva. */
+  finishUrl: string;
+}
+
+export function getAbandonedReservationEmailSubject(): string {
+  return "Tu lugar en KingPark todavía no está reservado";
+}
+
+export function buildAbandonedReservationEmail(data: AbandonedReservationEmailData): string {
+  const name = escapeHtml(data.firstName.trim() || "");
+  const p = "margin:0 0 16px;color:#475569;font-size:15px;line-height:1.6";
+  const body = `
+    <p style="${p}">Hola${name ? ` ${name}` : ""},</p>
+    <p style="${p}">
+      Empezaste a reservar tu estacionamiento para el <strong>${formatDate(data.startDate)}</strong>, pero el pago no se completó.
+    </p>
+    <p style="${p}">
+      <strong>El lugar queda tuyo recién cuando pagás.</strong> En las fechas de mucho movimiento los lugares se ocupan.
+    </p>
+    <div style="text-align:center;margin:28px 0">
+      <a href="${data.finishUrl}" style="display:inline-block;background:#1b3fc4;color:#fff;padding:14px 32px;border-radius:10px;text-decoration:none;font-size:15px;font-weight:600">
+        Terminar mi reserva
+      </a>
+    </div>
+    <p style="margin:0 0 16px;color:#475569;font-size:14px;line-height:1.6;text-align:center">
+      Traslado ida y vuelta incluido &middot; Cancelás con devolución del 100 % hasta 24 h antes.
+    </p>
+    <p style="margin:0;color:#475569;font-size:15px;line-height:1.6">
+      ¿Dudas? Escribinos al WhatsApp <a href="https://api.whatsapp.com/send?phone=${WA_PHONE}" style="color:#152766;font-weight:600;text-decoration:none">${WA_DISPLAY}</a>.
+    </p>
+    <p style="margin:24px 0 0;color:#9ca3af;font-size:12px;line-height:1.5;text-align:center">
+      Te escribimos porque empezaste una reserva en kingpark.com.ar.
+    </p>
+  `;
+  return wrapInLayout(body, { showContactBlock: false });
+}
