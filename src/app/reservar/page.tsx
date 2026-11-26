@@ -25,7 +25,10 @@ export default async function ReservarPage({ searchParams }: PageProps) {
   }
 
   // Si el query param matchea, lo pre-seleccionamos; si no, el primero.
-  const selectedSlug = destinations.find((d) => d.slug === destino)?.slug ?? destinations[0].slug;
+  const fromUrl = destinations.find((d) => d.slug === destino)?.slug;
+  const selectedSlug = fromUrl ?? destinations[0].slug;
 
-  return <ReservarPicker destinations={destinations} initialSlug={selectedSlug} />;
+  // Con destino en la dirección (anuncio, link directo, menú) el cliente ya
+  // eligió: va directo a las fechas, sin la foto grande ni el selector.
+  return <ReservarPicker destinations={destinations} initialSlug={selectedSlug} compact={!!fromUrl} />;
 }
