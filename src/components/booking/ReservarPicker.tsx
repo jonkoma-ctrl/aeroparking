@@ -39,10 +39,14 @@ const GRADIENT_BY_COLOR: Record<string, string> = {
 interface Props {
   destinations: DestinationMeta[];
   initialSlug: string;
+  /// Llegó con el destino elegido: sin foto grande ni selector arriba.
+  compact?: boolean;
 }
 
-export function ReservarPicker({ destinations, initialSlug }: Props) {
+export function ReservarPicker({ destinations, initialSlug, compact = false }: Props) {
   const [selectedSlug, setSelectedSlug] = useState(initialSlug);
+  // En modo compacto el selector se abre sólo si toca "Cambiar destino".
+  const [showChips, setShowChips] = useState(false);
   const searchParams = useSearchParams();
   const router = useRouter();
 
@@ -74,7 +78,7 @@ export function ReservarPicker({ destinations, initialSlug }: Props) {
   const SelectedIcon = ICON_BY_KEY[selected.iconKey] ?? Plane;
   const selectedGradient = GRADIENT_BY_COLOR[selected.accentColor] ?? GRADIENT_BY_COLOR.blue;
 
-  const picker = (
+  const hero = (
     <>
       {/* Hero card del destino seleccionado */}
       <div className="mb-4 overflow-hidden rounded-2xl shadow-sm">
@@ -115,7 +119,11 @@ export function ReservarPicker({ destinations, initialSlug }: Props) {
           </div>
         </div>
       </div>
+    </>
+  );
 
+  const chips = (
+    <>
       {/* Picker chips */}
       <div className="mb-6 rounded-2xl border border-brand-200 bg-white p-4 shadow-sm">
         <div className="mb-3 flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-brand-500">
@@ -148,11 +156,30 @@ export function ReservarPicker({ destinations, initialSlug }: Props) {
     </>
   );
 
+  if (compact) {
+    return (
+      <PresentialBookingForm
+        destino={selected.slug as Destino}
+        destinationMeta={selected}
+        headerSlot={showChips && destinations.length > 1 ? chips : undefined}
+        compact
+        onChangeDestination={
+          destinations.length > 1 && !showChips ? () => setShowChips(true) : undefined
+        }
+      />
+    );
+  }
+
   return (
     <PresentialBookingForm
       destino={selected.slug as Destino}
       destinationMeta={selected}
-      headerSlot={picker}
+      headerSlot={
+        <>
+          {hero}
+          {chips}
+        </>
+      }
     />
   );
 }

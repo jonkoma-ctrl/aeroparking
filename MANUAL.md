@@ -2,7 +2,7 @@
 
 > Guía para el equipo: cómo usar el panel, atender a los clientes y operar la playa.
 
-**Última actualización**: 16 de noviembre de 2026
+**Última actualización**: 26 de noviembre de 2026
 
 ---
 
@@ -70,7 +70,8 @@ El cliente entra a [kingpark.com.ar](https://kingpark.com.ar), ve el precio, res
 ## 3. Cómo reserva y paga el cliente
 
 1. En la portada elige **Aeroparque o Cruceros** y las **fechas**: el precio aparece al instante.
-2. En el formulario carga, en este orden: **fechas y horas**, **vehículo** (marca, modelo, patente), **viaje** (vuelos o crucero) y **contacto**. El **total** se ve arriba durante todo el formulario.
+2. En el formulario carga, en este orden: **fechas y horas**, **vehículo** (marca, modelo, patente), **viaje** (vuelos o crucero) y **contacto**. El **total** se ve durante todo el formulario (en el celular, fijo abajo de la pantalla).
+   - Si entra desde un anuncio o un link con el destino ya elegido, la página arranca directo en las fechas (sin la foto grande); puede tocar **"Cambiar destino"** si se equivocó.
 3. Toca **"Pagar"** y va a **Mercado Pago** (tarjeta de crédito, débito o dinero en cuenta). Tiene **30 minutos** para pagar.
 4. Cuando el pago se aprueba:
    - Al cliente le llega el **mail de confirmación con el QR** y un botón **"Gestionar mi reserva"**.
@@ -370,6 +371,12 @@ Si algo de este manual no coincide con lo que ves en pantalla, avisanos para cor
 ---
 
 ## 18. Historial de novedades
+
+### 26 de noviembre de 2026 — Reserva más corta en el celular
+
+- 📱 Quien llega desde un anuncio o un link de Aeroparque o Cruceros ve **las fechas apenas abre la página**, sin la foto grande ni el selector de destino (queda un link chico **"Cambiar destino"**).
+- ✅ Debajo de las fechas aparecen los motivos para reservar: 4.8 y +2.000 viajeros, traslado incluido, devolución del 100 % hasta 24 h antes y, en Aeroparque, retiro hasta las 23:59 si se demora el vuelo.
+- 💲 En el celular el **total queda fijo abajo** de la pantalla.
 
 ### 17 de noviembre de 2026 — Políticas de Border's
 

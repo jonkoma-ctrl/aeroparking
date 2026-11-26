@@ -15,9 +15,10 @@ import {
   ArrowLeft,
   Loader2,
   Phone,
-  Mail,
   Copy,
   AlertCircle,
+  RotateCcw,
+  Clock,
 } from "lucide-react";
 import {
   presentialReservationSchema,
@@ -68,6 +69,11 @@ interface Props {
   destinationMeta?: DestinationMeta;
   /// Contenido opcional renderizado arriba del header (ej: picker de destino).
   headerSlot?: React.ReactNode;
+  /// Llegó con el destino elegido (anuncio o link directo): encabezado corto
+  /// para que las fechas queden a la vista sin scrollear en el celular.
+  compact?: boolean;
+  /// Si viene, muestra el link chico "Cambiar destino".
+  onChangeDestination?: () => void;
 }
 
 interface FormState {
@@ -155,7 +161,14 @@ const STEPS = [
   { id: 4, label: "Contacto", icon: User },
 ];
 
-export function PresentialBookingForm({ destino, defaultServiceType, destinationMeta, headerSlot }: Props) {
+export function PresentialBookingForm({
+  destino,
+  defaultServiceType,
+  destinationMeta,
+  headerSlot,
+  compact = false,
+  onChangeDestination,
+}: Props) {
   // Si nos pasan meta de DB, lo usamos; si no, fallback a los defaults hardcoded.
   const meta = destinationMeta
     ? {
@@ -497,9 +510,8 @@ export function PresentialBookingForm({ destino, defaultServiceType, destination
             <div className="mt-6 border-t border-brand-100 pt-6 text-center text-xs text-brand-500">
               ¿Necesitás ayuda? <br className="sm:hidden" />
               <a href={`tel:+${CONTACT.whatsapp}`} className="font-semibold text-brand-700 hover:underline">
-                {CONTACT.phone}
-              </a>{" "}
-              · {CONTACT.email}
+                WhatsApp {CONTACT.phone}
+              </a>
             </div>
           </div>
         </div>
@@ -510,13 +522,40 @@ export function PresentialBookingForm({ destino, defaultServiceType, destination
   // ─── Form view ─────────────────────────────────────────────────────────────
   const showSummary = step === STEPS.length + 1;
   const Icon = meta.icon;
+  const showTotal = !!(total || totalError) && !showSummary;
 
   return (
-    <main className="min-h-[80vh] bg-gradient-to-b from-brand-50/70 via-white to-white py-8 sm:py-12">
+    <main
+      className={`min-h-[80vh] bg-gradient-to-b from-brand-50/70 via-white to-white ${
+        compact ? "pt-4" : "pt-8"
+      } ${showTotal ? "pb-28" : "pb-8"} sm:py-12`}
+    >
       <div className="container-main px-4 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-2xl">
           {headerSlot}
           {/* Header */}
+          {compact ? (
+            <div className="mb-4">
+              <div className="flex items-center justify-between gap-3">
+                <div className={`flex min-w-0 items-center gap-2 text-xs font-semibold uppercase tracking-widest ${meta.accentColor}`}>
+                  <Icon className="h-4 w-4 shrink-0" />
+                  <span className="truncate">{meta.label}</span>
+                </div>
+                {onChangeDestination && (
+                  <button
+                    type="button"
+                    onClick={onChangeDestination}
+                    className="shrink-0 text-xs font-medium text-brand-500 underline underline-offset-2 hover:text-brand-900"
+                  >
+                    Cambiar destino
+                  </button>
+                )}
+              </div>
+              <h1 className="mt-1 text-xl font-extrabold text-brand-900 sm:text-3xl">
+                Reservá tu estacionamiento + traslado
+              </h1>
+            </div>
+          ) : (
           <div className="mb-6">
             <Link
               href="/"
@@ -536,9 +575,15 @@ export function PresentialBookingForm({ destino, defaultServiceType, destination
               Pago online con Mercado Pago · Atención 24 horas
             </p>
           </div>
+          )}
 
           {/* Progress */}
-          <div ref={progressRef} className="mb-6 scroll-mt-24 rounded-3xl bg-white p-4 shadow-soft ring-1 ring-brand-100">
+          <div
+            ref={progressRef}
+            className={`scroll-mt-24 rounded-3xl bg-white shadow-soft ring-1 ring-brand-100 ${
+              compact ? "mb-4 p-3" : "mb-6 p-4"
+            }`}
+          >
             <div className="flex items-center justify-between">
               {STEPS.map((s, idx) => {
                 const StepIcon = s.icon;
@@ -572,8 +617,8 @@ export function PresentialBookingForm({ destino, defaultServiceType, destination
           </div>
 
           {/* Precio en vivo */}
-          {(total || totalError) && !showSummary && (
-            <div className="sticky top-20 z-20 mb-4 flex items-center justify-between gap-3 rounded-3xl bg-white/95 ring-1 ring-brand-100 px-5 py-3 shadow-soft backdrop-blur">
+          {showTotal && (
+            <div className="sticky top-20 z-20 mb-4 hidden items-center justify-between gap-3 rounded-3xl bg-white/95 ring-1 ring-brand-100 px-5 py-3 shadow-soft backdrop-blur sm:flex">
               {total ? (
                 <>
                   <div className="text-xs leading-tight text-brand-600">
@@ -588,6 +633,23 @@ export function PresentialBookingForm({ destino, defaultServiceType, destination
             </div>
           )}
 
+          {/* Total fijo abajo en el celular (a la derecha queda lugar para el botón de WhatsApp) */}
+          {showTotal && (
+            <div className="fixed inset-x-0 bottom-0 z-30 border-t border-brand-200 bg-white/95 py-3 pl-4 pr-24 shadow-elevated backdrop-blur print:hidden sm:hidden">
+              {total ? (
+                <div className="flex items-center justify-between gap-3">
+                  <div className="text-xs leading-tight text-brand-600">
+                    {totalIsApprox ? "Total estimado" : "Total"}
+                    <span className="block text-[11px] font-semibold text-green-700">Traslado ida y vuelta incluido</span>
+                  </div>
+                  <div className="font-display text-2xl font-extrabold tabular-nums text-brand-900">{formatPrice(total)}</div>
+                </div>
+              ) : (
+                <p className="text-sm text-red-600">No hay tarifa para esas fechas. Escribinos por WhatsApp.</p>
+              )}
+            </div>
+          )}
+
           {/* Card */}
           <div className="rounded-3xl bg-white p-6 shadow-soft ring-1 ring-brand-100 sm:p-8">
             {/* Step 1: Fechas */}
@@ -596,9 +658,13 @@ export function PresentialBookingForm({ destino, defaultServiceType, destination
                 <SectionHeader
                   icon={Calendar}
                   title="¿Cuándo viajás?"
-                  description="Necesitamos saber tu fecha y hora de ingreso al estacionamiento, y cuándo lo retirás."
+                  description={
+                    compact
+                      ? ""
+                      : "Necesitamos saber tu fecha y hora de ingreso al estacionamiento, y cuándo lo retirás."
+                  }
                 />
-                <div className="grid gap-4 sm:grid-cols-2">
+                <div className="grid grid-cols-2 gap-3 sm:gap-4">
                   <Field label="Fecha de ingreso" error={errors.startDate}>
                     <input
                       type="date"
@@ -634,6 +700,7 @@ export function PresentialBookingForm({ destino, defaultServiceType, destination
                     />
                   </Field>
                 </div>
+                <TrustStrip showFlightDelay={!isCruceros} />
                 <Field label="Pasajeros" error={errors.passengers} helpText="Cuántas personas viajan en el vehículo">
                   <input
                     type="number"
@@ -1021,11 +1088,7 @@ export function PresentialBookingForm({ destino, defaultServiceType, destination
           <div className="mt-6 rounded-xl border border-brand-200 bg-white p-5 text-center text-sm text-brand-600">
             ¿Necesitás ayuda?{" "}
             <a href={`tel:+${CONTACT.whatsapp}`} className="inline-flex items-center gap-1 font-semibold text-brand-900 hover:underline">
-              <Phone className="h-3.5 w-3.5" /> {CONTACT.phone}
-            </a>{" "}
-            ·{" "}
-            <a href={`mailto:${CONTACT.email}`} className="inline-flex items-center gap-1 font-semibold text-brand-900 hover:underline">
-              <Mail className="h-3.5 w-3.5" /> {CONTACT.email}
+              <Phone className="h-3.5 w-3.5" /> WhatsApp {CONTACT.phone}
             </a>
           </div>
         </div>
@@ -1035,6 +1098,32 @@ export function PresentialBookingForm({ destino, defaultServiceType, destination
 }
 
 // ─── Componentes auxiliares ──────────────────────────────────────────────────
+
+/// Señales de confianza pegadas a las fechas. Sólo frases validadas por Jon
+/// (26-nov-2026): no sumar otras sin su OK.
+function TrustStrip({ showFlightDelay }: { showFlightDelay: boolean }) {
+  const items: { icon: typeof Plane | null; text: string }[] = [
+    { icon: null, text: "★ 4.8 · +2.000 viajeros" },
+    { icon: Bus, text: "Traslado ida y vuelta incluido" },
+    { icon: RotateCcw, text: "Cancelás con devolución del 100 % hasta 24 h antes" },
+  ];
+  if (showFlightDelay) {
+    items.push({ icon: Clock, text: "Vuelo demorado: retirás hasta las 23:59 sin cargo" });
+  }
+  return (
+    <ul className="flex flex-wrap gap-1.5" aria-label="Por qué reservar con nosotros">
+      {items.map(({ icon: ItemIcon, text }) => (
+        <li
+          key={text}
+          className="inline-flex items-center gap-1.5 rounded-full bg-green-50 px-2.5 py-1 text-[11px] font-medium leading-tight text-green-800 ring-1 ring-green-200"
+        >
+          {ItemIcon && <ItemIcon className="h-3.5 w-3.5 shrink-0" />}
+          {text}
+        </li>
+      ))}
+    </ul>
+  );
+}
 
 function SectionHeader({
   icon: Icon,
@@ -1051,7 +1140,7 @@ function SectionHeader({
         <Icon className="h-5 w-5 text-brand-900" />
         <h2 className="text-xl font-bold text-brand-900">{title}</h2>
       </div>
-      <p className="text-sm text-brand-500">{description}</p>
+      {description && <p className="text-sm text-brand-500">{description}</p>}
     </div>
   );
 }
